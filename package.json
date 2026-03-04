@@ -11,7 +11,7 @@
     "start": "bash -c \"docker run --rm --publish 8080:8080 -v $(pwd):/src:Z docker.io/klakegg/hugo:$(grep \"FROM docker.io/klakegg/hugo\" Dockerfile | sed 's/FROM docker.io\/klakegg\\/hugo://g' | sed 's/ AS builder//g') server -p 8080 --bind 0.0.0.0\"",
     "mdlint": "markdownlint --config .markdownlint.json content *.md",
     "mdlint-fix": "npm run mdlint -- --fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "bugs": {
     "url": "https://github.com/changeme/changeme-training/issues"
@@ -19,7 +19,7 @@
   "homepage": "https://github.com/changeme/changeme-training#readme",
   "devDependencies": {
     "husky": "9.1.7",
-    "lint-staged": "16.1.2",
+    "lint-staged": "16.1.4",
     "markdownlint-cli": "0.45.0"
   },
   "lint-staged": {

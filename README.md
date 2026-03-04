@@ -10,6 +10,12 @@ The training content resides within the [content](content) directory.
 The main part are the labs, which can be found at [content/en/docs](content/en/docs).
 
 
+## Local prerequisites
+
+* Node version 23
+* [Hugo](https://gohugo.io/installation/) version 0.138.0
+
+
 ## Hugo
 
 This site is built using the static page generator [Hugo](https://gohugo.io/).

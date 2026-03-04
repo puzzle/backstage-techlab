@@ -1,6 +1,6 @@
-# CHANGEME Training
+# Backstage Techlab
 
-CHANGEME Training Description
+Backstage Techlab Description
 
 
 ## Content Sections
@@ -82,13 +82,13 @@ This is only rendered when `enabledModule` in `config.toml` **does not** contain
 Build the image:
 
 ```bash
-docker build [--build-arg TRAINING_HUGO_ENV=...] -t acend/changeme-training .
+docker build [--build-arg TRAINING_HUGO_ENV=...] -t puzzle/backstage-techlab .
 ```
 
 Run it locally:
 
 ```bash
-docker run --rm -p 8080:8080 acend/changeme-training
+docker run --rm -p 8080:8080 puzzle/backstage-techlab
 ```
 
 
@@ -97,13 +97,13 @@ docker run --rm -p 8080:8080 acend/changeme-training
 Build the image:
 
 ```bash
-buildah build-using-dockerfile [--build-arg TRAINING_HUGO_ENV=...] -t acend/changeme-training .
+buildah build-using-dockerfile [--build-arg TRAINING_HUGO_ENV=...] -t puzzle/backstage-techlab .
 ```
 
 Run it locally:
 
 ```bash
-podman run --rm --rmi --publish 8080:8080 localhost/acend/changeme-training
+podman run --rm --rmi --publish 8080:8080 localhost/puzzle/backstage-techlab
 ```
 
 **Note:** Beware that `--rmi` automatically removes the built image when the container stops, so you either have to rebuild it or remove the parameter from the command.
@@ -183,32 +183,6 @@ npm run mdlint-fix
 
 ## How to setup an entire new Training
 
-* create an empty git repo
-* Copy the contents of this repo to it
-  * Install latest hugo binary
-  * Init the site as Hugo Module `hugo mod init github.com/acend/<training>`
-  * Add the Hugo Modules Dependencies
-
-```sh
-hugo mod get github.com/google/docsy
-hugo mod get github.com/google/docsy/dependencies
-hugo mod get github.com/acend/docsy-plus
-hugo mod get github.com/acend/docsy-acend
-hugo mod get github.com/puzzle/docsy-puzzle
-```
-
-* replace all CHANGEME
-  * `https://github.com/changeme/changeme-training` to your repo url
-  * `quay.io/acend/hugo-training-template` to your image registry url
-  * `acend/changeme-training` to your org and training
-  * `changeme/changeme-training` to your org and training
-  * `acend-hugo-training-template-prod` to your prod deployment namespace
-  * `acend-hugo-training-template-test` to your test deployment namespace
-  * `hugo-training-template` to your training
-  * `changeme-training` to your training
-  * `changeme Training` to your training name, eg. `Hugo Training`
-  * `acend-hugo-template` to your org and training
-  * check remaining `changeme`'s
 * Configure all names, URLs and so on in the [build actions](.github/workflows/) and [values.yaml](./helm-chart/values.yaml)
 * remove `How to setup an entire new Training` chapter from README.md
 * adapt or remove not needed variants in the config folder

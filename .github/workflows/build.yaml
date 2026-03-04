@@ -52,7 +52,7 @@ jobs:
           push: true
           # changeme
           tags: |
-            quay.io/acend/hugo-training-template:pr-${{ github.event.pull_request.number }}
+            ghcr.io/puzzle/backstage-techlab:pr-${{ github.event.pull_request.number }}
       -
         name: Build Puzzle Version
         uses: docker/build-push-action@v6
@@ -64,7 +64,7 @@ jobs:
           push: true
           # changeme
           tags: |
-            quay.io/acend/hugo-training-template:pr-${{ github.event.pull_request.number }}-puzzle
+            ghcr.io/puzzle/backstage-techlab:pr-${{ github.event.pull_request.number }}-puzzle
       -
         name: 'Install Helm'
         uses: azure/setup-helm@v4
@@ -86,7 +86,7 @@ jobs:
         name: Deploy Helm Release
         env:
           TRAINING_HELM_RELEASE: 'pr-${{ github.event.pull_request.number }}'
-          TRAINING_NAMESPACE: 'acend-hugo-training-template-test' # changeme
+          TRAINING_NAMESPACE: 'pitc-cicd-backstage-techlab-test' # changeme
           TRAINING_VERSION: '${{ github.sha }}'
         run: |
           helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic --history-max 1
@@ -95,7 +95,7 @@ jobs:
         env:
           TRAINING_HELM_RELEASE: 'pr-${{ github.event.pull_request.number }}'
           TRAINING_HELM_NAME: 'acend-hugo-template' # changeme
-          TRAINING_NAMESPACE: 'acend-hugo-training-template-test' # changeme
+          TRAINING_NAMESPACE: 'pitc-cicd-backstage-techlab-test' # changeme
         # changeme
         run: |
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE
@@ -108,5 +108,5 @@ jobs:
           # changeme
           message: |
            PR Environments:
-           * acend version <https://hugo-training-template-pr-${{ github.event.pull_request.number }}.training.acend.ch>
-           * puzzle version <https://hugo-training-template-pr-${{ github.event.pull_request.number }}.training.puzzle.ch>
+           * acend version <https://backstage-techlab-pr-${{ github.event.pull_request.number }}.training.acend.ch>
+           * puzzle version <https://backstage-techlab-pr-${{ github.event.pull_request.number }}.training.puzzle.ch>

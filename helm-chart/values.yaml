@@ -6,30 +6,30 @@ acendTraining:
       name: acend
       replicaCount: 2
       image:
-        repository: quay.io/acend/hugo-training-template
+        repository: ghcr.io/puzzle/backstage-techlab
         pullPolicy: Always
         tag: ""
         tagsuffix: ""
       ingress:
         secretOverride: acend-wildcard
-        appname: hugo-training-template
+        appname: backstage-techlab
         domain: training.acend.ch
     - 
       name: puzzle
       replicaCount: 2
       image:
-        repository: quay.io/acend/hugo-training-template
+        repository: ghcr.io/puzzle/backstage-techlab
         pullPolicy: Always
         tag: ""
         tagsuffix: "-puzzle"
       ingress:
         secretOverride: acend-wildcard
-        appname: hugo-training-template
+        appname: backstage-techlab
         domain: training.puzzle.ch
 
 
 
-nameOverride: "acend-hugo-template"
+nameOverride: "backstage-techlab"
 fullnameOverride: ""
 
 serviceAccount:

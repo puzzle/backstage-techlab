@@ -1,10 +1,10 @@
 {
-  "name": "changeme-training",
+  "name": "backstage-techlab",
   "version": "0.0.9",
-  "description": "changeme Training",
+  "description": "Backstage Techlab",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/changeme/changeme-training.git"
+    "url": "git+https://github.com/puzzle/backstage-techlab.git"
   },
   "author": "changeme",
   "scripts": {
@@ -14,9 +14,9 @@
     "prepare": "husky"
   },
   "bugs": {
-    "url": "https://github.com/changeme/changeme-training/issues"
+    "url": "https://github.com/puzzle/backstage-techlab/issues"
   },
-  "homepage": "https://github.com/changeme/changeme-training#readme",
+  "homepage": "https://github.com/puzzle/backstage-techlab#readme",
   "devDependencies": {
     "husky": "9.1.7",
     "lint-staged": "16.1.4",

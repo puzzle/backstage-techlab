@@ -55,7 +55,7 @@ jobs:
           push: true
           # changeme
           tags: |
-            quay.io/acend/hugo-training-template:latest
+            ghcr.io/puzzle/backstage-techlab:latest
       -
         name: Build Puzzle Version
         uses: docker/build-push-action@v6
@@ -67,7 +67,7 @@ jobs:
           push: true
           # changeme
           tags: |
-            quay.io/acend/hugo-training-template:latest-puzzle
+            ghcr.io/puzzle/backstage-techlab:latest-puzzle
       -
         name: 'Install Helm'
         uses: azure/setup-helm@v4
@@ -89,7 +89,7 @@ jobs:
         name: Deploy Helm Release
         env:
           TRAINING_HELM_RELEASE: 'latest'
-          TRAINING_NAMESPACE: 'acend-hugo-training-template-prod' # changeme
+          TRAINING_NAMESPACE: 'pitc-cicd-backstage-techlab-prod' # changeme
           TRAINING_VERSION: '${{ github.sha }}'
         run: |
           helm upgrade $TRAINING_HELM_RELEASE acend-training-chart --install --wait --kubeconfig $HOME/.kube/config  --namespace=$TRAINING_NAMESPACE --set=app.name=$HELM_RELEASE --set=app.version=$TRAINING_VERSION --repo=https://acend.github.io/helm-charts/ --values=helm-chart/values.yaml --atomic
@@ -98,7 +98,7 @@ jobs:
         env:
           TRAINING_HELM_RELEASE: 'latest'
           TRAINING_HELM_NAME: 'acend-hugo-template' # changeme
-          TRAINING_NAMESPACE: 'acend-hugo-training-template-prod' # changeme
+          TRAINING_NAMESPACE: 'pitc-cicd-backstage-techlab-prod' # changeme
         # changeme
         run: |
           kubectl rollout restart deployment/${TRAINING_HELM_RELEASE}-${TRAINING_HELM_NAME}-acend --kubeconfig $HOME/.kube/config --namespace $TRAINING_NAMESPACE

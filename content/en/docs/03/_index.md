@@ -23,255 +23,139 @@ Templates use a declarative YAML format and can integrate with Git providers, CI
 ## Task {{% param sectionnumber %}}.1: Explore Existing Templates
 
 Before creating your own template, let's explore what's available by default.
+**This step uses the github token from the previous task - 2.4 Use Catalog Processors**
 
 1. Navigate to `http://localhost:3000/create`
-2. You should see some example templates
-3. Click on one to see its parameters and preview
+2. Click on `choose` to select the example template
+3. Set the `Name`, your `GitHub-Username` and the `name for the new repository`
+4. Create it
 
-Notice how templates ask for input (like project name, description) and show what will be created.
+See the created component via `Open in Catalog`!
+
+![Template Result](/docs/03/default_template.png)
 
 
 ## Task {{% param sectionnumber %}}.2: Create Your First Template
 
 Let's create a simple template for a Node.js microservice.
 
-Create a new directory for your template:
+### Step 1: Download the prepared template
+
+You can download the files from here: [Template Data](https://github.com/StephGit/backstage-techlab-data)
+
+Create a new directory for your template and add the files there:
 
 ```bash
-mkdir -p ~/backstage-templates/nodejs-microservice
-cd ~/backstage-templates/nodejs-microservice
+mkdir -p ./backstage-data/custom_template
+...
+ls  ./backstage-data/custom_template   
+nodejs-microservice
 ```
+<details>
+  <summary>Analyse the template.yaml </summary>
 
-Create a `template.yaml` file:
-
-```yaml
-apiVersion: scaffolder.backstage.io/v1beta3
-kind: Template
-metadata:
-  name: nodejs-microservice
-  title: Node.js Microservice
-  description: Create a new Node.js microservice with Express and best practices
-  tags:
-    - recommended
-    - nodejs
-    - microservice
-spec:
-  owner: team-a
-  type: service
-  
-  parameters:
-    - title: Service Information
-      required:
-        - name
-        - description
-      properties:
-        name:
-          title: Name
-          type: string
-          description: Unique name for the service
-          ui:autofocus: true
-          ui:options:
-            rows: 5
-        description:
-          title: Description
-          type: string
-          description: A brief description of what this service does
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
+  ```yaml
+  apiVersion: scaffolder.backstage.io/v1beta3
+  kind: Template
+  metadata:
+    name: nodejs-microservice
+    title: Node.js Microservice
+    description: Create a new Node.js microservice with Express and best practices
+    tags:
+      - recommended
+      - nodejs
+      - microservice
+  spec:
+    owner: team-a
+    type: service
     
-    - title: Repository Information
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
+    parameters:
+      - title: Service Information
+        required:
+          - name
+          - description
+        properties:
+          name:
+            title: Name
+            type: string
+            description: Unique name for the service
+            ui:autofocus: true
+            ui:options:
+              rows: 5
+          description:
+            title: Description
+            type: string
+            description: A brief description of what this service does
+          owner:
+            title: Owner
+            type: string
+            description: Owner of the component
+            ui:field: OwnerPicker
+            ui:options:
+              catalogFilter:
+                kind: Group
+      
+      - title: Repository Information
+        required:
+          - repoUrl
+        properties:
+          repoUrl:
+            title: Repository Location
+            type: string
+            ui:field: RepoUrlPicker
+            ui:options:
+              allowedHosts:
+                - github.com
 
-  steps:
-    - id: fetch-base
-      name: Fetch Base Template
-      action: fetch:template
-      input:
-        url: ./skeleton
-        values:
-          name: ${{ parameters.name }}
+    steps:
+      - id: fetch-base
+        name: Fetch Base Template
+        action: fetch:template
+        input:
+          url: ./skeleton
+          values:
+            name: ${{ parameters.name }}
+            description: ${{ parameters.description }}
+            owner: ${{ parameters.owner }}
+
+      - id: publish
+        name: Publish to GitHub
+        action: publish:github
+        input:
+          allowedHosts: ['github.com']
           description: ${{ parameters.description }}
-          owner: ${{ parameters.owner }}
+          repoUrl: ${{ parameters.repoUrl }}
+          defaultBranch: main
 
-    - id: publish
-      name: Publish to GitHub
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        description: ${{ parameters.description }}
-        repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: main
+      - id: register
+        name: Register Component
+        action: catalog:register
+        input:
+          repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+          catalogInfoPath: '/catalog-info.yaml'
 
-    - id: register
-      name: Register Component
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
+    output:
+      links:
+        - title: Repository
+          url: ${{ steps.publish.output.remoteUrl }}
+        - title: Open in Catalog
+          icon: catalog
+          entityRef: ${{ steps.register.output.entityRef }}
+  ```
+</details>
 
-  output:
-    links:
-      - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
-      - title: Open in Catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
-```
+  **Understanding the template structure:**
+  - `parameters`: Define the input form users fill out
+  - `steps`: Actions to execute when the template runs
+  - `output`: Links shown to the user after completion
 
-**Understanding the template structure:**
-- `parameters`: Define the input form users fill out
-- `steps`: Actions to execute when the template runs
-- `output`: Links shown to the user after completion
+  **Analyse the skeleton files**
+
+  Check out the file contents in the skeleton subfolder.
+  Notice the `${{ values.* }}` syntax - these are template variables that get replaced with user input when the template is executed.
 
 
-## Task {{% param sectionnumber %}}.3: Create the Template Skeleton
-
-Templates use a "skeleton" directory containing the actual files to be generated. Let's create one.
-
-Create the skeleton directory structure:
-
-```bash
-mkdir -p skeleton/src
-```
-
-Create `skeleton/package.json`:
-
-```json
-{
-  "name": "${{ values.name }}",
-  "version": "1.0.0",
-  "description": "${{ values.description }}",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "test": "jest"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^16.0.3"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.22",
-    "jest": "^29.5.0"
-  }
-}
-```
-
-Create `skeleton/src/index.js`:
-
-```javascript
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-
-app.get('/health', (req, res) => {
-  res.json({ status: 'healthy', service: '${{ values.name }}' });
-});
-
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Welcome to ${{ values.name }}',
-    description: '${{ values.description }}'
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`${{ values.name }} listening on port ${PORT}`);
-});
-
-module.exports = app;
-```
-
-Create `skeleton/README.md`:
-
-```markdown
-# ${{ values.name }}
-
-${{ values.description }}
-
-## Owner
-
-${{ values.owner }}
-
-## Getting Started
-
-### Installation
-
-\`\`\`bash
-npm install
-\`\`\`
-
-### Running Locally
-
-\`\`\`bash
-npm run dev
-\`\`\`
-
-### Running Tests
-
-\`\`\`bash
-npm test
-\`\`\`
-
-## API Endpoints
-
-- `GET /health` - Health check endpoint
-- `GET /` - Welcome message
-```
-
-Create `skeleton/catalog-info.yaml`:
-
-```yaml
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: ${{ values.name }}
-  description: ${{ values.description }}
-  annotations:
-    github.com/project-slug: ${{ values.repoUrl | parseRepoUrl | pick('owner') }}/${{ values.repoUrl | parseRepoUrl | pick('repo') }}
-  tags:
-    - nodejs
-    - microservice
-spec:
-  type: service
-  lifecycle: experimental
-  owner: ${{ values.owner }}
-```
-
-Create `skeleton/.gitignore`:
-
-```
-node_modules/
-.env
-*.log
-dist/
-coverage/
-```
-
-{{% alert title="Note" color="primary" %}}
-Notice the `${{ values.* }}` syntax - these are template variables that get replaced with user input when the template is executed.
-{{% /alert %}}
-
-
-## Task {{% param sectionnumber %}}.4: Register Your Template
+### Step 2: Register Your Template
 
 Now let's register this template in Backstage.
 
@@ -281,27 +165,26 @@ Add the template location to your `app-config.yaml`:
 catalog:
   locations:
     - type: file
-      target: ../../backstage-templates/nodejs-microservice/template.yaml
+      target: ../../backstage-data/templates/nodejs-microservice/template.yaml
       rules:
         - allow: [Template]
 ```
 
-Restart your Backstage instance or wait for the catalog to refresh. Navigate to `http://localhost:3000/create` and you should see your new template!
+Wait for the catalog to refresh. Navigate to `http://localhost:3000/create` and you should see your new template!
 
 
-## Task {{% param sectionnumber %}}.5: Use Your Template
+### Step 3: Use Your Template
 
 Let's create a new service using your template.
 
-1. Go to `http://localhost:3000/create`
-2. Click on "Node.js Microservice"
-3. Fill in the form:
+1. Click on "Node.js Microservice"
+2. Fill in the form:
    - **Name**: `user-service`
    - **Description**: `Service for managing user accounts`
    - **Owner**: Select a team
    - **Repository Location**: Choose GitHub and specify the repository details
 
-4. Click "Review" and then "Create"
+3. Click "Review" and then "Create"
 
 Watch as Backstage:
 - Creates the repository on GitHub
@@ -315,16 +198,23 @@ You'll need to have GitHub integration configured with appropriate permissions f
 
 ## Task {{% param sectionnumber %}}.6: Create an Advanced Template with Multiple Steps
 
-Let's create a more sophisticated template that includes CI/CD setup.
+Let's create a more sophisticated template that includes CI/CD setup and demonstrates advanced features like multiple parameter sections, conditional logic, and multiple fetch steps.
 
-Create a new template directory:
+### Step 1: Download the advanced template files
+
+Download the full-stack application template from the [Template Data](https://github.com/StephGit/backstage-techlab-data) repository.
+
+Create a new directory for the advanced template and add the files there:
 
 ```bash
-mkdir -p ~/backstage-templates/fullstack-app
-cd ~/backstage-templates/fullstack-app
+mkdir -p ./backstage-data/templates/fullstack-app
+...
+ls ./backstage-data/templates/fullstack-app
+fullstack-app
 ```
 
-Create `template.yaml`:
+<details>
+  <summary>Analyse the advanced template.yaml</summary>
 
 ```yaml
 apiVersion: scaffolder.backstage.io/v1beta3
@@ -451,12 +341,51 @@ spec:
       - title: CI/CD Pipeline
         url: ${{ steps.publish.output.remoteUrl }}/actions
 ```
+</details>
 
-This advanced template demonstrates:
-- **Multiple parameter sections**: Organized form with different categories
-- **Conditional logic**: Options like `includeAuth` that affect generated code
-- **Multiple fetch steps**: Combining different sources
-- **CI/CD integration**: Automatically creating GitHub Actions workflows
+**Key features of this advanced template:**
+
+- **Multiple parameter sections**: Organized form with different categories (Application Info, Technology Choices, Repository)
+- **Conditional logic**: Options like `includeAuth` and `database` that affect generated code
+- **Multiple fetch steps**: Combines skeleton files, documentation, and workflow files
+- **CI/CD integration**: Automatically creates GitHub Actions workflows
+
+**Analyse the skeleton structure:**
+
+The skeleton folder contains a more complex structure:
+- `frontend/` - React application with routing and state management
+- `backend/` - Node.js API with database integration
+- `docs/` - Documentation files
+- `.github/workflows/` - CI/CD pipeline configuration
+- `docker-compose.yml` - Local development environment
+- Conditional files based on `${{ values.includeAuth }}` and `${{ values.database }}`
+
+### Step 2: Register the advanced template
+
+Add the template location to your `app-config.yaml`:
+
+```yaml
+catalog:
+  locations:
+    - type: file
+      target: ../../backstage-data/templates/fullstack-app/template.yaml
+      rules:
+        - allow: [Template]
+```
+
+Wait for the catalog to refresh and navigate to `http://localhost:3000/create` to see your advanced template!
+
+### Step 3: Test the advanced template (optional)
+
+If you have time, try creating a full-stack application:
+
+1. Click on "Full-Stack Application"
+2. Fill in the form and experiment with different options:
+   - Try different database choices (PostgreSQL, MySQL, MongoDB)
+   - Toggle the authentication option
+3. Create the application and explore the generated repository
+
+Notice how the template adapts based on your selections!
 
 
 ## Task {{% param sectionnumber %}}.7: Add Custom Template Actions

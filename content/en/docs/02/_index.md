@@ -29,10 +29,10 @@ Let's create a simple microservice component and register it in the catalog.
 
 ### Create the catalog-info.yaml file
 
-Create a new sub-directory for your sample service into the examples folder:
+Create a new directory for your sample service folder:
 
 ```bash
-mkdir -p examples/my-sample-service
+mkdir -p backstage-data/my-sample-service
 ```
 
 Create a `catalog-info.yaml` file with the following content:
@@ -78,7 +78,7 @@ Add the new entity to the catalog-location in your `app-config.yaml`:
 catalog:
   locations:
     - type: file
-      target: ../../examples/my-sample-service/catalog-info.yaml
+      target: ../../backstage-data/my-sample-service/catalog-info.yaml
 ```
 
 After saving, Backstage will automatically pick up the new component. 
@@ -266,7 +266,49 @@ Now when you view components, you'll see the actual team members who own them!
 
 ## Task {{% param sectionnumber %}}.4: Use Catalog Processors
 
-Backstage can automatically discover and import entities from various sources. Let's configure GitHub discovery.
+Backstage can automatically discover and import entities from various sources. Let's configure GitHub discovery to automatically find all repositories with `catalog-info.yaml` files.
+
+### Step 1: Create a GitHub Personal Access Token
+
+To allow Backstage to access your GitHub repositories, you need to create a Personal Access Token (PAT):
+
+1. Go to GitHub Settings: [https://github.com/settings/tokens](https://github.com/settings/tokens)
+2. Click **"Generate new token"** → **"Generate new token (classic)"**
+3. Give your token a descriptive name (e.g., "Backstage Catalog Discovery")
+4. Select the following scopes:
+   - `repo` (Full control of private and public repositories) - access private and public repos *
+   - `write:org` (Write org projects) - to write a new repo *
+   - `read:org` (Read org and team membership) - to read organization data
+   - `read:user` (Read user profile data)
+5. Click **"Generate token"**
+6. **Copy the token immediately** - you won't be able to see it again!
+
+\* This will be used in the next chapter.
+
+### Step 2: Set the environment variable
+
+Set the `GITHUB_TOKEN` environment variable with your token:
+
+```bash
+export GITHUB_TOKEN=ghp_your_token_here
+```
+
+**Alternative: Use app-config.local.yaml (not recommended for production)**
+
+For local development only, you can create an `app-config.local.yaml` file (which should be in `.gitignore`):
+
+```yaml
+integrations:
+  github:
+    - host: github.com
+      token: ghp_your_token_here
+```
+
+{{% alert title="Warning" color="warning" %}}
+Never commit tokens directly to your repository! Always use environment variables or secret management tools in production.
+{{% /alert %}}
+
+### Step 3: Configure GitHub integration
 
 Edit your `app-config.yaml` to add GitHub integration:
 
@@ -280,21 +322,25 @@ catalog:
   providers:
     github:
       myOrg:
-        organization: 'your-github-org'
+        organization: 'your-github-org'  # Replace with your GitHub organization
         catalogPath: '/catalog-info.yaml'
         filters:
           branch: 'main'
-          repository: '.*'
+          repository: '.*'  # Regex to match all repositories
         schedule:
           frequency: { minutes: 30 }
           timeout: { minutes: 3 }
 ```
 
-{{% alert title="Note" color="primary" %}}
-You'll need to set the `GITHUB_TOKEN` environment variable with a personal access token that has read access to your repositories.
-{{% /alert %}}
+### Step 4: Restart Backstage
 
-This configuration will automatically discover all repositories in your GitHub organization that contain a `catalog-info.yaml` file!
+Restart your Backstage instance to apply the changes:
+
+```bash
+yarn start
+```
+
+This configuration will automatically discover all repositories in your GitHub organization that contain a `catalog-info.yaml` file and refresh every 30 minutes!
 
 
 ## Best Practices for Catalog Management

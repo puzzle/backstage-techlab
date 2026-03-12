@@ -27,6 +27,8 @@ The catalog uses a declarative approach - you describe what exists, and Backstag
 
 Let's create a simple microservice component and register it in the catalog.
 
+### Create the catalog-info.yaml file
+
 Create a new sub-directory for your sample service into the examples folder:
 
 ```bash
@@ -68,23 +70,9 @@ spec:
 
 See the [Backstage Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format/) for more details.
 
-## Task {{% param sectionnumber %}}.2: Register the Component in Backstage
+### Manual registration in the catalog
 
-Now let's register this component in your Backstage instance.
-
-**Option 1: Register via URL (if using Git)**
-
-If you've pushed this file to a Git repository:
-
-1. Navigate to your Backstage instance at `http://localhost:3000`
-2. Click on "Create..." in the sidebar
-3. Click "Register Existing Component"
-4. Enter the URL to your `catalog-info.yaml` file
-5. Click "Analyze" and then "Import"
-
-**Option 2: Register via Local File**
-
-For local development, add the location to your `app-config.yaml`:
+Add the new entity to the catalog-location in your `app-config.yaml`:
 
 ```yaml
 catalog:
@@ -93,10 +81,22 @@ catalog:
       target: ../../examples/my-sample-service/catalog-info.yaml
 ```
 
-After saving, Backstage will automatically pick up the new component. Navigate to the Catalog to see your component!
+After saving, Backstage will automatically pick up the new component. 
+Navigate to your Backstage catalog and explore the relationships of your component.
+
+Explore the different tabs:
+   - **Overview**: Basic information
+   - **Dependencies**: What this component depends on
+   - **API**: APIs provided by this component
+   - **Docs**: TechDocs documentation (if configured)
+
+Checkout the entity detail by selecting `Inspect entity` in the submenu in the top right corner.
 
 
-## Task {{% param sectionnumber %}}.3: Create a Complete System
+![Entity Detail](/docs/02/entity-detail.png)
+
+
+## Task {{% param sectionnumber %}}.2: Create a Complete System
 
 Let's create a more complex example with multiple components forming a system.
 
@@ -185,21 +185,26 @@ spec:
   system: my-system
 ```
 
-Register this file in your `app-config.yaml`:
-
-```yaml
-catalog:
-  locations:
-    - type: file
-      target: ../../catalog-system.yaml
-```
-
 {{% alert title="Note" color="primary" %}}
 Notice how components reference each other through `providesApis` and `consumesApis`. This creates a dependency graph that Backstage visualizes automatically.
 {{% /alert %}}
 
+### Register the Component via URL (GIT)
 
-## Task {{% param sectionnumber %}}.4: Define Teams and Ownership
+First you have to push the file in a Git repository! 
+Navigate to the Backstage Home-Page:
+
+1. Click on "Create..." in the sidebar
+2. Click "Register Existing Component"
+3. Enter the URL to your `catalog-info.yaml` file
+4. Click "Analyze" and then "Import"
+
+Checkout the new entities. You can navigate between them by clicking on relations. 
+
+![Backstage Catalog](/docs/02/entities.png)
+
+
+## Task {{% param sectionnumber %}}.3: Define Teams and Ownership
 
 Ownership is crucial for accountability. Let's define teams in the catalog.
 
@@ -259,7 +264,7 @@ catalog:
 Now when you view components, you'll see the actual team members who own them!
 
 
-## Task {{% param sectionnumber %}}.5: Use Catalog Processors
+## Task {{% param sectionnumber %}}.4: Use Catalog Processors
 
 Backstage can automatically discover and import entities from various sources. Let's configure GitHub discovery.
 
@@ -292,100 +297,6 @@ You'll need to set the `GITHUB_TOKEN` environment variable with a personal acces
 This configuration will automatically discover all repositories in your GitHub organization that contain a `catalog-info.yaml` file!
 
 
-## Task {{% param sectionnumber %}}.6: Add TechDocs to Your Component
-
-TechDocs brings documentation directly into Backstage. Let's add documentation to one of your components.
-
-In your `my-sample-service` directory, create a `docs/` folder:
-
-```bash
-mkdir -p ~/my-sample-service/docs
-```
-
-Create `docs/index.md`:
-
-```markdown
-# My Sample Service
-
-## Overview
-
-This is a sample microservice that demonstrates Backstage catalog integration.
-
-## Architecture
-
-The service is built with Node.js and provides a REST API for user management.
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL 14+
-
-### Installation
-
-\`\`\`bash
-npm install
-npm start
-\`\`\`
-
-## API Documentation
-
-See the [API Reference](./api.md) for detailed endpoint documentation.
-```
-
-Update your `catalog-info.yaml` to enable TechDocs:
-
-```yaml
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: my-sample-service
-  description: A sample microservice for the Backstage catalog
-  annotations:
-    github.com/project-slug: your-org/my-sample-service
-    backstage.io/techdocs-ref: dir:.
-  tags:
-    - nodejs
-    - microservice
-spec:
-  type: service
-  lifecycle: production
-  owner: team-a
-  system: my-system
-```
-
-Create a `mkdocs.yml` file in the root of your service:
-
-```yaml
-site_name: 'My Sample Service'
-site_description: 'Documentation for My Sample Service'
-
-nav:
-  - Home: index.md
-
-plugins:
-  - techdocs-core
-```
-
-Now your documentation will be available directly in Backstage under the "Docs" tab of your component!
-
-
-## Task {{% param sectionnumber %}}.7: Explore Catalog Relationships
-
-Navigate to your Backstage catalog and explore the relationships:
-
-1. Go to `http://localhost:3000/catalog`
-2. Click on the `backend-api` component
-3. Explore the different tabs:
-   - **Overview**: Basic information
-   - **Dependencies**: What this component depends on
-   - **API**: APIs provided by this component
-   - **Docs**: TechDocs documentation (if configured)
-
-Notice the visual dependency graph showing how components relate to each other!
-
-
 ## Best Practices for Catalog Management
 
 As you build out your catalog, keep these best practices in mind:
@@ -402,12 +313,9 @@ As you build out your catalog, keep these best practices in mind:
 ## Summary
 
 In this chapter, you:
-- ✅ Created your first catalog component
-- ✅ Registered components in Backstage
+- ✅ Created and registered your first catalog component
 - ✅ Built a complete system with multiple entities
 - ✅ Defined teams and ownership
 - ✅ Configured automatic discovery from GitHub
-- ✅ Added TechDocs documentation
-- ✅ Explored catalog relationships
 
-Your Backstage catalog is now populated with meaningful data that represents your software ecosystem!  
+Your Backstage catalog is now populated with data that represents your software ecosystem!  

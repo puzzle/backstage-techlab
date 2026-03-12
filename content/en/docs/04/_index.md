@@ -224,11 +224,11 @@ spec:
 Now you can see GitHub Actions workflow runs directly in Backstage!
 
 
-## Task {{% param sectionnumber %}}.4: Install the TechDocs Plugin (Advanced Configuration)
+## Task {{% param sectionnumber %}}.4: Setup TechDocs Plugin
 
-TechDocs is already included by default, but let's configure it for production use.
+TechDocs brings documentation directly into Backstage, making it easy for developers to find and read documentation alongside their services. TechDocs is already included by default, but let's configure it properly and add documentation to a component.
 
-**Step 1: Configure TechDocs generator**
+**Step 1: Configure TechDocs for local development**
 
 Edit `app-config.yaml`:
 
@@ -241,7 +241,89 @@ techdocs:
     type: 'local'
 ```
 
-For production, use external storage:
+**Step 2: Create documentation for a component**
+
+In your `my-sample-service` directory (or any catalog component), create a `docs/` folder:
+
+```bash
+mkdir -p ~/my-sample-service/docs
+```
+
+Create `docs/index.md`:
+
+```markdown
+# My Sample Service
+
+## Overview
+
+This is a sample microservice that demonstrates Backstage catalog integration.
+
+## Architecture
+
+The service is built with Node.js and provides a REST API for user management.
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 22+
+- PostgreSQL 14+
+
+### Installation
+
+\`\`\`bash
+npm install
+npm start
+\`\`\`
+
+## API Documentation
+
+See the [API Reference](./api.md) for detailed endpoint documentation.
+```
+
+**Step 3: Create MkDocs configuration**
+
+Create a `mkdocs.yml` file in the root of your service:
+
+```yaml
+site_name: 'My Sample Service'
+site_description: 'Documentation for My Sample Service'
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core
+```
+
+**Step 4: Enable TechDocs in catalog**
+
+Update your `catalog-info.yaml` to enable TechDocs:
+
+```yaml
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: my-sample-service
+  description: A sample microservice for the Backstage catalog
+  annotations:
+    github.com/project-slug: your-org/my-sample-service
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - nodejs
+    - microservice
+spec:
+  type: service
+  lifecycle: production
+  owner: team-a
+  system: my-system
+```
+
+Now your documentation will be available directly in Backstage under the "Docs" tab of your component!
+
+**Step 5: Production configuration (optional)**
+
+For production deployments, use external storage:
 
 ```yaml
 techdocs:
@@ -258,37 +340,9 @@ techdocs:
         secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
 ```
 
-**Step 2: Install required dependencies**
-
-```bash
-yarn add @backstage/plugin-techdocs-backend
-```
-
-**Step 3: Enable TechDocs for components**
-
-Add the annotation to your `catalog-info.yaml`:
-
-```yaml
-metadata:
-  annotations:
-    backstage.io/techdocs-ref: dir:.
-```
-
-Create `mkdocs.yml` in your repository:
-
-```yaml
-site_name: 'My Service Documentation'
-site_description: 'Technical documentation for My Service'
-
-nav:
-  - Home: index.md
-  - Architecture: architecture.md
-  - API Reference: api.md
-  - Deployment: deployment.md
-
-plugins:
-  - techdocs-core
-```
+{{% alert title="Note" color="primary" %}}
+The `backstage.io/techdocs-ref: dir:.` annotation tells Backstage where to find the documentation. Use `dir:.` for docs in the same repository, or specify a URL for external documentation sources.
+{{% /alert %}}
 
 
 ## Task {{% param sectionnumber %}}.5: Install a Monitoring Plugin (Grafana)

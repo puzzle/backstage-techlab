@@ -3,6 +3,7 @@ services:
   hugo:
     build:
       target: builder
+    user: "1000:1000"
     environment:
       HUGO_ENVIRONMENT: "${HUGO_ENVIRONMENT:-development}"
     volumes:
@@ -12,4 +13,4 @@ services:
     # Use colors in output
     # https://github.com/docker/compose/issues/2231
     tty: true
-    command: server --port 8080
+    command: server --port 8080 --noBuildLock

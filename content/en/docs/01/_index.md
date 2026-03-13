@@ -169,7 +169,7 @@ Save the file. Thanks to hot-reloading, you should see the changes reflected in 
 
 ## Task {{% param sectionnumber %}}.4: Run Tests
 
-### Unit Tests
+**Unit Tests
 
 Backstage comes with a [jest](https://jestjs.io/) testing setup out of the box. Run the test suite:
 
@@ -186,7 +186,7 @@ yarn test:all
 
 For the moment there's just a basic test to check that the setup is working.
 
-### E2E Tests
+**E2E Tests
 
 For end-to-end tests a [playwright](https://playwright.dev/) setup is ready to use. 
 

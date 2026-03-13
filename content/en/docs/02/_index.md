@@ -27,7 +27,7 @@ The catalog uses a declarative approach - you describe what exists, and Backstag
 
 Let's create a simple microservice component and register it in the catalog.
 
-### Create the catalog-info.yaml file
+**Create the catalog-info.yaml file
 
 Create a new directory for your sample service folder:
 
@@ -70,7 +70,7 @@ spec:
 
 See the [Backstage Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format/) for more details.
 
-### Manual registration in the catalog
+**Manual registration in the catalog
 
 Add the new entity to the catalog-location in your `app-config.yaml`:
 
@@ -191,7 +191,7 @@ spec:
 Notice how components reference each other through `providesApis` and `consumesApis`. This creates a dependency graph that Backstage visualizes automatically.
 {{% /alert %}}
 
-### Register the Component via URL (GIT)
+**Register the Component via URL (GIT)
 
 First you have to push the file in a Git repository! 
 Navigate to the Backstage Home-Page:

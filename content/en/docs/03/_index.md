@@ -25,7 +25,7 @@ Templates use a declarative YAML format and can integrate with Git providers, CI
 Before creating your own template, let's explore what's available by default.
 To make the following tasks work you need a GitHub Personal Access Token with the appropriate scopes.
 
-### Step 1: Create a GitHub Personal Access Token
+**Step 1: Create a GitHub Personal Access Token**
 
 To allow Backstage to access your GitHub repositories, you need to create a Personal Access Token (PAT):
 
@@ -34,13 +34,14 @@ To allow Backstage to access your GitHub repositories, you need to create a Pers
 3. Give your token a descriptive name (e.g., "Backstage Catalog Discovery")
 4. Select the following scopes:
    - `repo` (Full control of private and public repositories) - access private and public repos 
+   - `workflow` (Access GitHub Actions workflows) - to update workflows
    - `write:org` (Write org projects) - to write a new repo 
    - `read:org` (Read org and team membership) - to read organization data
    - `read:user` (Read user profile data)
 5. Click **"Generate token"**
 6. **Copy the token immediately** - you won't be able to see it again!
 
-### Step 2: Set the environment variable
+**Step 2: Set the environment variable**
 
 Set the `GITHUB_TOKEN` environment variable with your token:
 
@@ -64,7 +65,7 @@ Never commit tokens directly to your repository! Always use environment variable
 {{% /alert %}}
 
 
-### Step 3: Run the default template
+**Step 3: Run the default template**
 
 1. Navigate to `http://localhost:3000/create`
 2. Click on `choose` to select the example template
@@ -80,7 +81,7 @@ See the created component via `Open in Catalog`!
 
 Let's create a simple template for a Node.js microservice.
 
-### Step 1: Download the prepared template
+**Step 1: Download the prepared template**
 
 You can download the files from here: [Template Data](https://github.com/StephGit/backstage-techlab-data)
 
@@ -196,7 +197,7 @@ fullstack-app
   Notice the `${{ values.* }}` syntax - these are template variables that get replaced with user input when the template is executed.
 
 
-### Step 2: Register Your Template
+**Step 2: Register Your Template**
 
 Now let's register this template in Backstage.
 
@@ -214,7 +215,7 @@ catalog:
 Wait for the catalog to refresh. Navigate to `http://localhost:3000/create` and you should see your new template!
 
 
-### Step 3: Use Your Template
+**Step 3: Use Your Template**
 
 Let's create a new service using your template.
 
@@ -241,7 +242,7 @@ You'll need to have GitHub integration configured with appropriate permissions f
 
 Let's create a more sophisticated template that includes CI/CD setup and demonstrates advanced features like multiple parameter sections, conditional logic, and multiple fetch steps.
 
-### Step 1: Download the advanced template files
+**Step 1: Download the advanced template files**
 
 Download the full-stack application template from the [Template Data](https://github.com/StephGit/backstage-techlab-data) repository.
 
@@ -401,7 +402,7 @@ The skeleton folder contains a more complex structure:
 - `docker-compose.yml` - Local development environment
 - Conditional files based on `${{ values.includeAuth }}` and `${{ values.database }}`
 
-### Step 2: Register the template
+**Step 2: Register the template**
 
 Add the template location to your `app-config.yaml`:
 
@@ -416,7 +417,7 @@ catalog:
 
 Wait for the catalog to refresh and navigate to `http://localhost:3000/create` to see your advanced template!
 
-### Step 3: Test the template
+**Step 3: Test the template**
 
 1. Click on "Full-Stack Application"
 2. Fill in the form and experiment with different options:

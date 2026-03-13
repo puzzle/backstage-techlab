@@ -39,12 +39,28 @@ Popular plugins include:
 
 
 
-## Task {{% param sectionnumber %}}.4: Use Catalog Processors
+## Task {{% param sectionnumber %}}.2: Use Github-Catalog Processors
 
-Backstage can automatically discover and import entities from various sources. Let's configure GitHub discovery to automatically find all repositories with `catalog-info.yaml` files.
+Backstage can automatically discover and import entities from various sources. 
 
 
-### Step 3: Configure GitHub integration
+Let's configure GitHub discovery to automatically find all repositories with `catalog-info.yaml` files.
+
+### Step 1: Install and configure plugin
+
+```bash
+# From your Backstage root directory
+yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-github
+```
+
+Update your backend by adding the following line:
+
+```bash
+# packages/backend/src/index.ts
+backend.add(import('@backstage/plugin-catalog-backend-module-github'));
+```
+
+### Step 2: Configure GitHub integration
 
 Edit your `app-config.yaml` to add GitHub integration:
 
@@ -58,7 +74,7 @@ catalog:
   providers:
     github:
       myOrg:
-        organization: 'your-github-org'  # Replace with your GitHub organization
+        organization: 'your-github-org'  # Replace with your GitHub organization or username
         catalogPath: '/catalog-info.yaml'
         filters:
           branch: 'main'
@@ -68,7 +84,7 @@ catalog:
           timeout: { minutes: 3 }
 ```
 
-### Step 4: Restart Backstage
+### Step 3: Restart Backstage
 
 Restart your Backstage instance to apply the changes:
 
@@ -78,6 +94,11 @@ yarn start
 
 This configuration will automatically discover all repositories in your GitHub organization that contain a `catalog-info.yaml` file and refresh every 30 minutes!
 
+### Step 4: Find the provided entites
+
+
+- Checkout the new created `Location` entity for GitHub
+- Navigate to `Inspect Entity` and checkout the annotations for GitHub
 
 
 ## Task {{% param sectionnumber %}}.2: Install the GitHub Actions Plugin
@@ -87,8 +108,7 @@ Let's add CI/CD visibility with the GitHub Actions plugin.
 **Step 1: Install the plugin**
 
 ```bash
-cd packages/app
-yarn add @backstage/plugin-github-actions
+yarn --cwd packages/app add @backstage/plugin-github-actions
 ```
 
 **Step 2: Add to the Entity Page**

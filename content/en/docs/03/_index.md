@@ -237,7 +237,7 @@ You'll need to have GitHub integration configured with appropriate permissions f
 {{% /alert %}} -->
 
 
-## Task {{% param sectionnumber %}}.2: Create an Advanced Template with Multiple Steps
+## Task {{% param sectionnumber %}}.2: Create a Template with Multiple Steps
 
 Let's create a more sophisticated template that includes CI/CD setup and demonstrates advanced features like multiple parameter sections, conditional logic, and multiple fetch steps.
 
@@ -384,7 +384,7 @@ spec:
 ```
 </details>
 
-**Key features of this advanced template:**
+**Key features of this template:**
 
 - **Multiple parameter sections**: Organized form with different categories (Application Info, Technology Choices, Repository)
 - **Conditional logic**: Options like `includeAuth` and `database` that affect generated code
@@ -401,7 +401,7 @@ The skeleton folder contains a more complex structure:
 - `docker-compose.yml` - Local development environment
 - Conditional files based on `${{ values.includeAuth }}` and `${{ values.database }}`
 
-### Step 2: Register the advanced template
+### Step 2: Register the template
 
 Add the template location to your `app-config.yaml`:
 
@@ -416,9 +416,7 @@ catalog:
 
 Wait for the catalog to refresh and navigate to `http://localhost:3000/create` to see your advanced template!
 
-### Step 3: Test the advanced template (optional)
-
-If you have time, try creating a full-stack application:
+### Step 3: Test the template
 
 1. Click on "Full-Stack Application"
 2. Fill in the form and experiment with different options:
@@ -427,8 +425,6 @@ If you have time, try creating a full-stack application:
 3. Create the application and explore the generated repository
 
 Notice how the template adapts based on your selections!
-
-
 
 
 {{% onlyWhen fullScope %}}
@@ -502,6 +498,5 @@ In this chapter, you:
 - ✅ Created your first software template
 - ✅ Built a template skeleton with variables
 - ✅ Registered and used your template
-- ✅ Created an advanced multi-step template
 
 Software Templates are one of Backstage's most powerful features for improving developer productivity. By standardizing project creation, you reduce cognitive load and ensure consistency across your organization.  

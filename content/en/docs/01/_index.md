@@ -31,38 +31,40 @@ Run the following command to create a new Backstage app:
 npx @backstage/create-app@latest
 ```
 
-When prompted, enter a name for your app (e.g., `my-backstage-app`).
+When prompted, enter a name for your app (**`my-backstage-app`**).
 
 {{% alert title="Note" color="primary" %}}
 The creation process may take several minutes as it downloads dependencies and sets up the project structure.
 {{% /alert %}}
 
-After the creation process is complete, navigate into your newly created app directory:
+The output should look similar to:
 
 ```bash  
   ...
   copying       index.ts ✔ 
-  copying       EntityPage.tsx ✔ 
-  copying       SearchPage.tsx ✔ 
 
  Moving to final location:
-  moving        my-app ✔ 
+  moving        my-backstage-app ✔ 
   fetching      yarn.lock seed ✔ 
   init          git repository ◜ 
-
-Installing dependencies:
+ Installing dependencies:
   init          git repository ✔ 
   executing     yarn install ✔ 
   executing     yarn tsc ✔ 
 
-🥇  Successfully created my-app
+🥇  Successfully created my-backstage-app
 
 
  All set! Now you might want to:
-  Run the app: cd my-app && yarn start
+  Run the app: cd my-backstage-app && yarn start
   Set up the software catalog: https://backstage.io/docs/features/software-catalog/configuration
   Add authentication: https://backstage.io/docs/auth/
+```
 
+After the creation process is complete, navigate into your newly created app directory.
+
+```bash
+cd my-backstage-app
 ```
 
 Explore the project structure. You should see:
@@ -89,7 +91,9 @@ This command will:
 * Start the frontend on `http://localhost:3000`
 * Enable hot-reloading for development
 
-Open your browser and navigate to `http://localhost:3000`. You should see the Backstage home page!
+Open your browser and navigate to `http://localhost:3000`
+
+This should load the home page of your newly created Backstage application!
 
 You may see a warning message like:
 
@@ -98,11 +102,15 @@ You are currently using the legacy guest token...
 ```
 
 {{% alert title="Note" color="primary" %}}
-This warning is expected for local development. Backstage uses a guest authentication mode by default, which is fine for development purposes. In production, you would configure proper authentication (OAuth, SAML, etc.). You can safely ignore this warning for now.
+This warning is expected for local development. Backstage uses a guest authentication mode by default, which is fine for development purposes. In production, you would configure proper authentication (OAuth, SAML, etc.).
+
+You can safely ignore this warning for now.
 {{% /alert %}}
 
 
 ### Task {{% param sectionnumber %}}.2.1: Explore the Default Interface
+
+TODO: Check CRA
 
 The default installation includes example entities to help you understand how Backstage organizes information.
 
@@ -140,10 +148,13 @@ catalog:
     - allow: [Component, System, API, Resource, Location, Group, User]
 ```
 
+TODO: add numbers for reference
+
+
 **Understanding the configuration:**
 
 * `app.title`: The name displayed in the browser tab
-* `organization.name`: Your organization's name
+* `organization.name`: Your company / organization name displayed in the UI.
 * `backend.baseUrl`: Where the backend API is running
 * `catalog`: Configuration for the software catalog
 
@@ -171,7 +182,7 @@ Save the file. Thanks to hot-reloading, you should see the changes reflected in 
 
 ## Task {{% param sectionnumber %}}.4: Run Tests
 
-**Unit Tests
+### Unit Tests
 
 Backstage comes with a [jest](https://jestjs.io/) testing setup out of the box. Run the test suite:
 
@@ -188,7 +199,7 @@ yarn test:all
 
 For the moment there's just a basic test to check that the setup is working.
 
-**E2E Tests
+### E2E Tests
 
 For end-to-end tests a [playwright](https://playwright.dev/) setup is ready to use.
 
@@ -197,7 +208,9 @@ yarn test:e2e
 ```
 
 {{% alert title="Note" color="primary" %}}
-Depending on your setup you might get a error and you need to install browsers first: e.g. `yarn playwright install chrome`
+Depending on your setup you might get a error running the E2E tests.
+
+You probably need to install browsers first: e.g. `yarn playwright install chrome`
 {{% /alert %}}
 
 
@@ -224,7 +237,9 @@ This command performs several build steps:
 4. **Type Checking**: Validates TypeScript types across the entire codebase
 
 {{% alert title="Note" color="primary" %}}
-The production build artifacts are created in the `dist/` directories of each package (`packages/app/dist` and `packages/backend/dist`). These optimized builds are what you would deploy to production. For this techlab, we won't deploy them, but it's important to understand the build process.
+The production build artifacts are created in the `dist/` directories of each package (`packages/app/dist` and `packages/backend/dist`).
+
+These optimized builds are what you would deploy to production. For this techlab, we won't deploy them, but it's important to understand the build process.
 {{% /alert %}}
 
 
@@ -236,6 +251,9 @@ Now that you have Backstage running locally, consider how this improves Develope
 * **Self-Service**: Developers can discover and use resources without waiting
 * **Standardization**: Consistent way to document and organize software
 * **Reduced Cognitive Load**: Less context switching between different tools
+
+TODO: CRA: without waiting? reduce CL through what?
+
 
 In the next chapters, you'll learn how to populate the catalog, create templates, and add plugins to make Backstage truly powerful for your organization.
 

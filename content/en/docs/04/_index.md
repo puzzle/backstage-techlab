@@ -4,8 +4,15 @@ weight: 4
 sectionnumber: 4
 ---
 
-Plugins extend Backstage with new functionality, integrations, and visualizations. In this chapter, you'll learn how to discover, install, and configure existing plugins to enhance your developer portal.
+Plugins extend Backstage with new functionality, integrations, and visualizations.
 
+In this chapter, you'll learn how to discover, install, and configure existing plugins to enhance your developer portal.
+
+TODO CRA: simple plugins, take todo app
+
+TODO CRA: github tasks as advanced tasks
+
+TODO CRA: home page task in a new lab: change look and feel / adapt to company cooperate design
 
 ## Understanding the Plugin Ecosystem
 

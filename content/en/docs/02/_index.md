@@ -4,7 +4,9 @@ weight: 2
 sectionnumber: 2
 ---
 
-The Backstage Software Catalog is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization. In this chapter, you'll learn how to populate and manage the catalog effectively.
+The Backstage Software Catalog is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization.
+
+In this chapter, you'll learn how to populate and manage the catalog effectively.
 
 
 ## Understanding the Catalog
@@ -28,7 +30,9 @@ The catalog uses a declarative approach - you describe what exists, and Backstag
 
 Let's create a simple microservice component and register it in the catalog.
 
-**Create the catalog-info.yaml file
+TODO CRA: anywhere?
+
+### Create the catalog-info.yaml file
 
 Create a new directory for your sample service folder:
 
@@ -60,6 +64,8 @@ spec:
   system: my-system
 ```
 
+TODO: CRA: reference bullets?
+
 **Understanding the structure:**
 
 * `metadata.name`: Unique identifier for the component
@@ -72,9 +78,11 @@ spec:
 
 See the [Backstage Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format/) for more details.
 
-**Manual registration in the catalog
+### Manual registration in the catalog
 
 Add the new entity to the catalog-location in your `app-config.yaml`:
+
+TODO: CRA: path to the folder?
 
 ```yaml
 catalog:
@@ -86,6 +94,7 @@ catalog:
 ```
 
 After restarting, Backstage will automatically pick up the new component.
+
 Navigate to your Backstage catalog and explore the relationships of your component.
 
 Explore the different tabs:
@@ -97,13 +106,18 @@ Explore the different tabs:
 
 Checkout the entity detail by selecting `Inspect entity` in the submenu in the top right corner.
 
+TODO: CRA: link to right menu item
 
 ![Entity Detail](/docs/02/entity-detail.png)
+
+TODO: CRA: Explain what we see here
 
 
 ## Task {{% param sectionnumber %}}.2: Create a Complete System
 
 Let's create a more complex example with multiple components forming a system.
+
+TODO: CRA: Prerequisite or as an advanced task?
 
 Create a new file `catalog-info.yaml` and push it to a github repository:
 
@@ -196,6 +210,8 @@ Notice how components reference each other through `providesApis` and `consumesA
 
 
 ### Register the Component via URL (GIT)
+
+TODO: CRA: github integration needed?
 
 First you have to push the file in a Git repository!
 

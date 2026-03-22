@@ -4,7 +4,14 @@ weight: 3
 sectionnumber: 3
 ---
 
-Software Templates in Backstage enable self-service for developers. Instead of copying boilerplate code or following lengthy setup guides, developers can use templates to scaffold new projects with best practices built in. This chapter will teach you how to create and use templates effectively.
+Software Templates in Backstage enable self-service for developers. Instead of copying boilerplate code or following lengthy setup guides, developers can use templates to scaffold new projects with best practices built in.
+
+This chapter will teach you how to create and use templates effectively.
+
+
+TODO CRA: tasks with gitlab as advanced tasks?
+
+TODO CRA: simpler templates that run without gitlab?
 
 
 ## Understanding Software Templates
@@ -26,6 +33,7 @@ Templates use a declarative YAML format and can integrate with Git providers, CI
 Before creating your own template, let's explore what's available by default.
 To make the following tasks work you need a GitHub Personal Access Token with the appropriate scopes.
 
+TODO CRA: prerequisite!
 
 ### Step 1: Create a GitHub Personal Access Token
 
@@ -43,6 +51,7 @@ To allow Backstage to access your GitHub repositories, you need to create a Pers
 5. Click **"Generate token"**
 6. **Copy the token immediately** - you won't be able to see it again!
 
+TODO CRA: as less rights als possible!
 
 ### Step 2: Set the environment variable
 
@@ -86,6 +95,8 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 
 ### Step 1: Download the advanced template files
+
+TODO CRA: put it into this repo
 
 Download the full-stack application template from the [Template Data](https://github.com/StephGit/backstage-techlab-data) repository.
 

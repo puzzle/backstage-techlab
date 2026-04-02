@@ -94,8 +94,6 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 ### Step 1: Download the advanced template files
 
-TODO CRA: put it into this repo
-
 Download the full-stack application template from the [Techlab Repo: Template Data](https://github.com/puzzle/backstage-techlab/raw/refs/heads/cra-review/content/backstage-data.zip) repository.
 
 Create a new directory for the template and add the files there:

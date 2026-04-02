@@ -1,15 +1,107 @@
 ---
-title: "5. Change the look and feel"
+title: "5. Change the Look and Feel"
 weight: 5
 sectionnumber: 5
 ---
 
+Backstage is designed to be branded and customized to match your organization's identity. In this chapter, you'll learn how to customize the theme (colors, fonts, logo), create a custom home page, and adjust the navigation sidebar. These changes help make the developer portal feel like an integral part of your company's toolchain rather than a generic off-the-shelf product.
+
+{{% alert title="Note" color="primary" %}}
+Backstage uses [Material UI (MUI)](https://material-ui.com/) for its component library. Theme customizations follow the MUI theming approach, so if you're familiar with MUI, you'll feel right at home.
+{{% /alert %}}
 
 
+## Task {{% param sectionnumber %}}.1: Customize the Theme
 
-## Task {{% param sectionnumber %}}.1: Create a Custom Home Page
+Backstage supports custom themes to align the portal with your corporate design. You can override colors, typography, and more.
 
-Let's customize the Backstage home page with a congratulatory message.
+
+### Step 1: Create a custom theme
+
+Create a new file `packages/app/src/theme.ts`:
+
+```typescript
+import {
+  createUnifiedTheme,
+  palettes,
+  genPageTheme,
+  shapes,
+} from '@backstage/theme';
+
+export const myCustomTheme = createUnifiedTheme({
+  palette: {
+    ...palettes.light,
+    primary: {
+      main: '#0052CC',
+    },
+    secondary: {
+      main: '#FF5630',
+    },
+    navigation: {
+      background: '#172B4D',
+      indicator: '#0052CC',
+      color: '#FFFFFF',
+      selectedColor: '#FFFFFF',
+    },
+  },
+  defaultPageTheme: 'home',
+  pageTheme: {
+    home: genPageTheme({
+      colors: ['#0052CC', '#00B8D9'],
+      shape: shapes.wave,
+    }),
+    documentation: genPageTheme({
+      colors: ['#6554C0', '#00B8D9'],
+      shape: shapes.wave2,
+    }),
+    tool: genPageTheme({
+      colors: ['#FF5630', '#FFAB00'],
+      shape: shapes.round,
+    }),
+  },
+});
+```
+
+
+### Step 2: Apply the theme
+
+Edit `packages/app/src/App.tsx` and wrap the app with your custom theme.
+
+Add the import:
+
+```typescript
+import { UnifiedThemeProvider } from '@backstage/theme';
+import { myCustomTheme } from './theme';
+```
+
+Then replace the default themes in the `createApp` configuration:
+
+```typescript
+const app = createApp({
+  // ... other config
+  themes: [
+    {
+      id: 'my-theme',
+      title: 'My Custom Theme',
+      variant: 'light',
+      Provider: ({ children }) => (
+        <UnifiedThemeProvider theme={myCustomTheme} children={children} />
+      ),
+    },
+  ],
+});
+```
+
+Restart Backstage and observe the new colors in the sidebar and page headers.
+
+{{% alert title="Tip" color="primary" %}}
+Try changing the `primary.main` and `navigation.background` colors to match your company's brand. You can use any valid CSS color value.
+{{% /alert %}}
+
+
+## Task {{% param sectionnumber %}}.2: Create a Custom Home Page
+
+Now let's replace the default home page with a custom one.
 
 Create `packages/app/src/components/home/HomePage.tsx`:
 
@@ -85,3 +177,16 @@ Set the route element in `App.tsx`:
 ```typescript
     <Route path="/" element={<HomePage />} />
 ```
+
+After restarting, the root URL `/` will now show your custom home page instead of the default catalog view.
+
+
+## Summary
+
+In this chapter, you:
+
+* ✅ Customized the Backstage theme with your own colors and page themes
+* ✅ Created a custom home page component
+* ✅ Updated the sidebar navigation and routing
+
+These customizations make Backstage feel like a native part of your organization's tooling. In a real-world setup, you would further refine the theme to match your corporate design guidelines and add useful widgets (e.g., quick links, recent components, announcements) to the home page.

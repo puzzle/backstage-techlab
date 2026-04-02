@@ -8,12 +8,6 @@ Software Templates in Backstage enable self-service for developers. Instead of c
 
 This chapter will teach you how to create and use templates effectively.
 
-
-TODO CRA: tasks with gitlab as advanced tasks?
-
-TODO CRA: simpler templates that run without gitlab?
-
-
 ## Understanding Software Templates
 
 Software Templates (also called Scaffolder Templates) allow you to:
@@ -27,13 +21,9 @@ Software Templates (also called Scaffolder Templates) allow you to:
 Templates use a declarative YAML format and can integrate with Git providers, CI/CD systems, and other tools to fully automate project creation.
 {{% /alert %}}
 
+## Prerequisites
 
-## Task {{% param sectionnumber %}}.1: Explore Existing Templates
-
-Before creating your own template, let's explore what's available by default.
 To make the following tasks work you need a GitHub Personal Access Token with the appropriate scopes.
-
-TODO CRA: prerequisite!
 
 ### Step 1: Create a GitHub Personal Access Token
 
@@ -51,7 +41,7 @@ To allow Backstage to access your GitHub repositories, you need to create a Pers
 5. Click **"Generate token"**
 6. **Copy the token immediately** - you won't be able to see it again!
 
-TODO CRA: as less rights als possible!
+TODO CRA: as less rights als possible! -> SGI: that's it :-)
 
 ### Step 2: Set the environment variable
 
@@ -77,7 +67,13 @@ Never commit tokens directly to your repository! Always use environment variable
 {{% /alert %}}
 
 
-### Step 3: Run the default template
+
+## Task {{% param sectionnumber %}}.1: Explore Existing Templates
+
+Before creating your own template, let's explore what's available by default.
+
+
+### Run the default template
 
 1. Navigate to `http://localhost:3000/create`
 2. Click on `choose` to select the example template
@@ -88,8 +84,10 @@ See the created component via `Open in Catalog`!
 
 ![Template Result](/docs/03/default_template.png)
 
+Navigate to the links to see your new Component or your Github-Repo
 
-## Task {{% param sectionnumber %}}.2: Create a Template with Multiple Steps
+
+## Task {{% param sectionnumber %}}.1: Create a Template with Multiple Steps
 
 Let's create a more sophisticated template that includes CI/CD setup and demonstrates advanced features like multiple parameter sections, conditional logic, and multiple fetch steps.
 
@@ -98,9 +96,9 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 TODO CRA: put it into this repo
 
-Download the full-stack application template from the [Template Data](https://github.com/StephGit/backstage-techlab-data) repository.
+Download the full-stack application template from the [Techlab Repo: Template Data](https://github.com/puzzle/backstage-techlab/tree/main/content/backstage-data) repository.
 
-Create a new directory for the advanced template and add the files there:
+Create a new directory for the template and add the files there:
 
 ```bash
 mkdir -p ./backstage-data/templates/fullstack-app

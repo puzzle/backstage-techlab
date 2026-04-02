@@ -130,33 +130,30 @@ Key sections to note:
 
 ```yaml
 app:
-  title: Scaffolded Backstage App
+  title: Scaffolded Backstage App #(1)
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: My Company #(2)
 
 backend:
-  baseUrl: http://localhost:7007
+  baseUrl: http://localhost:7007 #(3)
   listen:
     port: 7007
   
-catalog:
+catalog: #(4)
   import:
     entityFilename: catalog-info.yaml
   rules:
     - allow: [Component, System, API, Resource, Location, Group, User]
 ```
 
-TODO: add numbers for reference
-
-
 **Understanding the configuration:**
 
-* `app.title`: The name displayed in the browser tab
-* `organization.name`: Your company / organization name displayed in the UI.
-* `backend.baseUrl`: Where the backend API is running
-* `catalog`: Configuration for the software catalog
+1. `app.title`: The name displayed in the browser tab
+2. `organization.name`: Your company / organization name displayed in the UI.
+3. `backend.baseUrl`: Where the backend API is running
+4. `catalog`: Configuration for the software catalog
 
 
 ### Task {{% param sectionnumber %}}.3.1: Customize Your Backstage Instance
@@ -243,21 +240,6 @@ These optimized builds are what you would deploy to production. For this techlab
 {{% /alert %}}
 
 
-## Understanding the Developer Experience Benefits
-
-Now that you have Backstage running locally, consider how this improves Developer Experience (DevEx):
-
-* **Single Pane of Glass**: All your tools and services in one place
-* **Self-Service**: Developers can discover and use resources without waiting
-* **Standardization**: Consistent way to document and organize software
-* **Reduced Cognitive Load**: Less context switching between different tools
-
-TODO: CRA: without waiting? reduce CL through what?
-
-
-In the next chapters, you'll learn how to populate the catalog, create templates, and add plugins to make Backstage truly powerful for your organization.
-
-
 ## Summary
 
 In this chapter, you:
@@ -268,3 +250,5 @@ In this chapter, you:
 * ✅ Ran tests and created a production build
 
 Your local Backstage environment is now ready for the next steps!
+
+In the next chapters, you'll learn how to populate the catalog, create templates, and add plugins to make Backstage truly powerful for your organization.

@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3001
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=${{ values.database }}://user:password@db:5432/${{ values.name }}
+      {% if values.includeAuth %}
+      - JWT_SECRET=your-secret-key-change-in-production
+      {% endif %}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - db
+
+  db:
+    {% if values.database == 'postgresql' %}
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=${{ values.name }}
+    {% elif values.database == 'mysql' %}
+    image: mysql:8-alpine
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=${{ values.name }}
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    {% elif values.database == 'mongodb' %}
+    image: mongo:7-alpine
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=${{ values.name }}
+    {% endif %}
+    ports:
+      {% if values.database == 'postgresql' %}
+      - "5432:5432"
+      {% elif values.database == 'mysql' %}
+      - "3306:3306"
+      {% elif values.database == 'mongodb' %}
+      - "27017:27017"
+      {% endif %}
+    volumes:
+      - db-data:/var/lib/{% if values.database == 'mongodb' %}mongo{% else %}{{ values.database }}{% endif %}
+
+volumes:
+  db-data:

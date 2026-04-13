@@ -4,7 +4,9 @@ weight: 2
 sectionnumber: 2
 ---
 
-The Backstage Software Catalog is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization. In this chapter, you'll learn how to populate and manage the catalog effectively.
+The Backstage Software Catalog is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization.
+
+In this chapter, you'll learn how to populate and manage the catalog effectively.
 
 
 ## Understanding the Catalog
@@ -26,9 +28,10 @@ The catalog uses a declarative approach - you describe what exists, and Backstag
 
 ## Task {{% param sectionnumber %}}.1: Create Your First Component
 
-Let's create a simple microservice component and register it in the catalog.
+In this chapter, you'll create a simple microservice component and register it in the catalog.
 
-**Create the catalog-info.yaml file
+
+### Create the catalog-info.yaml file
 
 Create a new directory for your sample service folder:
 
@@ -42,11 +45,11 @@ Create a `catalog-info.yaml` file with the following content:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: my-sample-service
-  description: A sample microservice for the Backstage catalog
-  annotations:
+  name: my-sample-service #(1)
+  description: A sample microservice for the Backstage catalog #(2)
+  annotations: #(3)
     github.com/project-slug: your-org/my-sample-service
-  tags:
+  tags: #(4)
     - nodejs
     - microservice
   links:
@@ -54,58 +57,73 @@ metadata:
       title: Service Dashboard
       icon: dashboard
 spec:
-  type: service
-  lifecycle: production
-  owner: team-a
-  system: my-system
+  type: service #(5)
+  lifecycle: production #(6)
+  owner: team-a #(7)
+  system: my-system #(8)
 ```
 
 **Understanding the structure:**
 
-* `metadata.name`: Unique identifier for the component
-* `metadata.description`: Human-readable description
-* `metadata.annotations`: Additional metadata (like GitHub repository)
-* `metadata.tags`: Labels for filtering and searching
-* `spec.type`: Type of component (service, library, website, etc.)
-* `spec.lifecycle`: Stage of development (experimental, production, deprecated)
-* `spec.owner`: Team or group that owns this component
+1. `metadata.name`: Unique identifier for the component
+2. `metadata.description`: Human-readable description
+3. `metadata.annotations`: Additional metadata (like GitHub repository)
+4. `metadata.tags`: Labels for filtering and searching
+5. `spec.type`: Type of component (service, library, website, etc.)
+6. `spec.lifecycle`: Stage of development (experimental, production, deprecated)
+7. `spec.owner`: Team or group that owns this component
+8. `spec.system`: System this component belongs to
 
 See the [Backstage Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format/) for more details.
 
-**Manual registration in the catalog
+
+### Manual registration in the catalog
 
 Add the new entity to the catalog-location in your `app-config.yaml`:
 
 ```yaml
 catalog:
   locations:
+  ...
     - type: file
       target: ../../backstage-data/my-sample-service/catalog-info.yaml
       rules:
         - allow: [Component]
 ```
 
-After restarting, Backstage will automatically pick up the new component.
-Navigate to your Backstage catalog and explore the relationships of your component.
+Backstage will automatically pick up the new component.
+
+{{% alert title="Important" color="warning" %}}
+With the local setup, the catalog locations are sometimes not picked up automatically. In this case, you need to restart the Backstage application for the changes to take effect. After a restart, wait a minute until the catalog-registration is finished.
+{{% /alert %}}
+
+Navigate to your Backstage catalog and explore the values of your component.
+(There are some info-messages about unresolved relations, that you can ignore at this moment.)
 
 Explore the different tabs:
 
 * **Overview**: Basic information
-* **Dependencies**: What this component depends on
+* **Techdocs**: Technical documentation for this component
 * **API**: APIs provided by this component
-* **Docs**: TechDocs documentation (if configured)
 
 Checkout the entity detail by selecting `Inspect entity` in the submenu in the top right corner.
 
-
 ![Entity Detail](/docs/02/entity-detail.png)
+
+In the modal you can analyse all the details of the entity. This is specially helpful if you need to see the `Raw JSON`/`Raw YAML`.
 
 
 ## Task {{% param sectionnumber %}}.2: Create a Complete System
 
 Let's create a more complex example with multiple components forming a system.
 
-Create a new file `catalog-info.yaml` and push it to a github repository:
+Create a subfolder in the `backstage-data` directory:
+
+```sh
+  mkdir -p backstage-data/my-entities
+```
+
+Create a new file `catalog-info.yaml` and save it to your `backstage-data/my-entities` directory:
 
 ```yaml
 ---
@@ -195,16 +213,21 @@ Notice how components reference each other through `providesApis` and `consumesA
 {{% /alert %}}
 
 
-### Register the Component via URL (GIT)
+### Register the Entity in the Catalog
 
-First you have to push the file in a Git repository!
+Add the new entity to the catalog-location in your `app-config.yaml`:
 
-Navigate to the Backstage Home-Page:
+```yaml
+catalog:
+  locations:
+  ...
+    - type: file
+      target: ../../backstage-data/my-entities/catalog-info.yaml
+      rules:
+        - allow: [System, Component, API, Resource]
+```
 
-1. Click on "Create..." in the sidebar
-2. Click "Register Existing Component"
-3. Enter the URL to your `catalog-info.yaml` file
-4. Click "Analyze" and then "Import"
+Backstage will automatically pick up the new entities.
 
 Checkout the new entities. You can navigate between them by clicking on relations.
 
@@ -270,7 +293,10 @@ catalog:
         - allow: [User, Group]
 ```
 
-After restarting, when you view components, you'll see the actual team members who own them!
+Now looking at your entities, you can click on a owner and you'll see the actual team members who own them!
+Check out the connection between all the entities by clicking on the relations or links.
+
+![Team Entity](/docs/02/team.png)
 
 
 ## Best Practices for Catalog Management

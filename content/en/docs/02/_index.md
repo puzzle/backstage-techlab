@@ -30,6 +30,7 @@ The catalog uses a declarative approach - you describe what exists, and Backstag
 
 In this chapter, you'll create a simple microservice component and register it in the catalog.
 
+
 ### Create the catalog-info.yaml file
 
 Create a new directory for your sample service folder:
@@ -74,6 +75,7 @@ spec:
 8. `spec.system`: System this component belongs to
 
 See the [Backstage Descriptor Format](https://backstage.io/docs/features/software-catalog/descriptor-format/) for more details.
+
 
 ### Manual registration in the catalog
 

@@ -12,6 +12,7 @@ TODO CRA: simple plugins, take todo app
 
 TODO CRA: github tasks as advanced tasks
 
+
 ## Understanding the Plugin Ecosystem
 
 Backstage has a rich ecosystem of plugins that fall into several categories:

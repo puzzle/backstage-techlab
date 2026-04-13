@@ -1,18 +1,22 @@
 # ${{ values.name }} Documentation
 
+
 ## Overview
 
 ${{ values.description }}
 
+
 ## Getting Started
+
 
 ### Prerequisites
 
-- Node.js 18 or higher
-- Docker and Docker Compose
+* Node.js 18 or higher
+* Docker and Docker Compose
 {% if values.database == 'postgresql' %}- PostgreSQL{% endif %}
 {% if values.database == 'mysql' %}- MySQL{% endif %}
 {% if values.database == 'mongodb' %}- MongoDB{% endif %}
+
 
 ### Installation
 
@@ -32,14 +36,18 @@ ${{ values.description }}
    npm run dev
    ```
 
+
 ## Architecture
 
 This is a full-stack application with:
-- **Frontend**: React with Vite
-- **Backend**: Node.js/Express
-- **Database**: ${{ values.database }}
+
+* **Frontend**: React with Vite
+* **Backend**: Node.js/Express
+* **Database**: ${{ values.database }}
+
 
 ## Development
+
 
 ### Running Locally
 
@@ -47,11 +55,13 @@ This is a full-stack application with:
 npm run dev
 ```
 
+
 ### Running Tests
 
 ```bash
 npm test
 ```
+
 
 ### Building for Production
 
@@ -59,9 +69,11 @@ npm test
 npm run build
 ```
 
+
 ## Deployment
 
 The application is configured with GitHub Actions for CI/CD. Every push to the main branch will trigger automated tests and builds.
+
 
 ## Owner
 

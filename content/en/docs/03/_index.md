@@ -8,6 +8,7 @@ Software Templates in Backstage enable self-service for developers. Instead of c
 
 This chapter will teach you how to create and use templates effectively.
 
+
 ## Understanding Software Templates
 
 Software Templates (also called Scaffolder Templates) allow you to:
@@ -21,9 +22,11 @@ Software Templates (also called Scaffolder Templates) allow you to:
 Templates use a declarative YAML format and can integrate with Git providers, CI/CD systems, and other tools to fully automate project creation.
 {{% /alert %}}
 
+
 ## Prerequisites
 
 To make the following tasks work you need a GitHub Personal Access Token with the appropriate scopes.
+
 
 ### Step 1: Create a GitHub Personal Access Token
 
@@ -42,6 +45,7 @@ To allow Backstage to access your GitHub repositories, you need to create a Pers
 6. **Copy the token immediately** - you won't be able to see it again!
 
 TODO CRA: as less rights als possible! -> SGI: that's it :-)
+
 
 ### Step 2: Set the environment variable
 
@@ -65,7 +69,6 @@ integrations:
 {{% alert title="Warning" color="warning" %}}
 Never commit tokens directly to your repository! Always use environment variables or secret management tools in production.
 {{% /alert %}}
-
 
 
 ## Task {{% param sectionnumber %}}.1: Explore Existing Templates

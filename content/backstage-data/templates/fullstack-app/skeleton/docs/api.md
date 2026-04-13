@@ -2,7 +2,9 @@
 
 Base URL: `http://localhost:3001/api`
 
+
 ## Health Check
+
 
 ### GET /api/health
 
@@ -19,12 +21,16 @@ Check the health status of the API.
 ```
 
 **Status Codes**
-- `200 OK`: Service is healthy
+
+* `200 OK`: Service is healthy
 
 ---
 
 {% if values.includeAuth %}
+
+
 ## Authentication
+
 
 ### POST /api/auth/register
 
@@ -48,11 +54,13 @@ Register a new user account.
 ```
 
 **Status Codes**
-- `201 Created`: User registered successfully
-- `400 Bad Request`: Invalid input data
-- `409 Conflict`: User already exists
+
+* `201 Created`: User registered successfully
+* `400 Bad Request`: Invalid input data
+* `409 Conflict`: User already exists
 
 ---
+
 
 ### POST /api/auth/login
 
@@ -79,10 +87,12 @@ Authenticate a user and receive a JWT token.
 ```
 
 **Status Codes**
-- `200 OK`: Authentication successful
-- `401 Unauthorized`: Invalid credentials
+
+* `200 OK`: Authentication successful
+* `401 Unauthorized`: Invalid credentials
 
 ---
+
 
 ### GET /api/auth/me
 
@@ -103,11 +113,13 @@ Authorization: Bearer <token>
 ```
 
 **Status Codes**
-- `200 OK`: User information retrieved
-- `401 Unauthorized`: Invalid or missing token
+
+* `200 OK`: User information retrieved
+* `401 Unauthorized`: Invalid or missing token
 
 ---
 {% endif %}
+
 
 ## Error Responses
 
@@ -122,15 +134,18 @@ All endpoints may return the following error format:
 ```
 
 **Common Status Codes**
-- `400 Bad Request`: Invalid request parameters
-- `401 Unauthorized`: Authentication required or failed
-- `403 Forbidden`: Insufficient permissions
-- `404 Not Found`: Resource not found
-- `500 Internal Server Error`: Server error
+
+* `400 Bad Request`: Invalid request parameters
+* `401 Unauthorized`: Authentication required or failed
+* `403 Forbidden`: Insufficient permissions
+* `404 Not Found`: Resource not found
+* `500 Internal Server Error`: Server error
+
 
 ## Rate Limiting
 
 Currently no rate limiting is implemented. Consider adding rate limiting for production deployments.
+
 
 ## Authentication
 
@@ -146,17 +161,20 @@ Tokens expire after 7 days by default (configurable via `JWT_EXPIRES_IN` environ
 This API currently does not implement authentication. Consider adding authentication for production use.
 {% endif %}
 
+
 ## CORS
 
 CORS is enabled for development. Configure allowed origins in production via environment variables.
+
 
 ## Pagination
 
 For endpoints returning lists, pagination will be implemented using:
 
 **Query Parameters**
-- `page`: Page number (default: 1)
-- `limit`: Items per page (default: 20, max: 100)
+
+* `page`: Page number (default: 1)
+* `limit`: Items per page (default: 20, max: 100)
 
 **Response Format**
 ```json
@@ -170,6 +188,7 @@ For endpoints returning lists, pagination will be implemented using:
   }
 }
 ```
+
 
 ## Versioning
 

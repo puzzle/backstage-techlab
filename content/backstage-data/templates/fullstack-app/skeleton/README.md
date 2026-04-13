@@ -2,33 +2,40 @@
 
 ${{ values.description }}
 
+
 ## Architecture
 
 This is a full-stack application with:
-- **Frontend**: React application with Vite
-- **Backend**: Node.js/Express API
-- **Database**: ${{ values.database }}
+
+* **Frontend**: React application with Vite
+* **Backend**: Node.js/Express API
+* **Database**: ${{ values.database }}
 {% if values.includeAuth %}
-- **Authentication**: JWT-based authentication
+* **Authentication**: JWT-based authentication
 {% endif %}
+
 
 ## Owner
 
 ${{ values.owner }}
 
+
 ## Getting Started
+
 
 ### Prerequisites
 
-- Node.js 22+
-- ${{ values.database | capitalize }}
-- Docker (optional, for containerized development)
+* Node.js 22+
+* ${{ values.database | capitalize }}
+* Docker (optional, for containerized development)
+
 
 ### Installation
 
 ```bash
 npm install
 ```
+
 
 ### Running Locally
 
@@ -48,17 +55,20 @@ npm run dev:frontend
 npm run dev:backend
 ```
 
+
 ### Running with Docker
 
 ```bash
 docker-compose up
 ```
 
+
 ### Running Tests
 
 ```bash
 npm test
 ```
+
 
 ## Project Structure
 
@@ -71,11 +81,13 @@ npm test
 └── docker-compose.yml # Docker configuration
 ```
 
+
 ## API Documentation
 
 The API is available at `http://localhost:3001/api`
 
 See the [API Documentation](./docs/api.md) for detailed endpoint information.
+
 
 ## Deployment
 

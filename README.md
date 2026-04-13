@@ -119,22 +119,22 @@ podman run --rm --rmi --publish 8080:8080 localhost/puzzle/backstage-techlab
 
 ### Docker Compose
 
-You can use `docker-compose`. If you prefer Podman check out [podman-compose](https://github.com/containers/podman-compose).
+You can use `docker compose`. If you prefer Podman check out [podman-compose](https://github.com/containers/podman-compose).
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Use the following command to set the hugo environment
 
 ```bash
-HUGO_ENVIRONMENT="something" docker-compose up
+HUGO_ENVIRONMENT="something" docker compose up
 ```
 
 To rebuild the image if something changed in the `Dockerfile`:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 The website is available at [localhost:8080](http://localhost:8080)

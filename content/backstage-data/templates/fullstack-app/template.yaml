@@ -1,0 +1,123 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: fullstack-app
+  title: Full-Stack Application
+  description: Create a complete full-stack application with React frontend, Node.js backend, and CI/CD
+  tags:
+    - recommended
+    - fullstack
+    - react
+    - nodejs
+spec:
+  owner: team-a
+  type: website
+  
+  parameters:
+    - title: Application Information
+      required:
+        - name
+        - description
+      properties:
+        name:
+          title: Application Name
+          type: string
+          description: Unique name for the application
+        description:
+          title: Description
+          type: string
+          description: What does this application do?
+        owner:
+          title: Owner
+          type: string
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
+    
+    - title: Technology Choices
+      properties:
+        database:
+          title: Database
+          type: string
+          description: Which database to use?
+          enum:
+            - postgresql
+            - mysql
+            - mongodb
+          default: postgresql
+        includeAuth:
+          title: Include Authentication
+          type: boolean
+          description: Add authentication scaffolding?
+          default: true
+    
+    - title: Repository Information
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: fetch-base
+      name: Fetch Base Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          database: ${{ parameters.database }}
+          includeAuth: ${{ parameters.includeAuth }}
+
+    - id: fetch-docs
+      name: Fetch Documentation
+      action: fetch:plain
+      input:
+        url: ./docs
+        targetPath: ./docs
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        allowedHosts: ['github.com']
+        description: ${{ parameters.description }}
+        repoUrl: ${{ parameters.repoUrl }}
+        defaultBranch: main
+        repoVisibility: private
+        deleteBranchOnMerge: true
+        protectDefaultBranch: false
+
+    - id: create-github-actions
+      name: Create GitHub Actions Workflow
+      action: fetch:template
+      input:
+        url: ./workflows
+        targetPath: .github/workflows
+        values:
+          name: ${{ parameters.name }}
+
+    - id: register
+      name: Register Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
+      - title: Open in Catalog
+        icon: catalog
+        entityRef: ${{ steps.register.output.entityRef }}
+      - title: CI/CD Pipeline
+        url: ${{ steps.publish.output.remoteUrl }}/actions

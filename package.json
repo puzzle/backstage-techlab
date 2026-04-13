@@ -17,6 +17,9 @@
     "url": "https://github.com/puzzle/backstage-techlab/issues"
   },
   "homepage": "https://github.com/puzzle/backstage-techlab#readme",
+  "engines": {
+    "node": ">=23"
+  },
   "devDependencies": {
     "husky": "9.1.7",
     "lint-staged": "16.1.4",

@@ -4,7 +4,9 @@ weight: 1
 sectionnumber: 1
 ---
 
-In this chapter, you will set up your local Backstage environment, learn how to start the application in development mode, and explore its core features. This hands-on introduction will give you the foundation needed to customize and extend Backstage for your organization.
+In this chapter, you will set up your local Backstage environment, learn how to start the application in development mode, and explore its core features.
+
+This hands-on introduction will give you the foundation needed to customize and extend Backstage for your organization.
 
 
 ## Prerequisites
@@ -25,10 +27,18 @@ You can verify your Node.js version with `node --version`. If you need to instal
 
 Backstage provides a CLI tool to scaffold a new application quickly. Let's create your first Backstage instance.
 
-Run the following command to create a new Backstage app:
+First create a folder, named `backstage-techlab`, for the techlab inside your workspaces folder or in a temporary directory.
+
+Command to create the folder inside the `tmp` directory:
 
 ```bash
-npx @backstage/create-app@latest
+mkdir ~/tmp/backstage-techlab
+```
+
+Run the following command, inside your `backstage-techlab` folder, to create a new Backstage app:
+
+```bash
+npx -y @backstage/create-app@0.8.1
 ```
 
 When prompted, enter a name for your app (**`my-backstage-app`**).
@@ -72,7 +82,7 @@ Explore the project structure. You should see:
 * `packages/app/` - Frontend React application
 * `packages/backend/` - Backend Node.js application
 * `app-config.yaml` - Main configuration file
-* `catalog-info.yaml` - Catalog entity for the Backstage app itself
+* `catalog-info.yaml` - Catalog entity for the Backstage app itself (will be explained later)
 
 
 ## Task {{% param sectionnumber %}}.2: Start Backstage in Development Mode
@@ -91,9 +101,14 @@ This command will:
 * Start the frontend on `http://localhost:3000`
 * Enable hot-reloading for development
 
-Open your browser and navigate to `http://localhost:3000`
+If your browser did not open a tab, navigate to `http://localhost:3000`
 
-This should load the home page of your newly created Backstage application!
+This should show the home page of your newly created Backstage application!
+
+![Backstage Homepage](/docs/01/homepage.png)
+
+Click on the `ENTER` button.
+
 
 You may see a warning message like:
 
@@ -110,16 +125,19 @@ You can safely ignore this warning for now.
 
 ### Task {{% param sectionnumber %}}.2.1: Explore the Default Interface
 
-TODO: Check CRA
-
 The default installation includes example entities to help you understand how Backstage organizes information.
 
-Take a few minutes to explore the default Backstage interface:
+Take a few minutes to explore the default Backstage interface.
 
-1. **Home**: The landing page and the catalog main page
+Use the Left-Side vertical navigation to check out your Backstage instance with it's example content:
+
+1. **Home (Catalog)**: The landing page and the catalog main page
 2. **APIs**: Check out the APIs section
 3. **Docs**: Explore the TechDocs section
 4. **Create**: Look at the "Create" section (we'll use this later for templates)
+5. **Search**: Try to search for any content
+
+Now you should have a first insight of the basic Backstage functionality.
 
 
 ## Task {{% param sectionnumber %}}.3: Understand the Configuration
@@ -148,7 +166,7 @@ catalog: #(4)
     - allow: [Component, System, API, Resource, Location, Group, User]
 ```
 
-**Understanding the configuration:**
+**Explanation:**
 
 1. `app.title`: The name displayed in the browser tab
 2. `organization.name`: Your company / organization name displayed in the UI.
@@ -174,7 +192,9 @@ app:
   title: Your Company Developer Portal
 ```
 
-Save the file. Thanks to hot-reloading, you should see the changes reflected in your browser within seconds!
+Save the file.
+
+Thanks to hot-reloading, you should see the changes reflected in your browser within seconds!
 
 
 ## Task {{% param sectionnumber %}}.4: Run Tests
@@ -182,25 +202,68 @@ Save the file. Thanks to hot-reloading, you should see the changes reflected in 
 
 ### Unit Tests
 
-Backstage comes with a [jest](https://jestjs.io/) testing setup out of the box. Run the test suite:
+Backstage comes with a [jest](https://jestjs.io/) testing setup out of the box.
+
+{{% alert title="Note" color="primary" %}}
+Run the tests in a new terminal inside the `backstage-techlab` folder or stop your Backstage by pressing `CTRL+c` on your keyboard.
+{{% /alert %}}
+
+Start the test suite:
 
 ```bash
 yarn test
-› Press a to run all tests.
 ```
 
-Or run with coverage:
+You should see a list with all available options.
+
+```bash
+No tests found related to files changed since last commit.
+Press `a` to run all tests, or run Jest with `--watchAll`.
+
+Watch Usage
+ › Press a to run all tests.
+ › Press f to run only failed tests.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+```
+
+Press `a` to run all tests and see, that all pass.
+
+```bash
+ PASS   app  packages/app/src/App.test.tsx
+  App
+    ✓ should render (33 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        2.822 s, estimated 6 s
+Ran all test suites.
+```
+
+For the moment there's just a basic test to check that the setup is working.
+
+{{% alert title="Note" color="primary" %}}
+Press `q` on your keyboard to exit the test suite.
+{{% /alert %}}
+
+
+To check the test coverage run:
 
 ```bash
 yarn test:all
 ```
 
-For the moment there's just a basic test to check that the setup is working.
+You will notice, that there are some lines of code not covered by any tests.
 
 
 ### E2E Tests
 
 For end-to-end tests a [playwright](https://playwright.dev/) setup is ready to use.
+
+It will start your Backstage instance and run the tests against it.
 
 ```bash
 yarn test:e2e

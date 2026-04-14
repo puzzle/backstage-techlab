@@ -26,6 +26,6 @@
     "markdownlint-cli": "0.48.0"
   },
   "lint-staged": {
-    "foo/**/*.md": "markdownlint --config .markdownlint.json --fix"
+    "**/*.md": "markdownlint --config .markdownlint.json --fix"
   }
 }

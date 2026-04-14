@@ -4,14 +4,16 @@ weight: 2
 sectionnumber: 2
 ---
 
-The Backstage Software Catalog is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization.
+The [Backstage Software Catalog](https://backstage.io/docs/features/software-catalog/) is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization.
 
 In this chapter, you'll learn how to populate and manage the catalog effectively.
 
 
 ## Understanding the Catalog
 
-The catalog uses YAML files to describe entities. Each entity represents something in your software ecosystem:
+The catalog uses YAML files to describe entities. Each entity represents something in your software ecosystem.
+
+These are the basic entities:
 
 * **Components**: Individual pieces of software (services, libraries, websites)
 * **APIs**: Interfaces that components provide
@@ -25,21 +27,31 @@ The catalog uses YAML files to describe entities. Each entity represents somethi
 The catalog uses a declarative approach - you describe what exists, and Backstage takes care of displaying and organizing it.
 {{% /alert %}}
 
+This is the Backstage entity model:
+
+![Entity Modeling](/docs/02/software-model-entities.drawio.svg)
+
+[Backstage Reference](https://backstage.io/docs/features/software-catalog/)
+
 
 ## Task {{% param sectionnumber %}}.1: Create Your First Component
 
 In this chapter, you'll create a simple microservice component and register it in the catalog.
 
 
-### Create the catalog-info.yaml file
+### Create the entity description file
 
-Create a new directory for your sample service folder:
+It is common to put the component description files alongside to the app source code and name it `catalog-info.yaml`.
+
+For our techlab we put it inside the examples directory.
+
+Create a new directory named `my-sample-service` inside the `examples` directory of your Backstage App:
 
 ```bash
-mkdir -p backstage-data/my-sample-service
+mkdir -p examples/my-sample-service
 ```
 
-Create a `catalog-info.yaml` file with the following content:
+Create a `catalog-info.yaml` file with the following content inside your newly created directory:
 
 ```yaml
 apiVersion: backstage.io/v1alpha1
@@ -79,6 +91,10 @@ See the [Backstage Descriptor Format](https://backstage.io/docs/features/softwar
 
 ### Manual registration in the catalog
 
+Catalog entries can be registered static or through [Entity Providers](https://backstage.io/docs/features/software-catalog/external-integrations/).
+
+We use the static registration pointing to our entity description file.
+
 Add the new entity to the catalog-location in your `app-config.yaml`:
 
 ```yaml
@@ -86,18 +102,18 @@ catalog:
   locations:
   ...
     - type: file
-      target: ../../backstage-data/my-sample-service/catalog-info.yaml
+      target: ../../examples/my-sample-service/catalog-info.yaml
       rules:
         - allow: [Component]
 ```
 
-Backstage will automatically pick up the new component.
+Backstage will automatically pick up the new component. If your Backstage app is not running, start it again.
 
 {{% alert title="Important" color="warning" %}}
 With the local setup, the catalog locations are sometimes not picked up automatically. In this case, you need to restart the Backstage application for the changes to take effect. After a restart, wait a minute until the catalog-registration is finished.
 {{% /alert %}}
 
-Navigate to your Backstage catalog and explore the values of your component.
+Navigate to your Backstage catalog, click on the name of your newly created component and explore the values of your component.
 (There are some info-messages about unresolved relations, that you can ignore at this moment.)
 
 Explore the different tabs:
@@ -110,20 +126,25 @@ Checkout the entity detail by selecting `Inspect entity` in the submenu in the t
 
 ![Entity Detail](/docs/02/entity-detail.png)
 
-In the modal you can analyse all the details of the entity. This is specially helpful if you need to see the `Raw JSON`/`Raw YAML`.
+In the modal you can analyze all the details of the entity. This is specially helpful if you need to see the `Raw JSON`/`Raw YAML`.
+
+Do you see the added configuration?
+
+Backstage adds additional information to the entity that makes it unique and marks it's origin. Also matched relations are added.
 
 
 ## Task {{% param sectionnumber %}}.2: Create a Complete System
 
 Let's create a more complex example with multiple components forming a system.
+We can put more than one entity inside the same `yaml` file when they are separated by `---`.
 
-Create a subfolder in the `backstage-data` directory:
+Create a new directory named `my-entities` inside the `examples` directory of your Backstage App:
 
-```sh
-  mkdir -p backstage-data/my-entities
+```bash
+mkdir -p examples/my-entities
 ```
 
-Create a new file `catalog-info.yaml` and save it to your `backstage-data/my-entities` directory:
+Create a new file `catalog-info.yaml` and save it to your `examples/my-entities` directory:
 
 ```yaml
 ---
@@ -157,7 +178,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: backend-api
+  name: backend-service
   description: Backend REST API service
   tags:
     - nodejs
@@ -222,10 +243,15 @@ catalog:
   locations:
   ...
     - type: file
-      target: ../../backstage-data/my-entities/catalog-info.yaml
+      target: ../../examples/my-entities/catalog-info.yaml
       rules:
         - allow: [System, Component, API, Resource]
 ```
+
+{{% alert title="Note" color="primary" %}}
+The `allow` list had to be extended that Backstage imports all entities of the file.
+{{% /alert %}}
+
 
 Backstage will automatically pick up the new entities.
 
@@ -233,12 +259,14 @@ Checkout the new entities. You can navigate between them by clicking on relation
 
 ![Backstage Catalog](/docs/02/entities.png)
 
+Interesting might be the API where you can browse the OpenAPI spec.
+
 
 ## Task {{% param sectionnumber %}}.3: Define Teams and Ownership
 
 Ownership is crucial for accountability. Let's define teams in the catalog.
 
-Create a `catalog-org.yaml` file in the backstage-data folder:
+Create a `catalog-org.yaml` file in the `examples` folder:
 
 ```yaml
 ---
@@ -282,16 +310,23 @@ spec:
     - team-a
 ```
 
+{{% alert title="Note" color="primary" %}}
+The name of the file does not have to be `catalog-info.yaml` when it is imported static.
+{{% /alert %}}
+
+
 Register this in your `app-config.yaml`:
 
 ```yaml
 catalog:
   locations:
     - type: file
-      target: ../../backstage-data/catalog-org.yaml
+      target: ../../examples/catalog-org.yaml
       rules:
         - allow: [User, Group]
 ```
+
+Select the `Group` Kind inside your Catalog and click on your just created `Platform Engineering` group.
 
 Now looking at your entities, you can click on a owner and you'll see the actual team members who own them!
 Check out the connection between all the entities by clicking on the relations or links.

@@ -32,16 +32,18 @@ Before creating your own template, let's explore what's available by default.
 
 ### Run the default template
 
-1. Navigate to `http://localhost:3000/create`
-2. Click on `choose` to select the example template
-3. Set the `Name`, your `GitHub-Username` and the `name for the new repository`
-4. Create it
+1. Navigate to [http://localhost:3000/create](http://localhost:3000/create)
+2. Click the `choose` button on the `Example Node.js Template` card to select the example template
+3. Set any value for `Name`, your `Owner` and the `Repository`
+4. Click on `review` to check your input
+5. Create it by using the `created` button
 
-See the created component via `Open in Catalog`!
+You will get an error and stacktrace. This is because your Backstage instance has no right to create Repositories.
+A GitHub integration is missing for this. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
+
+The successful scaffolding of a template looks like this:
 
 ![Template Result](/docs/03/default_template.png)
-
-Navigate to the links to see your new Component or your Github-Repo
 
 
 ## Task {{% param sectionnumber %}}.1: Create a Template with Multiple Steps
@@ -51,15 +53,18 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 ### Step 1: Download the advanced template files
 
-Download the full-stack application template from the [Techlab Repo: Template Data](https://github.com/puzzle/backstage-techlab/raw/refs/heads/cra-review/content/backstage-data.zip) repository.
+We need the [Techlab Repo: Template Data](https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip) files.
 
-Create a new directory for the template and add the files there:
+Download the [ZIP file](https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
+
+This `curl` command will do it for you. Execute it from your app root (`my-backstage-app`):
 
 ```bash
-mkdir -p ./backstage-data/templates/fullstack-app
-...
-ls ./backstage-data/templates/fullstack-app
-fullstack-app
+curl -L https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip -o backstage-data.zip \
+  && unzip -o backstage-data.zip -d . \
+  && mv backstage-data/templates/fullstack-app examples/ \
+  && rm backstage-data.zip \
+  && rm -rf ./backstage-data/
 ```
 
 <details>
@@ -219,12 +224,12 @@ Add the template location to your `app-config.yaml`:
 catalog:
   locations:
     - type: file
-      target: ../../backstage-data/templates/fullstack-app/template.yaml
+      target: ../../examples/fullstack-app/template.yaml
       rules:
         - allow: [Template]
 ```
 
-Wait for the catalog to refresh and navigate to `http://localhost:3000/create` to see your advanced template!
+Wait for the catalog to refresh or restart your Backstage app and navigate to [http://localhost:3000/create](http://localhost:3000/create) to see your advanced template!
 
 
 ### Step 3: Test the template
@@ -234,6 +239,9 @@ Wait for the catalog to refresh and navigate to `http://localhost:3000/create` t
    * Try different database choices (PostgreSQL, MySQL, MongoDB)
    * Toggle the authentication option
 3. Create the application and explore the generated repository
+
+
+<!-- TODO CRA: geht nicht ohne GitHub Integration -->
 
 Notice how the template adapts based on your selections!
 

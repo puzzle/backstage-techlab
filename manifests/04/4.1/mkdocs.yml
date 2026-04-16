@@ -1,0 +1,8 @@
+site_name: 'My Sample Service'
+site_description: 'Documentation for My Sample Service'
+
+nav:
+  - Home: index.md
+
+plugins:
+  - techdocs-core

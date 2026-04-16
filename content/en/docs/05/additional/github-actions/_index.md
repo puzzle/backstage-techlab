@@ -1,7 +1,7 @@
 ---
-title: "4.2.2 Extending the Portal with Existing Plugins"
-weight: 422
-sectionnumber: 4.2.2
+title: "5.3.2 Use the GitHub Actions Plugin"
+weight: 532
+sectionnumber: 5.3.2
 ---
 
 

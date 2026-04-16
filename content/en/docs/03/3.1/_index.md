@@ -4,7 +4,7 @@ weight: 31
 sectionnumber: 3.1
 ---
 
-[Software Templates](https://backstage.io/docs/features/software-templates/) in Backstage enable self-service for developers. Instead of copying boilerplate code or following lengthy setup guides, developers can use templates to scaffold new projects with best practices built in.
+[Software Templates](https://backstage.io/docs/features/software-templates/) in Backstage enable self-service for developers. Instead of copying boilerplate code or following lengthy setup guides, developers can use templates to scaffold new projects with best practices built in. It is one of the [Core Features](https://backstage.io/plugins/) that is included by default.
 
 This chapter will teach you how to create and use templates effectively.
 

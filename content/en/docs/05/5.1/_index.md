@@ -1,16 +1,14 @@
 ---
-title: "4.1 Extending the Portal with Existing Plugins"
-weight: 41
-sectionnumber: 4.1
+title: "5.1 Introduction to Plugin usage"
+weight: 51
+sectionnumber: 5.1
 ---
 
 Plugins extend Backstage with new functionality, integrations, and visualizations.
 
 In this chapter, you'll learn how to discover, install, and configure existing plugins to enhance your developer portal.
 
-TODO CRA: simple plugins, take todo app
-
-TODO CRA: github tasks as advanced tasks
+TODO CRA: simple plugins, take todo app?
 
 
 ## Understanding the Plugin Ecosystem
@@ -49,12 +47,12 @@ Popular plugins include:
 
 ## Task {{% param sectionnumber %}}.2: Setup TechDocs Plugin
 
-TechDocs brings documentation directly into Backstage, making it easy for developers to find and read documentation alongside their services. TechDocs is already included by default, but let's configure it properly and add documentation to a component.
+[TechDocs](http://backstage.io/docs/features/techdocs/) brings documentation directly into Backstage, making it easy for developers to find and read documentation alongside their services. TechDocs is already included by default, but let's configure it properly and add documentation to a component.
 
 
 ### Step 1: Configure TechDocs for local development
 
-Edit `app-config.yaml`:
+Make sure that your `app-config.yaml` is configured for TechDocs:
 
 ```yaml
 techdocs:
@@ -71,56 +69,19 @@ techdocs:
 In your `my-sample-service` directory (or any catalog component), create a `docs/` folder:
 
 ```bash
-mkdir -p ~/my-sample-service/docs
+mkdir -p examples/my-sample-service/docs
 ```
 
 Create `docs/index.md`:
 
-```markdown
-# My Sample Service
-
-## Overview
-
-This is a sample microservice that demonstrates Backstage catalog integration.
-
-## Architecture
-
-The service is built with Node.js and provides a REST API for user management.
-
-## Getting Started
-
-### Prerequisites
-
-* Node.js 22+
-* PostgreSQL 14+
-
-### Installation
-
-\`\`\`bash
-npm install
-npm start
-\`\`\`
-
-## API Documentation
-
-See the [API Reference](./api.md) for detailed endpoint documentation.
-```
+{{< readfile file="/manifests/04/4.1/docs/index.md" code="true" lang="markdown" >}}
 
 
 ### Step 3: Create MkDocs configuration
 
 Create a `mkdocs.yml` file in the root of your service:
 
-```yaml
-site_name: 'My Sample Service'
-site_description: 'Documentation for My Sample Service'
-
-nav:
-  - Home: index.md
-
-plugins:
-  - techdocs-core
-```
+{{< readfile file="/manifests/04/4.1/mkdocs.yml" code="true" lang="yaml" >}}
 
 
 ### Step 4: Enable TechDocs in catalog

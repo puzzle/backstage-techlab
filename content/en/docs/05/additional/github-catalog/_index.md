@@ -1,7 +1,7 @@
 ---
-title: "4.2.1 Extending the Portal with Existing Plugins"
-weight: 421
-sectionnumber: 4.2.1
+title: "5.3.1 Fill the Catalog with Processors"
+weight: 531
+sectionnumber: 5.3.1
 ---
 
 ## Task {{% param sectionnumber %}}.2: Use Github-Catalog Processors

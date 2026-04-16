@@ -4,7 +4,7 @@ weight: 2
 sectionnumber: 2
 ---
 
-The [Backstage Software Catalog](https://backstage.io/docs/features/software-catalog/) is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization.
+The [Backstage Software Catalog](https://backstage.io/docs/features/software-catalog/) is the heart of your developer portal. It provides a centralized view of all software components, services, APIs, resources, and teams in your organization. It is one of the [Core Features](https://backstage.io/plugins/) that is included by default.
 
 In this chapter, you'll learn how to populate and manage the catalog effectively.
 

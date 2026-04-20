@@ -160,20 +160,18 @@ jobs:
         uses: azure/setup-kubectl@v4
         with:
           version: 'latest'
-      - name: Create KUBECONFIG
+      - name: Deploy techlab website
         env:
           KUBE_CONFIG: ${{ secrets[env.DEPLOY_SECRET_VARIABLE_NAME] }}
-        run: bash ./scripts/create_kubeconfig.sh
-      - name: Deploy Helm Release
-        env:
           HELM_RELEASE: ${{ env.BUILD_VERSION }}
           NAMESPACE: ${{ env.NAMESPACE_NAME }}
-        run: bash ./scripts/deploy_helm_release.sh
-      - name: Redeploy Deployments
-        env:
-          HELM_RELEASE: ${{ env.BUILD_VERSION }}
-          NAMESPACE: ${{ env.NAMESPACE_NAME }}
-        run: bash ./scripts/redeploy_deployment.sh
+        run: |
+          echo "Create KUBECONFIG"
+          ./scripts/create_kubeconfig.sh
+          echo "Deploy Helm Release"
+          ./scripts/deploy_helm_release.sh
+          echo "Redeploy Deployments"
+          ./scripts/redeploy_deployment.sh
 
   comment:
     if: github.ref != 'refs/heads/main'

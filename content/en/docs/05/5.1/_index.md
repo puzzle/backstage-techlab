@@ -80,14 +80,14 @@ When you start your Backstage application, the Tech Radar is integrated by menu 
 
 We prepared a `sampleTechRadar.json` file with following content:
 
-{{< readfile file="/content/backstage-data/sampleTechRadar.json" code="true" lang="json" >}}
+{{< readfile file="/static-content/sampleTechRadar.json" code="true" lang="json" >}}
 
 Configure your Backstage app to use our Tech Radar configuration file.
 Extend your `app-config.yaml` file with the configuration for your new plugin:
 
 ```yaml
 techRadar:
-  url: https://raw.githubusercontent.com/puzzle/backstage-techlab/refs/heads/main/manifests/05/5.1/sampleTechRadar.json
+  url: https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json
 ```
 
 Restart your Backstage app to see the changed content.

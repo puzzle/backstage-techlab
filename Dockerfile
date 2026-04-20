@@ -34,9 +34,13 @@ LABEL org.opencontainers.image.licenses="CC-BY-SA-4.0"
 
 USER root
 COPY nginx.conf /etc/nginx/nginx.conf
+RUN mkdir -p /usr/share/nginx/html/static && \
+    chown -R nginx /usr/share/nginx/html/static
 USER 101
 
 EXPOSE 8080
 
 COPY --from=builder /src/public /usr/share/nginx/html
 COPY --from=wkhtmltopdf /pdf.pdf /usr/share/nginx/html/pdf/pdf.pdf
+
+COPY ./static-content/ /usr/share/nginx/html/static

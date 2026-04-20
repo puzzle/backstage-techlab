@@ -53,14 +53,14 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 ### Step 1: Download the advanced template files
 
-We need the [Techlab Repo: Template Data](https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip) files.
+We need the [Techlab Repo: Template Data](https://backstage-techlab.puzzle.ch/static/backstage-data.zip) files.
 
-Download the [ZIP file](https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
+Download the [ZIP file](https://backstage-techlab.puzzle.ch/static/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
 
 This `curl` command will do it for you. Execute it from your app root (`my-backstage-app`):
 
 ```bash
-curl -L https://github.com/puzzle/backstage-techlab/raw/refs/heads/main/content/backstage-data.zip -o backstage-data.zip \
+curl -L https://backstage-techlab.puzzle.ch/static/backstage-data.zip -o backstage-data.zip \
   && unzip -o backstage-data.zip -d . \
   && mv backstage-data/templates/fullstack-app examples/ \
   && rm backstage-data.zip \

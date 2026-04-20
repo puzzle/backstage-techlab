@@ -9,6 +9,7 @@ set -euo pipefail
 : "${KUBE_CONFIG_FILENAME:?KUBE_CONFIG_FILENAME environment variable is required}"
 
 echo "🚀 Deploying Helm release '$HELM_RELEASE' into namespace '$NAMESPACE'..."
+echo "Using helm: $(helm version --short)"
 
 helm upgrade "$HELM_RELEASE" acend-training-chart \
   --install \
@@ -19,6 +20,6 @@ helm upgrade "$HELM_RELEASE" acend-training-chart \
   --set=app.version="$TRAINING_VERSION" \
   --repo=https://acend.github.io/helm-charts/ \
   --values=helm-chart/values.yaml \
-  --atomic
+  --rollback-on-failure
 
 echo "✅ Helm release '$HELM_RELEASE' deployed successfully."

@@ -18,8 +18,6 @@ acendTraining:
         domainmain: puzzle.ch
         domain: ocp.cloudscale.puzzle.ch
 
-
-
 nameOverride: "backstage-techlab"
 fullnameOverride: ""
 

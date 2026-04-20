@@ -45,121 +45,52 @@ Popular plugins include:
 * **ArgoCD**: CD pipeline visualization
 
 
-## Task {{% param sectionnumber %}}.2: Setup TechDocs Plugin
+## Task {{% param sectionnumber %}}.2: Install your first plugin
 
-[TechDocs](http://backstage.io/docs/features/techdocs/) brings documentation directly into Backstage, making it easy for developers to find and read documentation alongside their services. TechDocs is already included by default, but let's configure it properly and add documentation to a component.
-
-
-### Step 1: Configure TechDocs for local development
-
-Make sure that your `app-config.yaml` is configured for TechDocs:
-
-```yaml
-techdocs:
-  builder: 'local'
-  generator:
-    runIn: 'local'
-  publisher:
-    type: 'local'
-```
+Learn how to install plugins by using the [Tech Radar](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar) plugin.
 
 
-### Step 2: Create documentation
+### Step 1: Check Tech Radar plugin documentation
 
-In your `my-sample-service` directory (or any catalog component), create a `docs/` folder:
+Visit the Backstage Plugin Marketplace again:
 
-```bash
-mkdir -p examples/my-sample-service/docs
-```
+* Go to [https://backstage.io/plugins](https://backstage.io/plugins)
+* Type `radar` into the `Search plugins...` search field.
+* Click on `Explore` on the Tech Radar card.
 
-Create `docs/index.md`:
+Some plugins live in the [backstage/backstage](https://github.com/backstage/backstage) repository but there are other locations for plugins like [backstage/community-plugins](https://github.com/backstage/community-plugins) or [redhat-developer/rhdh-plugins](https://github.com/redhat-developer/rhdh-plugins).
 
-{{< readfile file="/manifests/04/4.1/docs/index.md" code="true" lang="markdown" >}}
-
-
-### Step 3: Create MkDocs configuration
-
-Create a `mkdocs.yml` file in the root of your service:
-
-{{< readfile file="/manifests/04/4.1/mkdocs.yml" code="true" lang="yaml" >}}
-
-
-### Step 4: Enable TechDocs in catalog
-
-Update your `catalog-info.yaml` to enable TechDocs:
-
-```yaml
-apiVersion: backstage.io/v1alpha1
-kind: Component
-metadata:
-  name: my-sample-service
-  description: A sample microservice for the Backstage catalog
-  annotations:
-    github.com/project-slug: your-org/my-sample-service
-    backstage.io/techdocs-ref: dir:.
-  tags:
-    - nodejs
-    - microservice
-spec:
-  type: service
-  lifecycle: production
-  owner: team-a
-  system: my-system
-```
-
-Now your documentation will be available directly in Backstage under the "Docs" tab of your component!
+Read the `Purpose` and `Getting Started` sections.
 
 {{% alert title="Note" color="primary" %}}
-The `backstage.io/techdocs-ref: dir:.` annotation tells Backstage where to find the documentation. Use `dir:.` for docs in the same repository, or specify a URL for external documentation sources.
+Backstage changed their plugin integration mechanism recently. This for backend and frontend plugins.
+
+Some plugins are still using older versions of the integrations. This has to be respected when installing them.
 {{% /alert %}}
 
 
-## Task {{% param sectionnumber %}}.4: Configure Plugin Permissions
+### Step 1: Install the Tech Radar plugin
 
-Backstage supports fine-grained permissions. Let's configure who can access what.
+Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar#install)
+
+When you start your Backstage application, the Tech Radar is integrated by menu `Tech Radar` and route: [http://localhost:3000/tech-radar](http://localhost:3000/tech-radar).
 
 
-### Step 1: Install permissions plugins
+### Step 2: Configure the Tech Radar plugin
 
-```bash
-cd packages/backend
-yarn add @backstage/plugin-permission-backend
-yarn add @backstage/plugin-permission-node
+We prepared a `sampleTechRadar.json` file with following content:
+
+{{< readfile file="/content/backstage-data/sampleTechRadar.json" code="true" lang="json" >}}
+
+Configure your Backstage app to use our Tech Radar configuration file.
+Extend your `app-config.yaml` file with the configuration for your new plugin:
+
+```yaml
+techRadar:
+  url: https://raw.githubusercontent.com/puzzle/backstage-techlab/refs/heads/main/manifests/05/5.1/sampleTechRadar.json
 ```
 
-
-### Step 2: Create permission policy
-
-Create `packages/backend/src/plugins/permission.ts`:
-
-```typescript
-import { createRouter } from '@backstage/plugin-permission-backend';
-import { Router } from 'express';
-import { PluginEnvironment } from '../types';
-import { PolicyDecision } from '@backstage/plugin-permission-common';
-
-class CustomPermissionPolicy {
-  async handle(request: any): Promise<PolicyDecision> {
-    // Define your permission logic here
-    if (request.permission.name === 'catalog.entity.delete') {
-      // Only admins can delete entities
-      return { result: 'CONDITIONAL' };
-    }
-    return { result: 'ALLOW' };
-  }
-}
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  return await createRouter({
-    config: env.config,
-    logger: env.logger,
-    discovery: env.discovery,
-    policy: new CustomPermissionPolicy(),
-  });
-}
-```
+Restart your Backstage app to see the changed content.
 
 
 ## Best Practices for Plugin Management

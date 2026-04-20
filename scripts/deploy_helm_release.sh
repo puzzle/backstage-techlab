@@ -14,8 +14,8 @@ echo "Using helm: $(helm version --short)"
 helm upgrade "$HELM_RELEASE" acend-training-chart \
   --install \
   --wait \
-  --kubeconfig "$KUBE_CONFIG_PATH/$KUBE_CONFIG_FILENAME" \
-  --namespace "$NAMESPACE" \
+  --kubeconfig="$KUBE_CONFIG_PATH/$KUBE_CONFIG_FILENAME" \
+  --namespace="$NAMESPACE" \
   --set=app.name="$HELM_RELEASE" \
   --set=app.version="$TRAINING_VERSION" \
   --repo=https://acend.github.io/helm-charts/ \

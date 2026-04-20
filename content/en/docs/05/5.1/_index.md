@@ -75,8 +75,19 @@ Follow the plugin [installation instructions](https://github.com/backstage/commu
 
 When you start your Backstage application, the Tech Radar is integrated by menu `Tech Radar` and route: [http://localhost:3000/tech-radar](http://localhost:3000/tech-radar).
 
+But it only shows some example data.
 
-### Step 2: Configure the Tech Radar plugin
+
+### Step 2: Add the Tech Radar backend plugin
+
+Data is not loaded inside a frontend plugin. Most frontend plugins have a corresponding backend plugin loading and providing the needed data.
+
+This is also the case for the Tech Radar plugin.
+
+Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar-backend#integrating-into-a-backstage-instance) and use the new backend system guidance.
+
+
+### Step 3: Configure the Tech Radar plugin
 
 We prepared a `sampleTechRadar.json` file with following content:
 
@@ -90,7 +101,26 @@ techRadar:
   url: https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json
 ```
 
-Restart your Backstage app to see the changed content.
+Restart your Backstage app to see the changed content on your Tech Radar.
+
+{{% alert title="Warning" color="secondary" %}}
+Backstage does not read from any location. You should have gotten an error:
+
+```bash
+2026-04-20T15:12:11.631Z tech-radar warn Failed to read file from https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json with provided integrations (error is "Reading from 'https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json' is not allowed. You may need to configure an integration for the target host, or add it to the configured list of allowed hosts at 'backend.reading.allow'"). 
+```
+
+{{% /alert %}}
+
+To enable reading from a host, it has to be allowed. Add the following configuration to the `backend` section of your `app-config.yaml`:
+
+```yaml
+  reading:
+    allow:
+      - host: backstage-techlab.puzzle.ch
+```
+
+After restarting Backstage, you should not get the error any more and see a Backstage entry in the Tech Radar.
 
 
 ## Best Practices for Plugin Management
@@ -131,10 +161,8 @@ Restart your Backstage app to see the changed content.
 In this chapter, you:
 
 * ✅ Explored the Backstage plugin ecosystem
-* ✅ Configured GitHub catalog processors for automatic entity discovery
-* ✅ Set up TechDocs for component documentation
-* ✅ Installed and configured the GitHub Actions plugin for CI/CD visibility
-* ✅ Customized the home page with plugin widgets
+* ✅ Installed and configured the Tech Radar plugin
+* ✅ Got some Best Practice ant Troubleshooting hints
 
 Plugins are what make Backstage adaptable to your organization's needs. By carefully selecting and configuring plugins, you create a developer portal that truly reduces cognitive load and improves the developer experience.
 

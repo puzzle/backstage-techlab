@@ -76,19 +76,19 @@ spec:
           owner: ${{ parameters.owner }}
           database: ${{ parameters.database }}
           includeAuth: ${{ parameters.includeAuth }}
+          repoUrl: ${{ parameters.repoUrl }}
 
     - id: fetch-docs
       name: Fetch Documentation
       action: fetch:plain
       input:
-        url: ./docs
+        url: ./skeleton/docs
         targetPath: ./docs
 
     - id: publish
       name: Publish to GitHub
       action: publish:github
       input:
-        allowedHosts: ['github.com']
         description: ${{ parameters.description }}
         repoUrl: ${{ parameters.repoUrl }}
         defaultBranch: main
@@ -100,7 +100,7 @@ spec:
       name: Create GitHub Actions Workflow
       action: fetch:template
       input:
-        url: ./workflows
+        url: ./skeleton/workflows
         targetPath: .github/workflows
         values:
           name: ${{ parameters.name }}

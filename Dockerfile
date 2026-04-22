@@ -1,3 +1,4 @@
+# Build hugo site
 FROM docker.io/floryn90/hugo:0.138.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
@@ -6,6 +7,7 @@ COPY . /src
 
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
 
+# build pdf
 FROM docker.io/ubuntu:noble AS wkhtmltopdf
 RUN apt-get update \
     && apt-get install -y curl \
@@ -23,6 +25,13 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --header-html /pdf/header/index.html --footer-html /pdf/footer/index.html \
     /pdf/index.html /pdf.pdf
 
+# build static files
+FROM docker.io/ubuntu:noble AS zipper
+RUN apt-get update && apt-get install -y zip && rm -rf /var/lib/apt/lists/*
+COPY ./static-content/backstage-data /backstage-data
+RUN zip -r /backstage-data.zip /backstage-data
+
+# build runtime container
 FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine
 
 LABEL maintainer="Puzzle ITC <https://www.puzzle.ch/>"
@@ -44,3 +53,4 @@ COPY --from=builder /src/public /usr/share/nginx/html
 COPY --from=wkhtmltopdf /pdf.pdf /usr/share/nginx/html/pdf/pdf.pdf
 
 COPY ./static-content/ /usr/share/nginx/html/static
+COPY --from=zipper /backstage-data.zip /usr/share/nginx/html/static/backstage-data.zip

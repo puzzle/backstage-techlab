@@ -81,11 +81,10 @@ Prevent also coding agents from getting your token!
 
 ### Step 2: Do lab 3.1.1 again
 
-Run the template task again: [Explore Existing Templates](../../3.1/)
+Run the template task again: [Explore Existing Templates](../../3.1/#task-311-explore-existing-templates)
 
 But this time, set the right values for `Name`, `Owner` and `Repository`.
 Most important is your GitHub user name for `Owner`.
-
 
 Now you should see a successful template run.
 
@@ -93,92 +92,35 @@ Now you should see a successful template run.
 
 1. Click on the `REPOSITORY` link to get to your generated app on GitHub.
 2. Check that your input values are present inside `catalog-info.yaml`.
-3. Click on the `OPEN IN CATALOG` link to get find your new application in the Backstage catalog.
+3. Click on the `OPEN IN CATALOG` link to find your new application in the Backstage catalog.
 4. Is the same user/group visible in the relations that you selected in the template?
 
 
 ## Task {{% param sectionnumber %}}.2: Create a Template with Multiple Steps
 
-Here we will to the extended template task again ([Create a Template with Multiple Steps](../../3.1/)).
-But this time we will host the template on GitHub.
+Run the template task again: ([Create a Template with Multiple Steps](../../3.1/#task-312-create-a-template-with-multiple-steps))
 
 
-### Step 1: Download the advanced template files
+But this time, set the right values for `Name`, `Owner` and `Repository`.
+Most important is your GitHub user name for `Owner`.
 
-We need the [Techlab Repo: Template Data](https://backstage-techlab.puzzle.ch/static/backstage-data.zip) files.
-
-Download the [ZIP file](https://backstage-techlab.puzzle.ch/static/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
-
-This `curl` command will do it for you. Execute it from your app root (`my-backstage-app`):
-
-```bash
-curl -L https://backstage-techlab.puzzle.ch/static/backstage-data.zip -o backstage-data.zip \
-  && unzip -o backstage-data.zip -d . \
-  && mv backstage-data/templates/fullstack-app examples/ \
-  && rm backstage-data.zip \
-  && rm -rf ./backstage-data/
-```
-
-<details>
-  <summary>Analyse the advanced template.yaml</summary>
-
-{{< readfile file="/static-content/backstage-data/templates/fullstack-app/template.yaml" code="true" lang="YAML" >}}
-
-</details>
-
-**Key features of this template:**
-
-* **Multiple parameter sections**: Organized form with different categories (Application Info, Technology Choices, Repository)
-* **Conditional logic**: Options like `includeAuth` and `database` that affect generated code
-* **Multiple fetch steps**: Combines skeleton files, documentation, and workflow files
-* **CI/CD integration**: Automatically creates GitHub Actions workflows
-
-**Analyse the skeleton structure:**
-
-The skeleton folder contains a more complex structure:
-
-* `frontend/` - React application with routing and state management
-* `backend/` - Node.js API with database integration
-* `docs/` - Documentation files
-* `.github/workflows/` - CI/CD pipeline configuration
-* `docker-compose.yml` - Local development environment
-* Conditional files based on `${{ values.includeAuth }}` and `${{ values.database }}`
+Now you should see a successful template run.
 
 
-### Step 2: Register the template
+1. Click on the `REPOSITORY` link to get to your generated app on GitHub.
+2. Check that your input values are present inside `catalog-info.yaml`.
+3. Click on the `OPEN IN CATALOG` link to find your new application in the Backstage catalog.
+4. Is the same user/group visible in the relations that you selected in the template?
+5. Click on the `CI/CD PIPELINE` link to find your new applications actions.
 
-Add the template location to your `app-config.yaml`:
-
-```yaml
-catalog:
-  locations:
-    - type: file
-      target: ../../examples/fullstack-app/template.yaml
-      rules:
-        - allow: [Template]
-```
-
-Wait for the catalog to refresh or restart your Backstage app and navigate to [http://localhost:3000/create](http://localhost:3000/create) to see your advanced template!
-
-
-### Step 3: Test the template
-
-1. Click on "Full-Stack Application"
-2. Fill in the form and experiment with different options:
-   * Try different database choices (PostgreSQL, MySQL, MongoDB)
-   * Toggle the authentication option
-3. Create the application and explore the generated repository
-
-{{% alert title="Warning" color="secondary" %}}
-You will get an error and stacktrace. This is because your Backstage instance has no right to create Repositories.
-A GitHub integration is missing for this. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
-{{% /alert %}}
+<!-- TODO CRA: fix actions link -->
+<!-- TODO CRA: fix workflow folder name -->
 
 Notice how the template adapts based on your selections!
 
 
 {{% onlyWhen fullScope %}}
-<!-- TODO CRA: geht nicht ohne GitHub Integration -->
+<!-- TODO CRA: enablen? -->
 
 
 ## Task {{% param sectionnumber %}}.3: Add Custom Template Actions

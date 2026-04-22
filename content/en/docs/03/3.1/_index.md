@@ -48,7 +48,7 @@ The successful scaffolding of a template looks like this:
 ![Template Result](/docs/03/default_template.png)
 
 
-## Task {{% param sectionnumber %}}.1: Create a Template with Multiple Steps
+## Task {{% param sectionnumber %}}.2: Create a Template with Multiple Steps
 
 Let's create a more sophisticated template that includes CI/CD setup and demonstrates advanced features like multiple parameter sections, conditional logic, and multiple fetch steps.
 
@@ -72,131 +72,8 @@ curl -L https://backstage-techlab.puzzle.ch/static/backstage-data.zip -o backsta
 <details>
   <summary>Analyse the advanced template.yaml</summary>
 
-```yaml
-apiVersion: scaffolder.backstage.io/v1beta3
-kind: Template
-metadata:
-  name: fullstack-app
-  title: Full-Stack Application
-  description: Create a complete full-stack application with React frontend, Node.js backend, and CI/CD
-  tags:
-    - recommended
-    - fullstack
-    - react
-    - nodejs
-spec:
-  owner: team-a
-  type: website
-  
-  parameters:
-    - title: Application Information
-      required:
-        - name
-        - description
-      properties:
-        name:
-          title: Application Name
-          type: string
-          description: Unique name for the application
-        description:
-          title: Description
-          type: string
-          description: What does this application do?
-        owner:
-          title: Owner
-          type: string
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
-    
-    - title: Technology Choices
-      properties:
-        database:
-          title: Database
-          type: string
-          description: Which database to use?
-          enum:
-            - postgresql
-            - mysql
-            - mongodb
-          default: postgresql
-        includeAuth:
-          title: Include Authentication
-          type: boolean
-          description: Add authentication scaffolding?
-          default: true
-    
-    - title: Repository Information
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
+{{< readfile file="/static-content/backstage-data/templates/fullstack-app/template.yaml" code="true" lang="YAML" >}}
 
-  steps:
-    - id: fetch-base
-      name: Fetch Base Template
-      action: fetch:template
-      input:
-        url: ./skeleton
-        values:
-          name: ${{ parameters.name }}
-          description: ${{ parameters.description }}
-          owner: ${{ parameters.owner }}
-          database: ${{ parameters.database }}
-          includeAuth: ${{ parameters.includeAuth }}
-
-    - id: fetch-docs
-      name: Fetch Documentation
-      action: fetch:plain
-      input:
-        url: ./docs
-        targetPath: ./docs
-
-    - id: publish
-      name: Publish to GitHub
-      action: publish:github
-      input:
-        allowedHosts: ['github.com']
-        description: ${{ parameters.description }}
-        repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: main
-        repoVisibility: private
-        deleteBranchOnMerge: true
-        protectDefaultBranch: false
-
-    - id: create-github-actions
-      name: Create GitHub Actions Workflow
-      action: fetch:template
-      input:
-        url: ./workflows
-        targetPath: .github/workflows
-        values:
-          name: ${{ parameters.name }}
-
-    - id: register
-      name: Register Component
-      action: catalog:register
-      input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: '/catalog-info.yaml'
-
-  output:
-    links:
-      - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
-      - title: Open in Catalog
-        icon: catalog
-        entityRef: ${{ steps.register.output.entityRef }}
-      - title: CI/CD Pipeline
-        url: ${{ steps.publish.output.remoteUrl }}/actions
-```
 </details>
 
 **Key features of this template:**
@@ -242,64 +119,10 @@ Wait for the catalog to refresh or restart your Backstage app and navigate to [h
    * Toggle the authentication option
 3. Create the application and explore the generated repository
 
-
-<!-- TODO CRA: geht nicht ohne GitHub Integration -->
-
-Notice how the template adapts based on your selections!
-
-{{% onlyWhen fullScope %}}
-
-
-## Task {{% param sectionnumber %}}.5: Add Custom Template Actions
-
-Backstage allows you to create custom actions for templates. Here's an example of how to add a custom action to send a Slack notification.
-
-In your Backstage backend, you can register custom actions. Create a file `packages/backend/src/plugins/scaffolder.ts`:
-
-```typescript
-import { CatalogClient } from '@backstage/catalog-client';
-import { createRouter, createBuiltinActions } from '@backstage/plugin-scaffolder-backend';
-import { Router } from 'express';
-import type { PluginEnvironment } from '../types';
-import { ScmIntegrations } from '@backstage/integration';
-import { createSlackNotificationAction } from './scaffolder/actions/slack';
-
-export default async function createPlugin(
-  env: PluginEnvironment,
-): Promise<Router> {
-  const catalogClient = new CatalogClient({
-    discoveryApi: env.discovery,
-  });
-
-  const integrations = ScmIntegrations.fromConfig(env.config);
-  const builtInActions = createBuiltinActions({
-    integrations,
-    catalogClient,
-    config: env.config,
-    reader: env.reader,
-  });
-
-  const actions = [
-    ...builtInActions,
-    createSlackNotificationAction(),
-  ];
-
-  return await createRouter({
-    actions,
-    logger: env.logger,
-    config: env.config,
-    database: env.database,
-    reader: env.reader,
-    catalogClient,
-  });
-}
-```
-
-{{% alert title="Note" color="primary" %}}
-Custom actions allow you to integrate templates with any external system - from cloud providers to internal tools.
+{{% alert title="Warning" color="secondary" %}}
+You will get an error and stacktrace. This is because your Backstage instance has no right to read template files from your local instance.
+A GitHub integration is missing to make the template work. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
 {{% /alert %}}
-
-{{% /onlyWhen %}}
 
 
 ## Common Template Use Cases

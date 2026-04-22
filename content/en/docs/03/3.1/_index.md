@@ -120,8 +120,8 @@ Wait for the catalog to refresh or restart your Backstage app and navigate to [h
 3. Create the application and explore the generated repository
 
 {{% alert title="Warning" color="secondary" %}}
-You will get an error and stacktrace. This is because your Backstage instance has no right to read template files from your local instance.
-A GitHub integration is missing to make the template work. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
+You will get an error and stacktrace. This is because your Backstage instance has no right to create Repositories.
+A GitHub integration is missing for this. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
 {{% /alert %}}
 
 

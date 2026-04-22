@@ -32,7 +32,7 @@ COPY ./static-content/backstage-data /backstage-data
 RUN zip -r /backstage-data.zip /backstage-data
 
 # build runtime container
-FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine
+FROM docker.io/nginxinc/nginx-unprivileged:1.30-alpine
 
 LABEL maintainer="Puzzle ITC <https://www.puzzle.ch/>"
 LABEL org.opencontainers.image.authors="Puzzle ITC <https://www.puzzle.ch/>"

@@ -8,13 +8,9 @@ menu:
 
 {{< blocks/section color="light">}}
 
+<!-- TODO CRA: add slide -->
+
 {{% blocks/feature icon="fa-chalkboard-teacher" url="https://changeme" title="Slide 1" %}}
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-chalkboard-teacher" url="https://changeme" title="Slide 12" %}}
-{{% /blocks/feature %}}
-
-{{% blocks/feature icon="fa-chalkboard-teacher" url="https://changeme" title="Slide 3" %}}
 {{% /blocks/feature %}}
 
 {{< /blocks/section >}}

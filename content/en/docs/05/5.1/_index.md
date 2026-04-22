@@ -8,8 +8,6 @@ Plugins extend Backstage with new functionality, integrations, and visualization
 
 In this chapter, you'll learn how to discover, install, and configure existing plugins to enhance your developer portal.
 
-TODO CRA: simple plugins, take todo app?
-
 
 ## Understanding the Plugin Ecosystem
 

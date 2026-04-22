@@ -98,7 +98,7 @@ Now you should see a successful template run.
 
 ## Task {{% param sectionnumber %}}.2: Create a Template with Multiple Steps
 
-Run the template task again: ([Create a Template with Multiple Steps](../../3.1/#task-312-create-a-template-with-multiple-steps))
+Run the template task again: [Create a Template with Multiple Steps](../../3.1/#task-312-create-a-template-with-multiple-steps)
 
 
 But this time, set the right values for `Name`, `Owner` and `Repository`.
@@ -173,3 +173,12 @@ Custom actions allow you to integrate templates with any external system - from 
 {{% /alert %}}
 
 {{% /onlyWhen %}}
+
+
+## Summary
+
+In this chapter, you:
+
+* ✅ Connected your Backstage instance with GitHub
+* ✅ Really created your first software template and pushed it to GitHub
+* ✅ Got a glimpse of what is possible to realize with software templates

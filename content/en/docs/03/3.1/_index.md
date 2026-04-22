@@ -153,5 +153,5 @@ Software Templates are one of Backstage's most powerful features for improving d
 
 Now that you've completed this lab, you could:
 
-1. **Make your Software Template work**: Do the Additional Labs where you configure GitHub Integration.
-2. **Explore other Core Features**: Do the next lab and document your software with TechDocs.
+1. **Make your Software Template work**: Do the [Additional Labs](../additional/) where you configure GitHub Integration.
+2. **Explore other Core Features**: Do the [next lab](../../04/) and document your software with TechDocs.

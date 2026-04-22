@@ -69,11 +69,17 @@ Some plugins are still using older versions of the integrations. This has to be 
 
 ### Step 1: Install the Tech Radar plugin
 
-Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar#install)
+It is enough to install the NPM dependency.
+
+Run the `yarn` command from your app root (`my-backstage-app`):
+
+```bash
+yarn --cwd packages/app add @backstage-community/plugin-tech-radar
+```
 
 When you start your Backstage application, the Tech Radar is integrated by menu `Tech Radar` and route: [http://localhost:3000/tech-radar](http://localhost:3000/tech-radar).
 
-But it only shows some example data.
+But it only shows some example data. This is because we only installed a [Standalone plugin](https://backstage.io/docs/overview/architecture-overview#standalone-plugins). They run completely in the browser and display only static data.
 
 
 ### Step 2: Add the Tech Radar backend plugin
@@ -89,7 +95,12 @@ Follow the plugin [installation instructions](https://github.com/backstage/commu
 
 We prepared a `sampleTechRadar.json` file with following content:
 
+<details>
+  <summary>Explore the Tech Radar definition</summary>
+
 {{< readfile file="/static-content/sampleTechRadar.json" code="true" lang="json" >}}
+
+</details>
 
 Configure your Backstage app to use our Tech Radar configuration file.
 Extend your `app-config.yaml` file with the configuration for your new plugin:
@@ -110,9 +121,10 @@ Backstage does not read from any location. You should have gotten an error:
 
 {{% /alert %}}
 
-To enable reading from a host, it has to be allowed. Add the following configuration to the `backend` section of your `app-config.yaml`:
+To enable reading from a host, it has to be allowed. Add the following configuration to the `backend:` section of your `app-config.yaml`:
 
 ```yaml
+backend:
   reading:
     allow:
       - host: backstage-techlab.puzzle.ch
@@ -167,6 +179,16 @@ Plugins are what make Backstage adaptable to your organization's needs. By caref
 
 ## Next Steps
 
+Now that you've completed this lab, you could:
+
+1. **Install more plugins**: Do the [Additional Labs](../additional/) where you need the GitHub Integration for interesting plugins.
+2. **Customize the Look and Feel**: Do the [next lab](../../06/) and change the appearance of your Backstage App.
+
+
+<!-- TODO CRA: add as wrap up of the whole lab
+
+## Next Steps
+
 Now that you've completed this lab, you're ready to:
 
 1. **Identify your organization's needs**: What tools do your developers use daily?
@@ -176,3 +198,5 @@ Now that you've completed this lab, you're ready to:
 5. **Iterate and improve**: Continuously enhance your developer portal
 
 **Congratulations!** You now have the knowledge to install, customize, and extend Backstage to massively improve Developer Experience in your organization.  
+
+-->

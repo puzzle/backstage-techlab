@@ -97,11 +97,4 @@ In this chapter, you:
 
 TechDocs integrate the developers documentation easily into Backstage. With the docs-as-code approach it is also convenient to the developers to document.
 
-
-## Next Steps
-
-Now that you've completed this lab, you're ready to:
-
-TODO
-
-**Congratulations!** You now have the knowledge to ...
+**Congratulations!** You now have the knowledge to document your apps in an easy way.

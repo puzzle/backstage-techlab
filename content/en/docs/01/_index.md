@@ -27,18 +27,12 @@ You can verify your Node.js version with `node --version`. If you need to instal
 
 Backstage provides a CLI tool to scaffold a new application quickly. Let's create your first Backstage instance.
 
-First create a folder, named `backstage-techlab`, for the techlab inside your workspaces folder or in a temporary directory.
+First create a folder for the techlab inside your workspaces folder or in a temporary directory.
 
-Command to create the folder inside the `tmp` directory:
-
-```bash
-mkdir ~/tmp/backstage-techlab
-```
-
-Run the following command, inside your `backstage-techlab` folder, to create a new Backstage app:
+Run the following command to create a new Backstage app:
 
 ```bash
-npx -y @backstage/create-app@0.8.1
+npx -y @backstage/create-app@0.8.2
 ```
 
 When prompted, enter a name for your app (**`my-backstage-app`**).

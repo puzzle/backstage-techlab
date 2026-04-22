@@ -100,7 +100,7 @@ TechDocs integrate the developers documentation easily into Backstage. With the 
 
 ## Next Steps
 
-Now that you've completed this techlab, you're ready to:
+Now that you've completed this lab, you're ready to:
 
 TODO
 

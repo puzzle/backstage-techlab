@@ -169,7 +169,7 @@ Plugins are what make Backstage adaptable to your organization's needs. By caref
 
 ## Next Steps
 
-Now that you've completed this techlab, you're ready to:
+Now that you've completed this lab, you're ready to:
 
 1. **Identify your organization's needs**: What tools do your developers use daily?
 2. **Plan your plugin strategy**: Which plugins would provide the most value?

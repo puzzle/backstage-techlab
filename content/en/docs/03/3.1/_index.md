@@ -38,8 +38,10 @@ Before creating your own template, let's explore what's available by default.
 4. Click on `review` to check your input
 5. Create it by using the `created` button
 
+{{% alert title="Warning" color="secondary" %}}
 You will get an error and stacktrace. This is because your Backstage instance has no right to create Repositories.
 A GitHub integration is missing for this. We do not cover this here. Find the implementation inside the [Additional Labs](/docs/03/additional/).
+{{% /alert %}}
 
 The successful scaffolding of a template looks like this:
 
@@ -322,3 +324,11 @@ In this chapter, you:
 * ✅ Registered and used your template
 
 Software Templates are one of Backstage's most powerful features for improving developer productivity. By standardizing project creation, you reduce cognitive load and ensure consistency across your organization.  
+
+
+## Next Steps
+
+Now that you've completed this lab, you could:
+
+1. **Make your Software Template work**: Do the Additional Labs where you configure GitHub Integration.
+2. **Explore other Core Features**: Do the next lab and document your software with TechDocs.

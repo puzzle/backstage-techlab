@@ -26,8 +26,3 @@ The service is built with Node.js and provides a REST API for user management.
 npm install
 npm start
 ```
-
-
-## API Documentation
-
-See the [API Reference](./api.md) for detailed endpoint documentation.

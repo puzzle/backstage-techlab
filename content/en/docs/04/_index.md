@@ -24,7 +24,7 @@ Make sure that your `app-config.yaml` is configured for TechDocs:
 techdocs:
   builder: 'local'
   generator:
-    runIn: 'local'
+    runIn: 'docker'
   publisher:
     type: 'local'
 ```

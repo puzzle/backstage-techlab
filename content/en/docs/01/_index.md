@@ -32,7 +32,7 @@ First create a folder for the techlab inside your workspaces folder or in a temp
 Run the following command to create a new Backstage app:
 
 ```bash
-npx -y @backstage/create-app@0.8.2
+npx -y @backstage/create-app@0.8.3
 ```
 
 When prompted, enter a name for your app (**`my-backstage-app`**).
@@ -89,6 +89,17 @@ Start both the frontend and backend in development mode:
 yarn start
 ```
 
+<!--
+TODO: 
+0.8.3 hat ein Problem mit protobufjs -> fix, sonst error Meldung
+
+  "resolutions": {
+    ...
+    "@protobufjs/inquire": "1.1.0"
+  },
+
+-->
+
 This command will:
 
 * Start the backend on `http://localhost:7007`
@@ -125,11 +136,15 @@ Take a few minutes to explore the default Backstage interface.
 
 Use the Left-Side vertical navigation to check out your Backstage instance with it's example content:
 
-1. **Home (Catalog)**: The landing page and the catalog main page
-2. **APIs**: Check out the APIs section
-3. **Docs**: Explore the TechDocs section
-4. **Create**: Look at the "Create" section (we'll use this later for templates)
-5. **Search**: Try to search for any content
+1. **Search**: Try to search for any content
+2. **Home (Catalog)**: The landing page and the catalog main page
+3. **Create**: Look at the "Create" section (we'll use this later for templates)
+4. **APIs**: Check out the APIs section
+5. **Catalog Graph**: Additional Catalog Graph view
+6. **Docs**: Explore the TechDocs section
+7. **Kubernetes**: Attention: Does not work without the Kubernetes Integration
+8. **Notifications**: Notifications center
+9. **Register Existing Component**: Manual registration of components
 
 Now you should have a first insight of the basic Backstage functionality.
 

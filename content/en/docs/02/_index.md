@@ -113,13 +113,14 @@ Backstage will automatically pick up the new component. If your Backstage app is
 With the local setup, the catalog locations are sometimes not picked up automatically. In this case, you need to restart the Backstage application for the changes to take effect. After a restart, wait a minute until the catalog-registration is finished.
 {{% /alert %}}
 
-Navigate to your Backstage catalog, click on the name of your newly created component and explore the values of your component.
+Navigate to your Backstage catalog, click on the name of your newly created component (`my-sample-service`) and explore the values of your component.
 (There are some info-messages about unresolved relations, that you can ignore at this moment.)
 
 Explore the different tabs:
 
 * **Overview**: Basic information
 * **Techdocs**: Technical documentation for this component
+  * Empty while not provided
 * **API**: APIs provided by this component
 
 Checkout the entity detail by selecting `Inspect entity` in the submenu in the top right corner.
@@ -320,6 +321,7 @@ Register this in your `app-config.yaml`:
 ```yaml
 catalog:
   locations:
+  ...
     - type: file
       target: ../../examples/catalog-org.yaml
       rules:

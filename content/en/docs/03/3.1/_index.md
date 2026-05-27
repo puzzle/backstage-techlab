@@ -32,7 +32,7 @@ Before creating your own template, let's explore what's available by default.
 
 ### Run the default template
 
-1. Navigate to [http://localhost:3000/create](http://localhost:3000/create)
+1. Navigate to [http://localhost:3000/create](http://localhost:3000/create) or click on the **Create** navigation item
 2. Click the `choose` button on the `Example Node.js Template` card to select the example template
 3. Set any value for `Name`, your `Owner` and the `Repository`
 4. Click on `review` to check your input
@@ -102,6 +102,7 @@ Add the template location to your `app-config.yaml`:
 ```yaml
 catalog:
   locations:
+  ...
     - type: file
       target: ../../examples/fullstack-app/template.yaml
       rules:
@@ -113,7 +114,7 @@ Wait for the catalog to refresh or restart your Backstage app and navigate to [h
 
 ### Step 3: Test the template
 
-1. Click on "Full-Stack Application"
+1. Click on the `CHOOSE` button of the **Full-Stack Application** card
 2. Fill in the form and experiment with different options:
    * Try different database choices (PostgreSQL, MySQL, MongoDB)
    * Toggle the authentication option

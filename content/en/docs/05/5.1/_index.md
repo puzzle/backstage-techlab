@@ -90,6 +90,12 @@ This is also the case for the Tech Radar plugin.
 
 Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar-backend#integrating-into-a-backstage-instance) and use the new backend system guidance.
 
+{{% alert title="Note" color="primary" %}}
+You will see an **error** inside your backstage app logs about missing configuration.
+
+We will add the configuration in the next step.
+{{% /alert %}}
+
 
 ### Step 3: Configure the Tech Radar plugin
 
@@ -116,7 +122,7 @@ Restart your Backstage app to see the changed content on your Tech Radar.
 Backstage does not read from any location. You should have gotten an error:
 
 ```bash
-2026-04-20T15:12:11.631Z tech-radar warn Failed to read file from https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json with provided integrations (error is "Reading from 'https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json' is not allowed. You may need to configure an integration for the target host, or add it to the configured list of allowed hosts at 'backend.reading.allow'"). 
+2026-05-27T14:49:55.394Z tech-radar warn Failed to read file from https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json with provided integrations (error is "Reading from 'https://backstage-techlab.puzzle.ch/static/sampleTechRadar.json' is not allowed. You may need to configure an integration for the target host, or add it to the configured list of allowed hosts at 'backend.reading.allow'").
 ```
 
 {{% /alert %}}
@@ -125,6 +131,7 @@ To enable reading from a host, it has to be allowed. Add the following configura
 
 ```yaml
 backend:
+  ...
   reading:
     allow:
       - host: backstage-techlab.puzzle.ch

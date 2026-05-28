@@ -23,6 +23,7 @@ github.com/google/docsy/dependencies v0.7.2 h1:+t5ufoADQAj4XneFphz4A+UU0ICAxmNaR
 github.com/google/docsy/dependencies v0.7.2/go.mod h1:gihhs5gmgeO+wuoay4FwOzob+jYJVyQbNaQOh788lD4=
 github.com/puzzle/docsy-puzzle v0.0.0-20230123144731-757054047a02 h1:80gTlzoKpnRjr4F70KAXmNs6UsTAkPgYEyyVguDwheg=
 github.com/puzzle/docsy-puzzle v0.0.0-20230123144731-757054047a02/go.mod h1:q4bPnnpLaz5IDdFmQFxCHr85uwAsK9ayut5NNmC4w3I=
+github.com/puzzle/docsy-puzzle v0.0.0-20250822081608-44bcd465abfa/go.mod h1:q4bPnnpLaz5IDdFmQFxCHr85uwAsK9ayut5NNmC4w3I=
 github.com/twbs/bootstrap v4.6.1+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
 github.com/twbs/bootstrap v5.2.3+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=
 github.com/twbs/bootstrap v5.3.3+incompatible h1:goFoqinzdHfkeegpFP7pvhbd0g+A3O2hbU3XCjuNrEQ=

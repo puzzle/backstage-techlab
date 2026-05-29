@@ -82,6 +82,7 @@ export class BackendTodoApi implements TodoApi {
 }
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -100,6 +101,7 @@ private async getBaseUrl(): Promise<string> {
   return `${await this.discoveryApi.getBaseUrl('todo')}/todos`;
 }
 ```
+
 
 ## Task {{% param sectionnumber %}}.2: Update the Plugin to Use the Backend Client
 
@@ -161,6 +163,7 @@ export const todoPlugin = createFrontendPlugin({
 });
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -179,7 +182,7 @@ const todoApi = ApiBlueprint.make({
 });
 ```
 
-**`deps` with API references** — Compare this to the localStorage version from chapter 7.1 where `deps` was empty. Now we declare two dependencies: `discoveryApiRef` and `fetchApiRef`. The framework resolves these and passes them into the `factory` function. 
+**`deps` with API references** — Compare this to the localStorage version from chapter 7.1 where `deps` was empty. Now we declare two dependencies: `discoveryApiRef` and `fetchApiRef`. The framework resolves these and passes them into the `factory` function.
 
 **Swapping implementations** — Notice that no component code changed. The `TodoPage` and `EntityTodoCard` still call `useApi(todoApiRef)` exactly as before. Only the factory in the `ApiBlueprint` changed — from `new LocalStorageTodoApi()` to `new BackendTodoApi(...)`. This is the benefit of the interface + API ref pattern established in chapter 7.1.
 
@@ -328,6 +331,7 @@ Run the tests:
 yarn --cwd plugins/todo-backend test
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -433,6 +437,7 @@ Run the frontend tests:
 yarn --cwd plugins/todo test
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -467,6 +472,7 @@ await user.click(screen.getByText('Add Todo'));
 
 **`userEvent`** — Simulates real user interactions (typing, clicking) more realistically than `fireEvent`. It triggers the full event chain (keydown, keypress, input, keyup) just like a real browser, which catches more integration issues.
 
+
 ## Summary
 
 In this section, you:
@@ -478,8 +484,9 @@ In this section, you:
 * ✅ Tested the API end-to-end with curl
 
 Your Todo plugin is now fully functional with:
-- A standalone page at `/todo` showing all todos
-- An entity card on catalog pages showing entity-specific todos
-- Persistent storage in the backend database
-- Full test coverage for both frontend and backend
+
+* A standalone page at `/todo` showing all todos
+* An entity card on catalog pages showing entity-specific todos
+* Persistent storage in the backend database
+* Full test coverage for both frontend and backend
 

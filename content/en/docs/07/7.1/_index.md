@@ -6,6 +6,7 @@ sectionnumber: 7.1
 
 In this section, you'll create a frontend plugin that provides a Todo list page and an entity card for the catalog. We'll use **localStorage** as a temporary data store so the plugin works standalone without a backend.
 
+
 ## Task {{% param sectionnumber %}}.1: Scaffold the Plugin
 
 Use the Backstage CLI to create a new frontend plugin:
@@ -16,8 +17,9 @@ yarn new
 ```
 
 When prompted:
-- Select **`frontend-plugin`**
-- Enter the plugin ID: **`todo`**
+
+* Select **`frontend-plugin`**
+* Enter the plugin ID: **`todo`**
 
 This creates a new package at `plugins/todo/` with a basic plugin structure.
 
@@ -44,16 +46,18 @@ plugins/todo/
 └── dev/                  # (optional) Isolated dev setup for standalone dev
 ```
 
+
 ### How it lives in the repo
 
-- The plugin is a **workspace package** — it has its own `package.json` and is linked into the monorepo via Yarn workspaces. The `backstage-cli` provides additional tooling (scaffolding, building, serving) on top of the standard Yarn workspace setup.
-- It is referenced by its package name (e.g. `@internal/backstage-plugin-todo`).
-- The app discovers the plugin automatically at build time through the `app.packages: all` setting in `app-config.yaml`, which scans all workspace packages for valid Backstage plugins.
+* The plugin is a **workspace package** — it has its own `package.json` and is linked into the monorepo via Yarn workspaces. The `backstage-cli` provides additional tooling (scaffolding, building, serving) on top of the standard Yarn workspace setup.
+* It is referenced by its package name (e.g. `@internal/backstage-plugin-todo`).
+* The app discovers the plugin automatically at build time through the `app.packages: all` setting in `app-config.yaml`, which scans all workspace packages for valid Backstage plugins.
+
 
 ### Key dependencies
 
 | Package | Purpose |
-|---------|---------|
+| --------- | --------- |
 | `@backstage/frontend-plugin-api` | Core APIs for defining plugins, extensions, routes, and Utility APIs (new frontend system) |
 | `@backstage/core-components` | Reusable UI building blocks (`Header`, `Page`, `Content`, `Table`, etc.) |
 | `@backstage/plugin-catalog-react` | Catalog-aware hooks and blueprints (e.g. `useEntity`, `EntityCardBlueprint`) |
@@ -62,17 +66,15 @@ plugins/todo/
 
 All of the above are declared as **dependencies** in the plugin's own `package.json`. Backstage's build tooling handles bundling and deduplication across the monorepo.
 
+
 ### How the plugin integrates with the app
 
 The plugin exports a **default export** created with `createFrontendPlugin`. This export declares:
 
-- **Extensions** — the UI pieces (pages, entity cards, API factories) the plugin provides.
-- **Routes** — route references that the app can bind to navigation.
+* **Extensions** — the UI pieces (pages, entity cards, API factories) the plugin provides.
+* **Routes** — route references that the app can bind to navigation.
 
 The app's feature discovery mechanism picks up the default export and installs all declared extensions. No manual wiring in `App.tsx` is required when using the new frontend system with automatic discovery.
-
-
-
 
 
 ## Task {{% param sectionnumber %}}.2: Define Shared Types
@@ -97,6 +99,7 @@ export interface TodoApi {
   deleteTodo(id: string): Promise<void>;
 }
 ```
+
 
 ### Code Walkthrough
 
@@ -185,6 +188,7 @@ export class LocalStorageTodoApi implements TodoApi {
   }
 }
 ```
+
 
 ### Code Walkthrough
 
@@ -368,6 +372,7 @@ export const TodoPage = () => {
 };
 ```
 
+
 ### Code Walkthrough
 
 Let's break down some of the less obvious patterns in this component:
@@ -390,7 +395,7 @@ export const TodoPage = () => {
 ```
 **`Page`, `Header`, `Content`** — These are Backstage layout primitives from `@backstage/core-components`. Every top-level plugin page should follow this structure to ensure a consistent look across all plugins.
 
-**`themeId="tool"`** — The `themeId` prop on `Page` controls the **header color gradient**. Backstage ships with several built-in theme IDs (`tool`, `service`, `website`, `library`, `app`, `home`, etc.) that each produce a different color scheme. 
+**`themeId="tool"`** — The `themeId` prop on `Page` controls the **header color gradient**. Backstage ships with several built-in theme IDs (`tool`, `service`, `website`, `library`, `app`, `home`, etc.) that each produce a different color scheme.
 
 ```typescript
 ...
@@ -408,7 +413,6 @@ export const TodoPage = () => {
 ```  
 
 **`useCallback` + `useEffect`** — The `loadTodos` function is wrapped in `useCallback` to create a stable reference that only changes when `todoApi` changes. This prevents `useEffect` from re-running on every render. Without `useCallback`, the effect would trigger an infinite loop: render → new function reference → effect runs → state update → re-render → new function reference → ...
-
 
 
 ## Task {{% param sectionnumber %}}.5: Build the Entity Todo Card
@@ -551,6 +555,7 @@ export const EntityTodoCard = () => {
 };
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -584,6 +589,7 @@ import { createRouteRef } from '@backstage/frontend-plugin-api';
 export const rootRouteRef = createRouteRef();
 ```
 
+
 ### Code Walkthrough
 
 **`createRouteRef()`** — Creates a **route reference**, which is an abstract pointer to a URL path. Route refs decouple plugins from actual URLs: the plugin declares *that* it has a route, but the app decides *where* it lives. In the `PageBlueprint` (Task 7), you'll bind this ref to the path `/todo`. Other plugins can link to your page using this ref without hard-coding the URL.
@@ -596,7 +602,7 @@ Now let's connect everything using the new frontend system. The plugin definitio
 We use three types of extension blueprints:
 
 | Blueprint | What it does |
-|-----------|-------------|
+| ----------- | ------------- |
 | `ApiBlueprint` | Registers a Utility API factory. The API is available to all components in the plugin via `useApi(todoApiRef)`. Dependencies on other APIs (e.g. `discoveryApiRef`) are declared and injected automatically. |
 | `PageBlueprint` | Adds a top-level route to the app. Automatically creates a **sidebar entry** with the given `title` (and optional `icon`). The component is **lazy-loaded** — it is only fetched when the user navigates to the page. |
 | `EntityCardBlueprint` | Adds a card to entity pages in the catalog.  Like pages, the component is lazy-loaded. |
@@ -654,6 +660,7 @@ export const todoPlugin = createFrontendPlugin({
 });
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -705,6 +712,7 @@ export const todoPlugin = createFrontendPlugin({
 
 **`createFrontendPlugin`** — The top-level plugin declaration that bundles all extensions together. The `routes` map exposes route refs so other plugins can link to your pages. The `extensions` array is what the app's feature discovery scans and installs.
 
+
 ## Task {{% param sectionnumber %}}.8: Export the Plugin
 
 Update `plugins/todo/src/index.ts` to export the plugin as the **default export** (required for automatic feature discovery):
@@ -715,9 +723,10 @@ export { todoApiRef } from './api';
 export type { Todo, TodoApi } from './types';
 ```
 
+
 ### Code Walkthrough
 
-**`todoPlugin as default`** — The plugin must be the **default export** of the package for Backstage's automatic feature discovery to find it. 
+**`todoPlugin as default`** — The plugin must be the **default export** of the package for Backstage's automatic feature discovery to find it.
 
 **Named exports (`todoApiRef`, types)** — These are exported for other plugins or packages that need to interact with the todo plugin programmatically (e.g. to call the API from another plugin, or to use the types in a shared library).
 
@@ -789,9 +798,9 @@ yarn --cwd plugins/todo start
 
 This boots only the todo plugin — without starting the full Backstage backend and frontend — which makes for a **faster feedback loop** when iterating on your plugin's UI. It's especially useful when you want to:
 
-- Develop and preview your plugin without the overhead of the entire monorepo
-- Provide mock data or test providers specific to your plugin
-- Run the plugin in complete isolation for debugging
+* Develop and preview your plugin without the overhead of the entire monorepo
+* Provide mock data or test providers specific to your plugin
+* Run the plugin in complete isolation for debugging
 
 {{% alert title="Note" color="primary" %}}
 The `dev/` folder is optional and not required for the plugin to work within the full app. It is purely a convenience for plugin authors during development.

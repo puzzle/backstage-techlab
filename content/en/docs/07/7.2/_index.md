@@ -17,8 +17,9 @@ yarn new
 ```
 
 When prompted:
-- Select **`backend-plugin`**
-- Enter the plugin ID: **`todo`**
+
+* Select **`backend-plugin`**
+* Enter the plugin ID: **`todo`**
 
 This creates a new package at `plugins/todo-backend/`.
 
@@ -37,28 +38,31 @@ plugins/todo-backend/
 │   └── database.ts       # Database layer (Knex queries, migrations)
 ```
 
+
 ### How it lives in the repo
 
-- Like frontend plugins, the backend plugin is a **workspace package** with its own `package.json`, linked into the monorepo via Yarn workspaces.
-- It is referenced by its package name (e.g. `@internal/backstage-plugin-todo-backend`).
-- Unlike frontend plugins, backend plugins are **not auto-discovered**. They are registered in `packages/backend/src/index.ts` using `backend.add(import(...))`.
+* Like frontend plugins, the backend plugin is a **workspace package** with its own `package.json`, linked into the monorepo via Yarn workspaces.
+* It is referenced by its package name (e.g. `@internal/backstage-plugin-todo-backend`).
+* Unlike frontend plugins, backend plugins are **not auto-discovered**. They are registered in `packages/backend/src/index.ts` using `backend.add(import(...))`.
+
 
 ### Key dependencies
 
 | Package | Purpose |
-|---------|---------|
+| --------- | --------- |
 | `@backstage/backend-plugin-api` | Core APIs for defining backend plugins, accessing services (`coreServices`), and registering routes |
 | `express` | HTTP framework — each backend plugin exposes an Express `Router` |
 | `knex` | SQL query builder — provided by Backstage's built-in database service, used for queries and migrations |
 
 Dependencies are declared in the plugin's own `package.json`. Backstage's backend framework injects shared services (database, logger, HTTP router, auth) automatically.
 
+
 ### How the plugin integrates with the app
 
 The plugin exports a **default export** created with `createBackendPlugin`. This export declares:
 
-- **Service dependencies** — which core services (database, logger, HTTP router) the plugin needs, declared via `coreServices.*`.
-- **Initialization logic** — an `init` function that sets up the database, creates the Express router, and registers it with the HTTP router service.
+* **Service dependencies** — which core services (database, logger, HTTP router) the plugin needs, declared via `coreServices.*`.
+* **Initialization logic** — an `init` function that sets up the database, creates the Express router, and registers it with the HTTP router service.
 
 The backend mounts the plugin's routes under `/api/<pluginId>/` (e.g. `/api/todo/`). The /api/ prefix is a Backstage convention for all backend plugin APIs. The `pluginId` in `createBackendPlugin` determines this path segment.
 
@@ -180,6 +184,7 @@ export class TodoDatabase {
 }
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -189,7 +194,7 @@ export interface TodoRow {
 }
 ```
 
-**`TodoRow` vs `TodoItem`** — Two separate interfaces exist because the database representation differs from the API representation. SQLite has no native boolean type, so `completed` is stored as `0`/`1` (integer). 
+**`TodoRow` vs `TodoItem`** — Two separate interfaces exist because the database representation differs from the API representation. SQLite has no native boolean type, so `completed` is stored as `0`/`1` (integer).
 
 **`entity_ref` vs `entityRef`** — The database columns use `snake_case` (SQL convention), while the TypeScript API uses `camelCase` (JS convention). The mapping between these is handled explicitly in `rowToItem` and when building insert rows.
 
@@ -203,7 +208,7 @@ private static async runMigrations(knex: Knex): Promise<void> {
 }
 ```
 
-**Inline migrations** — This is a simplified migration strategy that checks if the table exists and creates it if not. For production plugins with evolving schemas, you'd use Knex's proper migration framework with versioned migration files. 
+**Inline migrations** — This is a simplified migration strategy that checks if the table exists and creates it if not. For production plugins with evolving schemas, you'd use Knex's proper migration framework with versioned migration files.
 
 ```typescript
 async getAll(entityRef?: string): Promise<TodoItem[]> {
@@ -216,7 +221,7 @@ async getAll(entityRef?: string): Promise<TodoItem[]> {
 }
 ```
 
-**Knex query building** — Knex uses a chainable API to build SQL queries. `this.db<TodoRow>('todos')` starts a query on the `todos` table with type safety. The generic `<TodoRow>` tells TypeScript what shape the rows will have. 
+**Knex query building** — Knex uses a chainable API to build SQL queries. `this.db<TodoRow>('todos')` starts a query on the `todos` table with type safety. The generic `<TodoRow>` tells TypeScript what shape the rows will have.
 
 
 ## Task {{% param sectionnumber %}}.3: Create the Express Router
@@ -303,6 +308,7 @@ export async function createRouter(options: RouterOptions): Promise<Router> {
 }
 ```
 
+
 ### Code Walkthrough
 
 ```typescript
@@ -362,6 +368,7 @@ export const todoPlugin = createBackendPlugin({
   },
 });
 ```
+
 
 ### Code Walkthrough
 
@@ -470,7 +477,7 @@ The backend API is available under `/api/todo/` — the `todo` path segment come
 
 ## Task {{% param sectionnumber %}}.9: Database Storage
 
-By default, Backstage uses a **SQLite** database in development mode. The data is stored in memory. You can keep this like it is, but the data is lost after each restart. 
+By default, Backstage uses a **SQLite** database in development mode. The data is stored in memory. You can keep this like it is, but the data is lost after each restart.
 Otherwise, change the connection string to store the database in a file at the project root. You can check the database configuration in `app-config.yaml`:
 
 

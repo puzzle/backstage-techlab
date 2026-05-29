@@ -44,7 +44,7 @@ plugins/
 The data model is simple:
 
 | Field | Type | Description |
-|-------|------|-------------|
+| ------- | ------ | ------------- |
 | `id` | `string` | Unique identifier (UUID) |
 | `title` | `string` | Todo description |
 | `entityRef` | `string` | Catalog entity reference (e.g. `component:default/my-service`) |

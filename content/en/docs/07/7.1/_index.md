@@ -125,8 +125,9 @@ Create `plugins/todo/src/api.ts`:
 import { createApiRef } from '@backstage/frontend-plugin-api';
 import { Todo, TodoApi } from './types';
 
-export const todoApiRef = createApiRef<TodoApi>({
+export const todoApiRef = createApiRef<TodoApi>().with({
   id: 'plugin.todo.api',
+  pluginId: 'todo',
 });
 
 const STORAGE_KEY = 'backstage-todo-items';
@@ -149,7 +150,10 @@ export class LocalStorageTodoApi implements TodoApi {
     return todos;
   }
 
-  async createTodo(input: { title: string; entityRef?: string }): Promise<Todo> {
+  async createTodo(input: {
+    title: string;
+    entityRef?: string;
+  }): Promise<Todo> {
     const todos = this.getTodosFromStorage();
     const newTodo: Todo = {
       id: crypto.randomUUID(),
@@ -163,7 +167,10 @@ export class LocalStorageTodoApi implements TodoApi {
     return newTodo;
   }
 
-  async updateTodo(id: string, updates: Partial<Pick<Todo, 'title' | 'completed'>>): Promise<Todo> {
+  async updateTodo(
+    id: string,
+    updates: Partial<Pick<Todo, 'title' | 'completed'>>,
+  ): Promise<Todo> {
     const todos = this.getTodosFromStorage();
     const index = todos.findIndex(t => t.id === id);
     if (index === -1) throw new Error(`Todo ${id} not found`);
@@ -182,28 +189,23 @@ export class LocalStorageTodoApi implements TodoApi {
 ### Code Walkthrough
 
 ```typescript
-export const todoApiRef = createApiRef<TodoApi>({
+export const todoApiRef = createApiRef<TodoApi>().with({
   id: 'plugin.todo.api',
+  pluginId: 'todo',
 });
 ```
 
-**`createApiRef`** — This creates a typed **API reference** — a unique token that the dependency injection system uses to look up the correct implementation at runtime. The generic `<TodoApi>` ensures type safety: when you call `useApi(todoApiRef)`, TypeScript knows the returned object satisfies the `TodoApi` interface. The `id` string must be globally unique across all plugins.
+**`createApiRef<TodoApi>().with({...})`** — This creates a typed **API reference** — a unique token that the dependency injection system uses to look up the correct implementation at runtime. The generic `<TodoApi>` ensures type safety: when you call `useApi(todoApiRef)`, TypeScript knows the returned object satisfies the `TodoApi` interface. The `id` string must be globally unique across all plugins. The `pluginId` ties this API to the `todo` plugin namespace.
 
 ```typescript
 export class LocalStorageTodoApi implements TodoApi {
   ...
-  async createTodo(input: { title: string; entityRef?: string }): Promise<Todo> {
-    ...
-    id: crypto.randomUUID(),
-    ...
-  }
+  async createTodo(input: { title: string;
   ...
 }
 ```
 
 **`async` methods returning `Promise`** — Even though localStorage is synchronous, the methods are `async` and return Promises. This is intentional: it matches the `TodoApi` interface contract, which is designed for a real backend (HTTP calls are async). By making the localStorage version async too, we can later swap in the backend client without changing any calling code.
-
-**`crypto.randomUUID()`** — Generates a cryptographically random UUID (v4) for each new todo. This is a browser-native API (no library needed) and ensures unique IDs even across sessions.
 
 **`implements TodoApi`** — The class explicitly implements the interface defined in `types.ts`. TypeScript will produce a compile error if any method is missing or has wrong types, ensuring our implementation stays in sync with the contract.
 

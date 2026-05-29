@@ -82,6 +82,24 @@ export class BackendTodoApi implements TodoApi {
 }
 ```
 
+### Code Walkthrough
+
+```typescript
+constructor(
+  private readonly discoveryApi: DiscoveryApi,
+  private readonly fetchApi: FetchApi,
+) {}
+```
+
+**`DiscoveryApi`** — A Backstage core API that resolves backend plugin base URLs. Instead of hard-coding `http://localhost:7007/api/todo`, you call `discoveryApi.getBaseUrl('todo')` which returns the correct URL for the current environment. This means the same code works in local dev, staging, and production without changes. 🎉
+
+**`FetchApi`** — A wrapper around the browser's native `fetch` that automatically attaches authentication headers (e.g. the user's Backstage token). Using `this.fetchApi.fetch(...)` instead of plain `fetch(...)` ensures that all backend requests are properly authenticated.
+
+```typescript
+private async getBaseUrl(): Promise<string> {
+  return `${await this.discoveryApi.getBaseUrl('todo')}/todos`;
+}
+```
 
 ## Task {{% param sectionnumber %}}.2: Update the Plugin to Use the Backend Client
 
@@ -99,6 +117,7 @@ import { EntityCardBlueprint } from '@backstage/plugin-catalog-react/alpha';
 import { rootRouteRef } from './routes';
 import { todoApiRef } from './api';
 import { BackendTodoApi } from './api.client';
+import { RiCheckboxLine } from '@remixicon/react';
 
 const todoApi = ApiBlueprint.make({
   name: 'todo',
@@ -119,6 +138,7 @@ const todoPage = PageBlueprint.make({
     routeRef: rootRouteRef,
     path: '/todo',
     title: 'Todo',
+    icon: <RiCheckboxLine />,
     loader: () => import('./components/TodoPage').then(m => <m.TodoPage />),
   },
 });
@@ -141,9 +161,27 @@ export const todoPlugin = createFrontendPlugin({
 });
 ```
 
-{{% alert title="Note" color="primary" %}}
-The `discoveryApiRef` resolves the backend base URL for the `todo` plugin (i.e., `http://localhost:7007/api/todo`). The `fetchApiRef` provides an authenticated fetch function that automatically includes the user's credentials.
-{{% /alert %}}
+### Code Walkthrough
+
+```typescript
+const todoApi = ApiBlueprint.make({
+  name: 'todo',
+  params: defineParams =>
+    defineParams({
+      api: todoApiRef,
+      deps: {
+        discoveryApi: discoveryApiRef,
+        fetchApi: fetchApiRef,
+      },
+      factory: ({ discoveryApi, fetchApi }) =>
+        new BackendTodoApi(discoveryApi, fetchApi),
+    }),
+});
+```
+
+**`deps` with API references** — Compare this to the localStorage version from chapter 7.1 where `deps` was empty. Now we declare two dependencies: `discoveryApiRef` and `fetchApiRef`. The framework resolves these and passes them into the `factory` function. 
+
+**Swapping implementations** — Notice that no component code changed. The `TodoPage` and `EntityTodoCard` still call `useApi(todoApiRef)` exactly as before. Only the factory in the `ApiBlueprint` changed — from `new LocalStorageTodoApi()` to `new BackendTodoApi(...)`. This is the benefit of the interface + API ref pattern established in chapter 7.1.
 
 
 ## Task {{% param sectionnumber %}}.3: Verify End-to-End
@@ -156,11 +194,10 @@ yarn start
 
 Now test the complete flow:
 
-1. Navigate to `/todo` and create a few todos
-2. Restart the application — your todos should **persist** (if using file-based SQLite)
-3. Open any component in the catalog
-4. The Entity Todo Card should show and allow managing todos specific to that entity
-5. Todos created on the entity page should also appear in the main `/todo` page with the entity reference
+1. Navigate to the `todo`-sidebar entry and create a few todos
+2. Open any component in the catalog
+3. The Entity Todo Card should show and allow managing todos specific to that entity
+4. Todos created on the entity page should also appear in the main `/todo` page with the entity reference
 
 
 ## Task {{% param sectionnumber %}}.4: Test the Backend Plugin
@@ -172,7 +209,7 @@ import express from 'express';
 import request from 'supertest';
 import { createRouter } from './router';
 import { TodoDatabase } from './database';
-import { getVoidLogger } from '@backstage/backend-test-utils';
+import { mockServices } from '@backstage/backend-test-utils';
 import Knex from 'knex';
 
 describe('todo router', () => {
@@ -189,7 +226,7 @@ describe('todo router', () => {
     database = await TodoDatabase.create(knex);
     const router = await createRouter({
       database,
-      logger: getVoidLogger(),
+      logger: mockServices.logger.mock(),
     });
 
     app = express();
@@ -280,11 +317,45 @@ Install the test dependencies:
 yarn --cwd plugins/todo-backend add --dev supertest @types/supertest @backstage/backend-test-utils knex better-sqlite3
 ```
 
+Delete the sample test file `plugin.test.ts` created from the cli:
+```bash
+rm plugins/todo-backend/src/plugin.test.ts
+```
+
 Run the tests:
 
 ```bash
 yarn --cwd plugins/todo-backend test
 ```
+
+### Code Walkthrough
+
+```typescript
+const knex = Knex({
+  client: 'better-sqlite3',
+  connection: ':memory:',
+  useNullAsDefault: true,
+});
+
+database = await TodoDatabase.create(knex);
+```
+
+**In-memory test database** — Each test run creates a fresh SQLite database in memory. This is fast, isolated, and requires no cleanup. `TodoDatabase.create(knex)` runs the migrations on this fresh database, so the test environment matches production exactly.
+
+**`useNullAsDefault: true`** — Required for SQLite with Knex. Without it, Knex throws errors when inserting rows with `undefined` values, because SQLite doesn't support the `DEFAULT` keyword the same way as PostgreSQL.
+
+```typescript
+const router = await createRouter({
+  database,
+  logger: mockServices.logger.mock(),
+});
+
+app = express();
+app.use(express.json());
+app.use(router);
+```
+
+**Test harness pattern** — The tests don't start a Backstage backend. Instead, they create a plain Express app, mount the router on it, and use `supertest` to make HTTP requests directly in-process (no network involved). `mockServices.logger.mock()` provides a silent mock logger that satisfies the `LoggerService` interface without producing output.
 
 
 ## Task {{% param sectionnumber %}}.5: Test the Frontend Components
@@ -361,6 +432,40 @@ Run the frontend tests:
 ```bash
 yarn --cwd plugins/todo test
 ```
+
+### Code Walkthrough
+
+```typescript
+const mockApi: jest.Mocked<TodoApi> = {
+  getTodos: jest.fn().mockResolvedValue(mockTodos),
+  createTodo: jest.fn().mockResolvedValue(mockTodos[0]),
+  updateTodo: jest.fn().mockResolvedValue({ ...mockTodos[0], completed: true }),
+  deleteTodo: jest.fn().mockResolvedValue(undefined),
+};
+```
+
+**`jest.Mocked<TodoApi>`** — Creates a mock object that satisfies the `TodoApi` interface with Jest mock functions. Each method is a `jest.fn()` with a preset return value. This lets you test components without a real backend — and verify which API methods were called with `expect(mockApi.createTodo).toHaveBeenCalledWith(...)`.
+
+```typescript
+await renderInTestApp(
+  <TestApiProvider apis={[[todoApiRef, mockApi]]}>
+    <TodoPage />
+  </TestApiProvider>,
+);
+```
+
+**`renderInTestApp`** — A Backstage test utility that renders components inside a minimal Backstage app context (with routing, theme, etc.). Regular `render()` from React Testing Library would fail because Backstage components depend on app-level context providers.
+
+**`TestApiProvider`** — Injects mock API implementations into the component tree. The `apis` prop takes an array of `[apiRef, implementation]` tuples. When `TodoPage` calls `useApi(todoApiRef)`, it receives `mockApi` instead of a real backend client.
+
+```typescript
+const user = userEvent.setup();
+...
+await user.type(input, 'New todo item');
+await user.click(screen.getByText('Add Todo'));
+```
+
+**`userEvent`** — Simulates real user interactions (typing, clicking) more realistically than `fireEvent`. It triggers the full event chain (keydown, keypress, input, keyup) just like a real browser, which catches more integration issues.
 
 ## Summary
 

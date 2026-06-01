@@ -78,13 +78,6 @@ spec:
           includeAuth: ${{ parameters.includeAuth }}
           repoUrl: ${{ parameters.repoUrl }}
 
-    - id: fetch-docs
-      name: Fetch Documentation
-      action: fetch:plain
-      input:
-        url: ./skeleton/docs
-        targetPath: ./docs
-
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -95,15 +88,6 @@ spec:
         repoVisibility: private
         deleteBranchOnMerge: true
         protectDefaultBranch: false
-
-    - id: create-github-actions
-      name: Create GitHub Actions Workflow
-      action: fetch:template
-      input:
-        url: ./skeleton/workflows
-        targetPath: .github/workflows
-        values:
-          name: ${{ parameters.name }}
 
     - id: register
       name: Register Component
@@ -120,4 +104,4 @@ spec:
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}
       - title: CI/CD Pipeline
-        url: ${{ steps.publish.output.remoteUrl }}/actions
+        url: ${{ steps.publish.output.remoteUrl | replace(".git", "") }}/actions

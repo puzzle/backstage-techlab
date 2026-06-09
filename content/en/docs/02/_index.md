@@ -349,6 +349,15 @@ As you build out your catalog, keep these best practices in mind:
 7. **Use systems and domains**: Group related components for better organization
 
 
+## Remarks
+
+The metadata file `catalog-info.yaml` is common naming and best practice.
+
+Any name can be used. But it is recognized by most [entity providers](https://backstage.io/docs/features/software-catalog/external-integrations) per default.
+
+In the extended lab [Fill the Catalog with Providers](../05/additional/github-catalog/) you will install and configure such an entity provider.
+
+
 ## Summary
 
 In this chapter, you:

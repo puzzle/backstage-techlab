@@ -57,9 +57,7 @@ Let's create a more sophisticated template that includes CI/CD setup and demonst
 
 We need the [Techlab Repo: Template Data](https://backstage-techlab.puzzle.ch/static/backstage-data.zip) files.
 
-Download the [ZIP file](https://backstage-techlab.puzzle.ch/static/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
-
-This `curl` command will do it for you. Execute it from your app root (`my-backstage-app`):
+This `curl` command will get the files and extract it to the right location. Execute it from your app root (`my-backstage-app`):
 
 ```bash
 curl -L https://backstage-techlab.puzzle.ch/static/backstage-data.zip -o backstage-data.zip \
@@ -68,6 +66,8 @@ curl -L https://backstage-techlab.puzzle.ch/static/backstage-data.zip -o backsta
   && rm backstage-data.zip \
   && rm -rf ./backstage-data/
 ```
+
+Alternatively you can download the [ZIP file](https://backstage-techlab.puzzle.ch/static/backstage-data.zip), extract it and copy / move the `backstage-data/templates/fullstack-app` folder into the `examples` folder of your Backstage app.
 
 <details>
   <summary>Analyse the advanced template.yaml</summary>
@@ -136,6 +136,39 @@ Here are some popular template use cases:
 * **Infrastructure**: Terraform modules or Kubernetes manifests
 * **Libraries**: Shared code libraries with publishing pipelines
 * **Data pipelines**: ETL jobs with scheduling and monitoring
+
+
+## Software Template development
+
+Short overview for developing [software templates](https://backstage.io/docs/features/software-templates/).
+
+
+### Template Actions
+
+Actions (also called *steps*) are the building blocks of a template's `steps` section. Each action performs a specific task during scaffolding. Backstage ships with a set of built-in actions:
+
+| Action | Description |
+| --- | --- |
+| `fetch:template` | Copies and renders skeleton files with template variables |
+| `fetch:plain` | Copies files without variable substitution |
+| `publish:github` | Creates a new GitHub repository and pushes the generated code |
+| `publish:gitlab` | Creates a new GitLab repository and pushes the generated code |
+| `catalog:register` | Registers the new component in the Backstage catalog |
+
+You can browse all available actions in your running Backstage instance at [http://localhost:3000/create/actions](http://localhost:3000/create/actions). This page lists every installed action along with its input/output schema.
+
+Custom actions can be implemented as Node.js functions and registered in the Scaffolder backend, allowing you to integrate with any internal tooling or API.
+
+
+### Template Editor
+
+Backstage includes a built-in **Template Editor** accessible at [http://localhost:3000/create/edit](http://localhost:3000/create/edit). It provides a live development environment for authoring templates directly in the browser:
+
+* **YAML editor**: Write or paste your `template.yaml` on the left side
+* **Form preview**: See the rendered input form update in real time on the right side
+* **Dry-run**: Execute a template locally to inspect what files would be generated, without publishing anything
+
+The Template Editor is the fastest way to iterate on a template — no restart or file deployment required.
 
 
 ## Summary

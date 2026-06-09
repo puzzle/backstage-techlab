@@ -1,10 +1,10 @@
 ---
-title: "5.3.1 Fill the Catalog with Processors"
+title: "5.3.1 Fill the Catalog with Providers"
 weight: 531
 sectionnumber: 5.3.1
 ---
 
-## Task {{% param sectionnumber %}}.2: Use Github-Catalog Processors
+## Task {{% param sectionnumber %}}.2: Use Github-Catalog Providers
 
 Backstage can automatically discover and import entities from various sources.
 

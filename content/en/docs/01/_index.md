@@ -83,7 +83,7 @@ Explore the project structure. You should see:
 
 Now let's start Backstage locally to see it in action.
 
-Start both the frontend and backend in development mode:
+Start both the frontend and backend in development mode with one command:
 
 ```bash
 yarn start

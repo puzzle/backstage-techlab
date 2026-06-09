@@ -72,32 +72,51 @@ Add the import:
 ```typescript
 import { UnifiedThemeProvider } from '@backstage/theme';
 import { myCustomTheme } from './theme';
+import { createFrontendModule } from '@backstage/frontend-plugin-api';
+import { ThemeBlueprint } from '@backstage/plugin-app-react';
 ```
 
-Then replace the default themes in the `createApp` configuration:
+Then add a `createFrontendModule` function and extend the `createApp` configuration to use it:
 
 ```typescript
-const app = createApp({
-  // ... other config
-  themes: [
-    {
-      id: 'my-theme',
-      title: 'My Custom Theme',
-      variant: 'light',
-      Provider: ({ children }) => (
-        <UnifiedThemeProvider theme={myCustomTheme} children={children} />
-      ),
-    },
+const themeModule = createFrontendModule({
+  pluginId: 'app',
+  extensions: [
+    ThemeBlueprint.make({
+      name: 'my-custom-theme',
+      params: {
+        theme: {
+          id: 'my-custom-theme',
+          title: 'My Custom Theme',
+          variant: 'light',
+          Provider: ({ children }) => (
+            <UnifiedThemeProvider theme={myCustomTheme}>
+              {children}
+            </UnifiedThemeProvider>
+          ),
+        },
+      },
+    }),
   ],
+});
+
+
+export default createApp({
+  features: [..., themeModule],
 });
 ```
 
-Restart Backstage and observe the new colors in the sidebar and page headers.
+Restart Backstage
+
+When you check Settings -> Appearance, you should see your new theme.
+Select you theme and observe the new colors in the sidebar and page headers.
 
 {{% alert title="Tip" color="primary" %}}
 Try changing the `primary.main` and `navigation.background` colors to match your company's brand. You can use any valid CSS color value.
 {{% /alert %}}
 
+
+<!--
 
 ## Task {{% param sectionnumber %}}.2: Create a Custom Home Page
 
@@ -179,14 +198,17 @@ Set the route element in `App.tsx`:
 ```
 
 After restarting, the root URL `/` will now show your custom home page instead of the default catalog view.
-
+-->
 
 ## Summary
 
 In this chapter, you:
 
 * ✅ Customized the Backstage theme with your own colors and page themes
+*
+<!--
 * ✅ Created a custom home page component
 * ✅ Updated the sidebar navigation and routing
+-->
 
 These customizations make Backstage feel like a native part of your organization's tooling. In a real-world setup, you would further refine the theme to match your corporate design guidelines and add useful widgets (e.g., quick links, recent components, announcements) to the home page.

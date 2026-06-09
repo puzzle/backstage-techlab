@@ -13,37 +13,27 @@ Let's add CI/CD visibility with the GitHub Actions plugin.
 ### Step 1: Install and configure the plugin
 
 ```bash
-yarn --cwd packages/app add @backstage/plugin-github-actions
+# From your Backstage root directory
+yarn --cwd packages/app add @backstage-community/plugin-github-actions
+
 ```
 
-Edit `packages/app/src/components/catalog/EntityPage.tsx`:
+Import `githubActionsPlugin` in your `packages/app/src/App.tsx` and add it to your app's `features` array:
 
 ```typescript
-import {
-  EntityGithubActionsContent,
-  isGithubActionsAvailable,
-} from '@backstage/plugin-github-actions';
+import githubActionsPlugin from '@backstage-community/plugin-github-actions/alpha';
+
+// ...
+
+export const app = createApp({
+  features: [ ... githubActionsPlugin, ],
+});
 ```
 
-Add the CI/CD tab to the existing constant:
-
-```typescript
-const cicdContent = (
-  <EntitySwitch>
-    <EntitySwitch.Case if={isGithubActionsAvailable}>
-      <EntityGithubActionsContent />
-    </EntitySwitch.Case>
-  </EntitySwitch>
-);
-```
-
-Enable the GitHub auth provider in the backend:
+Enable the GitHub auth provider in the backend, edit `packages/backend/src/index.ts`:
 
 ```bash
-# In packages/backend/src/index.ts
-backend.add(
-  import('@backstage/plugin-auth-backend-module-github-provider')
-);
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
 ```
 
 
@@ -57,7 +47,7 @@ To enable integration with GitHub, you need to register a GitHub OAuth app. This
    * **Application name**: Backstage
    * **Homepage URL**: http://localhost:3000
    * **Authorization callback URL**: http://localhost:7007/api/auth/github/handler/frame
-4. Click **"Register application"**
+4. Click **"Register application"** and **"Generate a new client secret"**
 5. Note the **Client ID** and **Client Secret**
 
 
@@ -65,8 +55,8 @@ Add the following to your `app-config.local.yaml`:
 
 ```yaml
 auth:
-  environment: development
   providers:
+    ...
     github:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}

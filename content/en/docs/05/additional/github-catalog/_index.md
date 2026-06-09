@@ -4,7 +4,7 @@ weight: 531
 sectionnumber: 5.3.1
 ---
 
-## Task {{% param sectionnumber %}}.2: Use Github-Catalog Providers
+## Task {{% param sectionnumber %}}.1: Use Github-Catalog Providers
 
 Backstage can automatically discover and import entities from various sources.
 
@@ -18,24 +18,29 @@ Let's configure GitHub discovery to automatically find all repositories with `ca
 yarn --cwd packages/backend add @backstage/plugin-catalog-backend-module-github
 ```
 
-Update your backend by adding the following line:
+Update your backend by adding the following line inside `packages/backend/src/index.ts`:
 
 ```bash
-# packages/backend/src/index.ts
 backend.add(import('@backstage/plugin-catalog-backend-module-github'));
 ```
 
 
-### Step 2: Configure GitHub integration
+### Step 2: Configure the catalog provider
 
-Edit your `app-config.yaml` to add GitHub integration:
+Check that the GitHub integration is configured like this in your `app-config.yaml`:
 
 ```yaml
 integrations:
   github:
     - host: github.com
       token: ${GITHUB_TOKEN}
+```
 
+You should have created the `GITHUB_TOKEN` in the lab [GitHub Integration](../../../03/additional/github/).
+
+Edit your `app-config.yaml` to enable the GitHub catalog provider:
+
+```yaml
 catalog:
   providers:
     github:
@@ -68,7 +73,7 @@ This configuration will automatically discover all repositories in your GitHub o
 * Navigate to `Inspect Entity` and checkout the annotations for GitHub
 
 
-## Task {{% param sectionnumber %}}.3: Install the GitHub Actions Plugin
+## Task {{% param sectionnumber %}}.2: Install the GitHub Actions Plugin
 
 Let's add CI/CD visibility with the GitHub Actions plugin.
 
@@ -154,7 +159,8 @@ Find your Full-Stack Application created with the template in chapter 3.2. You s
 ![GitHub Workflow](/docs/04/github_workflow.png)
 
 
-## Task {{% param sectionnumber %}}.4: Configure Plugin Permissions
+<!--
+## Task {{% param sectionnumber %}}.3: Configure Plugin Permissions
 
 Backstage supports fine-grained permissions. Let's configure who can access what.
 
@@ -200,3 +206,4 @@ export default async function createPlugin(
   });
 }
 ```
+-->

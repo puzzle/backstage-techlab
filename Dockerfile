@@ -8,7 +8,7 @@ COPY . /src
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
 
 # build pdf
-FROM docker.io/ubuntu:noble AS wkhtmltopdf
+FROM docker.io/ubuntu:resolute AS wkhtmltopdf
 RUN apt-get update \
     && apt-get install -y curl \
     && curl -L https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb --output wkhtmltox_0.12.6.1-2.jammy_amd64.deb \
@@ -26,7 +26,7 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     /pdf/index.html /pdf.pdf
 
 # build static files
-FROM docker.io/ubuntu:noble AS zipper
+FROM docker.io/ubuntu:resolute AS zipper
 RUN apt-get update && apt-get install -y zip && rm -rf /var/lib/apt/lists/*
 COPY ./static-content/backstage-data /backstage-data
 RUN zip -r /backstage-data.zip /backstage-data

@@ -143,7 +143,7 @@ docker run -d --name elasticsearch \
 {{% /alert %}}
 
 After restarting Backstage, the search index is built and persisted in Elasticsearch. Subsequent restarts are faster because the index already exists.
--->
+
 
 ## Search Result Types
 
@@ -155,11 +155,8 @@ Each collator registers its own result type. The frontend renders results differ
 | `techdocs` | Documentation page link with breadcrumb path |
 | custom | Any format you define in your own result extension |
 
-You can inspect the raw result documents at the search API endpoint:
 
-```
-GET http://localhost:7007/api/search/query?term=example
-```
+-->
 
 
 ## Summary

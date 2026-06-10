@@ -227,7 +227,7 @@ curl -X POST http://localhost:7007/api/todo/todos \
 
 ## Task {{% param sectionnumber %}}.4: Test the Backend Plugin
 
-Create `plugins/todo-backend/src/router.test.ts`:
+Update the file `plugins/todo-backend/src/router.test.ts` to reflect the changes we made:
 
 ```typescript
 import express from 'express';

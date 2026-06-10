@@ -105,7 +105,7 @@ private async getBaseUrl(): Promise<string> {
 
 ## Task {{% param sectionnumber %}}.2: Update the Plugin to Use the Backend Client
 
-Now update `plugins/todo/src/plugin.ts` to use the `BackendTodoApi` instead of the localStorage implementation:
+Now update `plugins/todo/src/plugin.tsx` to use the `BackendTodoApi` instead of the localStorage implementation:
 
 ```typescript
 import {
@@ -195,12 +195,34 @@ Start the full application:
 yarn start
 ```
 
+The data of the UI and Backend Plugin should be exchanged. You can use the `my-sample-service` component to test it.
+
 Now test the complete flow:
 
 1. Navigate to the `todo`-sidebar entry and create a few todos
 2. Open any component in the catalog
 3. The Entity Todo Card should show and allow managing todos specific to that entity
 4. Todos created on the entity page should also appear in the main `/todo` page with the entity reference
+
+
+Get the created todo's over the API with curl:
+
+```bash
+# List todos for a specific entity
+curl "http://localhost:7007/api/todo/todos?entityRef=component:default/my-sample-service"
+```
+
+This should show your manually created entries from the UI.
+
+
+Add a new entry over API and find it in the UI (`my-sample-service` component):
+
+```bash
+# Create a todo
+curl -X POST http://localhost:7007/api/todo/todos \
+  -H "Content-Type: application/json" \
+  -d '{"title": "My first todo", "entityRef": "component:default/my-sample-service"}'
+```
 
 
 ## Task {{% param sectionnumber %}}.4: Test the Backend Plugin

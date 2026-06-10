@@ -12,7 +12,7 @@ In this section, you'll create a backend plugin that provides a REST API for man
 Use the Backstage CLI to create a new backend plugin:
 
 ```bash
-cd my-backstage-app
+# From your Backstage root directory
 yarn new
 ```
 
@@ -228,7 +228,7 @@ async getAll(entityRef?: string): Promise<TodoItem[]> {
 
 The router exposes RESTful endpoints for the Todo CRUD operations.
 
-Create `plugins/todo-backend/src/router.ts`:
+Update `plugins/todo-backend/src/router.ts` to:
 
 ```typescript
 import express, { Router } from 'express';
@@ -409,7 +409,7 @@ httpRouter.addAuthPolicy({
 
 ## Task {{% param sectionnumber %}}.5: Export the Plugin
 
-Update `plugins/todo-backend/src/index.ts`:
+Check `plugins/todo-backend/src/index.ts` to contain:
 
 ```typescript
 export { todoPlugin as default } from './plugin';
@@ -421,6 +421,7 @@ export { todoPlugin as default } from './plugin';
 The backend plugin needs `uuid` for generating unique IDs:
 
 ```bash
+# From your Backstage root directory
 yarn --cwd plugins/todo-backend add uuid
 yarn --cwd plugins/todo-backend add --dev @types/uuid
 ```
@@ -447,6 +448,15 @@ In `packages/backend/package.json`
 
 ## Task {{% param sectionnumber %}}.8: Verify the Backend
 
+Test the functionality of the backend using it's API.
+
+{{% alert title="Note" color="primary" %}}
+The frontend plugin is not jet connected to the new backend plugin.
+
+Data is not exchanged. This will be set up in the nex lab.
+{{% /alert %}}
+
+
 Start the application:
 
 ```bash
@@ -459,13 +469,13 @@ Test the API with curl:
 # Create a todo
 curl -X POST http://localhost:7007/api/todo/todos \
   -H "Content-Type: application/json" \
-  -d '{"title": "My first todo", "entityRef": "component:default/my-service"}'
+  -d '{"title": "My first todo", "entityRef": "component:default/my-sample-service"}'
 
 # List all todos
 curl http://localhost:7007/api/todo/todos
 
 # List todos for a specific entity
-curl "http://localhost:7007/api/todo/todos?entityRef=component:default/my-service"
+curl "http://localhost:7007/api/todo/todos?entityRef=component:default/my-sample-service"
 ```
 
 You should see JSON responses with the created todo items.

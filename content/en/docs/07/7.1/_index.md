@@ -12,7 +12,7 @@ In this section, you'll create a frontend plugin that provides a Todo list page 
 Use the Backstage CLI to create a new frontend plugin:
 
 ```bash
-cd my-backstage-app
+# From your Backstage root directory
 yarn new
 ```
 
@@ -581,7 +581,7 @@ const entityRef = stringifyEntityRef(entity);
 
 ## Task {{% param sectionnumber %}}.6: Define Routes
 
-Create `plugins/todo/src/routes.ts`:
+Check the created `plugins/todo/src/routes.ts` file to contain:
 
 ```typescript
 import { createRouteRef } from '@backstage/frontend-plugin-api';

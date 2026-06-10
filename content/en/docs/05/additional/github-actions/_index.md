@@ -15,7 +15,6 @@ Let's add CI/CD visibility with the GitHub Actions plugin.
 ```bash
 # From your Backstage root directory
 yarn --cwd packages/app add @backstage-community/plugin-github-actions
-
 ```
 
 Import `githubActionsPlugin` in your `packages/app/src/App.tsx` and add it to your app's `features` array:

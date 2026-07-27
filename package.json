@@ -17,13 +17,13 @@
     "url": "https://github.com/puzzle/backstage-techlab/issues"
   },
   "homepage": "https://github.com/puzzle/backstage-techlab#readme",
-  "engines": {
+  "engines": {https://github.com/puzzle/backstage-techlab/pull/34/conflict?name=package-lock.json&ancestor_oid=2dd75274938502674a215e2cc7f4918738ca580b&base_oid=799ce5d1da9e17c9b736a3e5df382e34d23e8054&head_oid=3519d6563b52707c4d793e4951b2cefc04714391
     "node": ">=23"
   },
   "devDependencies": {
     "husky": "9.1.7",
     "lint-staged": "17.0.7",
-    "markdownlint-cli": "0.49.0"
+    "markdownlint-cli": "0.49.1"
   },
   "lint-staged": {
     "**/*.md": "markdownlint --config .markdownlint.json --fix"

@@ -13,13 +13,13 @@ This hands-on introduction will give you the foundation needed to customize and 
 
 Before you begin, ensure you have the following installed on your local machine:
 
-* **Node.js**: Version 22 or 24 (Recommendation: nvm or volta)
+* **Node.js**: Version 24 (Recommendation: nvm)
 * **Package Manager**: Yarn
 * **Source Control**: Git
 * **Container**: Docker or Podman
 
 {{% alert title="Note" color="primary" %}}
-You can verify your Node.js version with `node --version`. If you need to install or update Node.js, we recommend using [nvm](https://github.com/nvm-sh/nvm) or [volta](https://volta.sh/) for easy version management.
+You can verify your Node.js version with `node --version`. If you need to install or update Node.js, we recommend using [nvm](https://github.com/nvm-sh/nvm) for easy version management.
 {{% /alert %}}
 
 
@@ -32,8 +32,13 @@ First create a folder for the techlab inside your workspaces folder or in a temp
 Run the following command to create a new Backstage app:
 
 ```bash
-npx -y @backstage/create-app@0.8.3
+npx -y @backstage/create-app@0.9.1
 ```
+
+<!--
+Link to get latest version to update the lab:
+https://www.npmjs.com/package/@backstage/create-app
+-->
 
 When prompted, enter a name for your app (**`my-backstage-app`**).
 
@@ -89,17 +94,6 @@ Start both the frontend and backend in development mode with one command:
 yarn start
 ```
 
-<!--
-TODO: 
-0.8.3 hat ein Problem mit protobufjs -> fix, sonst error Meldung
-
-  "resolutions": {
-    ...
-    "@protobufjs/inquire": "1.1.0"
-  },
-
--->
-
 This command will:
 
 * Start the backend on `http://localhost:7007`
@@ -137,14 +131,13 @@ Take a few minutes to explore the default Backstage interface.
 Use the Left-Side vertical navigation to check out your Backstage instance with it's example content:
 
 1. **Search**: Try to search for any content
-2. **Home (Catalog)**: The landing page and the catalog main page
-3. **Create**: Look at the "Create" section (we'll use this later for templates)
-4. **APIs**: Check out the APIs section
-5. **Catalog Graph**: Additional Catalog Graph view
-6. **Docs**: Explore the TechDocs section
-7. **Kubernetes**: Attention: Does not work without the Kubernetes Integration
-8. **Notifications**: Notifications center
-9. **Register Existing Component**: Manual registration of components
+2. **Home**: Check the home page with welcome message and infos
+3. **Catalog**: See the landing page and the catalog main page
+4. **Create**: Look at the "Create" section (we'll use this later for templates)
+5. **APIs**: Check out the APIs section
+6. **Catalog Graph**: Additional Catalog Graph view
+7. **Docs**: Explore the TechDocs section
+8. **Register Existing Component**: Manual registration of components
 
 Now you should have a first insight of the basic Backstage functionality.
 

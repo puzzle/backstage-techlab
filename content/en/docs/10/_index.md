@@ -207,3 +207,8 @@ AI coding assistants are most effective when they have project-specific context 
 Now that you've completed this lab, you could add an `AGENTS.md` to your own Backstage instance.
 
 Such that you and your team can use AI coding assistants to develop your portal.
+
+{{% alert title="Note" color="primary" %}}
+Your coding assistant can help you adding the `AGENTS.md` and other needed files.
+{{% /alert %}}
+

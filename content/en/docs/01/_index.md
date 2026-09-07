@@ -11,7 +11,17 @@ This hands-on introduction will give you the foundation needed to customize and 
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your local machine:
+The prerequisites can be satisfied by using [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) or installing the tools on your local machine.
+
+
+### Option Dev Containers
+
+Use a Container engine and [VS Code](https://code.visualstudio.com/). Follow the setup of this support repository: https://github.com/chrira/backstage-techlab-devcontainer
+
+
+### Option local installation
+
+Ensure you have the following installed on your local machine:
 
 * **Node.js**: Version 24 (Recommendation: nvm)
 * **Package Manager**: Yarn
@@ -87,6 +97,21 @@ Explore the project structure. You should see:
 ## Task {{% param sectionnumber %}}.2: Start Backstage in Development Mode
 
 Now let's start Backstage locally to see it in action.
+
+{{% alert title="Warning" color="secondary" %}}
+Using the **Dev Containers** option an additional setting is needed for the access of your Backstage app. The app is running inside the container and needs the following additional configuration:
+
+Open the `app-config.yaml` file in your editor and add the `listen: host: 0.0.0.0` configuration at the `app` level. It should be like this:
+
+```yaml
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://localhost:3000
+  listen:
+    host: 0.0.0.0
+```
+{{% /alert %}}
+
 
 Start both the frontend and backend in development mode with one command:
 

@@ -11,15 +11,29 @@ This hands-on introduction will give you the foundation needed to customize and 
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed on your local machine:
+The prerequisites can be satisfied by using [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) or installing the tools on your local machine.
 
-* **Node.js**: Version 22 or 24 (Recommendation: nvm or volta)
+{{% alert title="Warning" color="secondary" %}}
+Some labs are not working 100% using the **Dev Containers** option.
+{{% /alert %}}
+
+
+### Option Dev Containers
+
+Use a Container engine and [VS Code](https://code.visualstudio.com/). Follow the setup of this support repository: https://github.com/chrira/backstage-techlab-devcontainer
+
+
+### Option local installation
+
+Ensure you have the following installed on your local machine:
+
+* **Node.js**: Version 24 (Recommendation: nvm)
 * **Package Manager**: Yarn
 * **Source Control**: Git
 * **Container**: Docker or Podman
 
 {{% alert title="Note" color="primary" %}}
-You can verify your Node.js version with `node --version`. If you need to install or update Node.js, we recommend using [nvm](https://github.com/nvm-sh/nvm) or [volta](https://volta.sh/) for easy version management.
+You can verify your Node.js version with `node --version`. If you need to install or update Node.js, we recommend using [nvm](https://github.com/nvm-sh/nvm) for easy version management.
 {{% /alert %}}
 
 
@@ -32,8 +46,13 @@ First create a folder for the techlab inside your workspaces folder or in a temp
 Run the following command to create a new Backstage app:
 
 ```bash
-npx -y @backstage/create-app@0.8.3
+npx -y @backstage/create-app@0.9.1
 ```
+
+<!--
+Link to get latest version to update the lab:
+https://www.npmjs.com/package/@backstage/create-app
+-->
 
 When prompted, enter a name for your app (**`my-backstage-app`**).
 
@@ -83,22 +102,26 @@ Explore the project structure. You should see:
 
 Now let's start Backstage locally to see it in action.
 
+{{% alert title="Warning" color="secondary" %}}
+Using the **Dev Containers** option an additional setting is needed for the access of your Backstage app. The app is running inside the container and needs the following additional configuration:
+
+Open the `app-config.yaml` file in your editor and add the `listen: host: 0.0.0.0` configuration at the `app` level. It should be like this:
+
+```yaml
+app:
+  title: Scaffolded Backstage App
+  baseUrl: http://localhost:3000
+  listen:
+    host: 0.0.0.0
+```
+{{% /alert %}}
+
+
 Start both the frontend and backend in development mode with one command:
 
 ```bash
 yarn start
 ```
-
-<!--
-TODO: 
-0.8.3 hat ein Problem mit protobufjs -> fix, sonst error Meldung
-
-  "resolutions": {
-    ...
-    "@protobufjs/inquire": "1.1.0"
-  },
-
--->
 
 This command will:
 
@@ -137,14 +160,13 @@ Take a few minutes to explore the default Backstage interface.
 Use the Left-Side vertical navigation to check out your Backstage instance with it's example content:
 
 1. **Search**: Try to search for any content
-2. **Home (Catalog)**: The landing page and the catalog main page
-3. **Create**: Look at the "Create" section (we'll use this later for templates)
-4. **APIs**: Check out the APIs section
-5. **Catalog Graph**: Additional Catalog Graph view
-6. **Docs**: Explore the TechDocs section
-7. **Kubernetes**: Attention: Does not work without the Kubernetes Integration
-8. **Notifications**: Notifications center
-9. **Register Existing Component**: Manual registration of components
+2. **Home**: Check the home page with welcome message and infos
+3. **Catalog**: See the landing page and the catalog main page
+4. **Create**: Look at the "Create" section (we'll use this later for templates)
+5. **APIs**: Check out the APIs section
+6. **Catalog Graph**: Additional Catalog Graph view
+7. **Docs**: Explore the TechDocs section
+8. **Register Existing Component**: Manual registration of components
 
 Now you should have a first insight of the basic Backstage functionality.
 
@@ -282,7 +304,11 @@ yarn test:e2e
 Depending on your setup you might get a error running the E2E tests.
 
 You probably need to install browsers first: e.g. `yarn playwright install chrome`
+
+E2e test are not working using the **Dev Containers** option.
 {{% /alert %}}
+
+<!-- TODO: fix dev container setup -->
 
 
 ## Task {{% param sectionnumber %}}.5: Build for Production

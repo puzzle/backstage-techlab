@@ -87,6 +87,12 @@ Now your documentation will be available directly in Backstage in the "Docs" men
 The `backstage.io/techdocs-ref: dir:.` annotation tells Backstage where to find the documentation. Use `dir:.` for docs in the same repository, or specify a URL for external documentation sources.
 {{% /alert %}}
 
+{{% alert title="Warning" color="secondary" %}}
+Techdocs are not working using the **Dev Containers** option.
+{{% /alert %}}
+
+<!-- TODO: fix dev container setup -->
+
 
 ## Summary
 

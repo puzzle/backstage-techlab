@@ -13,6 +13,10 @@ This hands-on introduction will give you the foundation needed to customize and 
 
 The prerequisites can be satisfied by using [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) or installing the tools on your local machine.
 
+{{% alert title="Warning" color="secondary" %}}
+Some labs are not working 100% using the **Dev Containers** option.
+{{% /alert %}}
+
 
 ### Option Dev Containers
 

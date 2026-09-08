@@ -300,7 +300,11 @@ yarn test:e2e
 Depending on your setup you might get a error running the E2E tests.
 
 You probably need to install browsers first: e.g. `yarn playwright install chrome`
+
+E2e test are not working using the **Dev Containers** option.
 {{% /alert %}}
+
+<!-- TODO: fix dev container setup -->
 
 
 ## Task {{% param sectionnumber %}}.5: Build for Production

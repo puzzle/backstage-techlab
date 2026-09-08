@@ -2,6 +2,8 @@
 title: "3.1 Using Software Templates"
 weight: 31
 sectionnumber: 3.1
+description: >
+  Basic template exploration, creation and execution.
 ---
 
 [Software Templates](https://backstage.io/docs/features/software-templates/) in Backstage enable self-service for developers. Instead of copying boilerplate code or following lengthy setup guides, developers can use templates to scaffold new projects with best practices built in. It is one of the [Core Features](https://backstage.io/plugins/) that is included by default.

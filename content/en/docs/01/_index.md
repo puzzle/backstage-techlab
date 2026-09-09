@@ -20,10 +20,10 @@ Some labs are not working 100% using the **Dev Containers** option.
 
 ### Option Dev Containers
 
-Use a Container engine and [VS Code](https://code.visualstudio.com/). Follow the setup of this support repository: https://github.com/chrira/backstage-techlab-devcontainer
+Use a Container engine and [VS Code](https://code.visualstudio.com/). Follow the setup of this support repository: https://github.com/puzzle/backstage-techlab-devcontainer
 
 
-#### Windows: File Permission Issues
+#### Windows and WSL
 
 On Windows, Dev Containers run via WSL2. If the container has no write permissions, this is usually caused by a mismatch between the Windows host filesystem and the Linux user inside the container.
 
@@ -37,11 +37,12 @@ Verify it works by running in the container terminal:
 touch test.txt
 ```
 
-If the file is created without error, the move was successful.
+If the file is created without error, the move was successful. If not, got to next section.
 
-**2. Fix ownership inside the container**
 
-As a quick fix, open the terminal inside the Dev Container and transfer ownership of the workspace directory to your current user:
+#### No write permissions
+
+Fix ownership inside the container. Open the terminal inside the Dev Container and transfer ownership of the workspace directory to your current user:
 
 ```bash
 sudo chown -R $(whoami) /workspace
@@ -234,18 +235,18 @@ catalog: #(4)
 
 Let's make a simple customization to make this instance your own.
 
-Edit `app-config.yaml` and change the organization name:
-
-```yaml
-organization:
-  name: Your Company Name
-```
-
-Also update the app title:
+Edit `app-config.yaml` and change the app title:
 
 ```yaml
 app:
   title: Your Company Developer Portal
+```
+
+Also update the organization name:
+
+```yaml
+organization:
+  name: Your Company Name
 ```
 
 Save the file.

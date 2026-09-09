@@ -88,7 +88,7 @@ Data is not loaded inside a frontend plugin. Most frontend plugins have a corres
 
 This is also the case for the Tech Radar plugin.
 
-Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar-backend#integrating-into-a-backstage-instance) and use the new backend system guidance.
+Follow the plugin [installation instructions](https://github.com/backstage/community-plugins/tree/main/workspaces/tech-radar/plugins/tech-radar-backend#integrating-into-a-backstage-instance) and use the **new backend** system guidance.
 
 {{% alert title="Note" color="primary" %}}
 You will see an **error** inside your backstage app logs about missing configuration.

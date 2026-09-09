@@ -1,19 +1,19 @@
 # In der CODEOWNERS-Datei können Kommentare geschrieben werden, wie dieser hier.
 # Jede Zeile ohne '#' ist ein File-Pattern gefolgt von einer Liste von Owners.
-# Wenn man sich an die Konventionen von GitHub hält, kann GH da direkt einige Features integrieren.
+# GitHub integriert diese Datei direkt in Features wie automatische PR-Reviewer.
 # Für uns ist aber wichtiger, dass wir wissen, wer bei Puzzle zuständig ist.
 # GitHub hat eine ausführliche Dokumentation, was alles möglich ist. Wir setzen hier nur das Minimum.
+# https://docs.github.com/de/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 
 # Damit werden zwei globale Owners für das Repo gesetzt.
-# Sie werden z.B. bei PRs auch angeschrieben.
-# Die Codeowner werden über ihre Puzzle-Email identifiziert.
-# Damit ist es einfacher zu bestimmen, wer gemeint ist.
+# Sie werden z.B. bei PRs automatisch als Reviewer vorgeschlagen.
+# Die Codeowner werden über ihren GitHub-Username identifiziert.
 # Mehrere Codeowner können in einer Liste referenziert werden:
-*       raaflaub@puzzle.ch girod@puzzle.ch
+*       @StephGit @chrira
 
 # Soll für ein Teil des Repos spezifisch ein anderer Owner gesetzt werden,
 # geht das auch, und spätere Matches überschreiben vorherige Matches.
 # Hier wird für /example ein neuer Owner gesetzt, aber für /example/specific
 # gelten wieder die globalen Owner, da dort die Owner-Liste leer ist.
-/example example@puzzle.ch
+# /example @example-user

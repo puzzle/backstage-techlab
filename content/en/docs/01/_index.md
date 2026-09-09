@@ -23,6 +23,31 @@ Some labs are not working 100% using the **Dev Containers** option.
 Use a Container engine and [VS Code](https://code.visualstudio.com/). Follow the setup of this support repository: https://github.com/chrira/backstage-techlab-devcontainer
 
 
+#### Windows: File Permission Issues
+
+On Windows, Dev Containers run via WSL2. If the container has no write permissions, this is usually caused by a mismatch between the Windows host filesystem and the Linux user inside the container.
+
+**1. Move your project into the WSL2 filesystem (recommended)**
+
+If your project is located on the Windows filesystem (`C:\` / `/mnt/c/`), permission conflicts are common. Clone or move the project directly into the WSL2 filesystem (e.g. `~/projects/my-project`) and open the Dev Container from there in VS Code: `code .`
+
+Verify it works by running in the container terminal:
+
+```bash
+touch test.txt
+```
+
+If the file is created without error, the move was successful.
+
+**2. Fix ownership inside the container**
+
+As a quick fix, open the terminal inside the Dev Container and transfer ownership of the workspace directory to your current user:
+
+```bash
+sudo chown -R $(whoami) /workspace
+```
+
+
 ### Option local installation
 
 Ensure you have the following installed on your local machine:

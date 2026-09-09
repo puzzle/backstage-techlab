@@ -7,7 +7,11 @@ sectionnumber: 6
 Backstage is designed to be branded and customized to match your organization's identity. In this chapter, you'll learn how to customize the theme (colors, fonts, logo), create a custom home page, and adjust the navigation sidebar. These changes help make the developer portal feel like an integral part of your company's toolchain rather than a generic off-the-shelf product.
 
 {{% alert title="Note" color="primary" %}}
-Backstage uses [Material UI (MUI)](https://material-ui.com/) for its component library. Theme customizations follow the MUI theming approach, so if you're familiar with MUI, you'll feel right at home.
+Backstage uses [Material UI (MUI)](https://material-ui.com/) or Backstage UI  (BUI).
+
+MUI is legacy and it is recommended to use the CSS based BUI system.
+
+This lab uses the MUI system. Documentation for BUI can be found at [Backstage](https://backstage.io/docs/conf/user-interface/#create-a-theme-for-backstage-ui-new).
 {{% /alert %}}
 
 
